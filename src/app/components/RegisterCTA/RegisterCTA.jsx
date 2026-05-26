@@ -221,7 +221,8 @@ const RegisterCTA = () => {
                       />
                     </svg>
                     <span className="text-white font-semibold tracking-wide">
-                      Registration Opens in <span className="text-[#ffcb40] font-bold">{timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span>
+                      {/* Registration Opens in <span className="text-[#ffcb40] font-bold">{timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m</span> */}
+                      Registration opens soon
                     </span>
                 </div>
               </div>

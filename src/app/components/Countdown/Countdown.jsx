@@ -52,13 +52,14 @@ const Countdown = () => {
     <div className="countdown-container z-20">
       <div className="countdown-content">
         <div className="countdown-header">
-          <h2 className="countdown-title">Registration Opens In</h2>
+          {/* <h2 className="countdown-title">Registration Opens In</h2> */}
+          <h2 className="countdown-title">Registration opens soon</h2>
           <p className="countdown-subtitle">
             Get ready to register for IEEE SLSYWC 2026
           </p>
         </div>
 
-        <div className="countdown-timer">
+        {/* <div className="countdown-timer">
           <div className="countdown-item">
             <div className="countdown-number">
               {timeLeft.days.toString().padStart(2, "0")}
@@ -86,7 +87,7 @@ const Countdown = () => {
             </div>
             <div className="countdown-label">Seconds</div>
           </div>
-        </div>
+        </div> */}
 
         <div className="countdown-info">
           <p className="countdown-date">
