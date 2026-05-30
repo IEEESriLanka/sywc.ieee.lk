@@ -18,6 +18,7 @@ const menuLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "#about" },
   { label: "Theme", href: "#theme" },
+  { label: "Location", href: "#location" },
   // { label: "Schedule", href: "#schedule" },
   { label: "Organizers", href: "#organizers" },
   { label: "Past Congress", href: "/past-congress" },

@@ -2,7 +2,7 @@
   position: relative;
   width: 100vw;
   height: 100svh;
-  background: #0a1020;
+  background: #030710;
   overflow: hidden;
   padding: 0 !important;
 }
@@ -11,25 +11,8 @@
   position: relative;
   width: 100vw;
   height: 100svh;
-  background: rgba(10, 16, 32, 0.9);
-  clip-path: circle(0% at 50% 50%);
-  will-change: clip-path;
+  background: transparent;
   overflow: hidden;
-}
-
-.whoweare-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 76, 241, 0.2) 0%,
-    rgba(0, 236, 236, 0.15) 50%,
-    rgba(0, 184, 54, 0.1) 100%
-  );
-  opacity: 0.6;
-  pointer-events: none;
-  z-index: 0;
 }
 
 .whoweare-scroll {
