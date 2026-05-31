@@ -24,13 +24,13 @@ const Marquee = ({ text }) => {
     }
 
     gsap.to(wrapper, {
-      x: "-25%", // Parallax movement
+      x: "-2%", // Absolute minimum movement for nearly stationary feel
       ease: "none",
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top bottom",
         end: "bottom top",
-        scrub: 1.5, // Ultra-smooth scrolling
+        scrub: 5, // Extremely high lag for intense slow-motion effect
       },
     });
   }, { scope: containerRef });
