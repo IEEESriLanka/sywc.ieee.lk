@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Copy from "../Copy/Copy";
+import AnimatedBackground from "../ui/AnimatedBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -50,7 +51,7 @@ const About = () => {
 
   return (
     <section ref={containerRef} id="about-premium" className="about-premium-section">
-      
+      <AnimatedBackground showNeuralNetwork={true} />
       <div className="container mx-auto px-6">
         
         {/* Section Header - Full Width */}

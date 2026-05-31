@@ -85,60 +85,35 @@ const Theme = () => {
   return (
     <>
       <div className="theme min-h-screen w-full" ref={themeRef}>
-        <AnimatedBackground className="absolute" showNeuralNetwork={false} />
         {/* Top fader for smooth transition from previous section */}
-        {/* <div
+        <div
           className="pointer-events-none absolute top-0 left-0 w-full h-32 z-20"
           style={{
             background:
-              "linear-gradient(to bottom, #0B1122 0%, rgba(11,17,34,0.0) 100%)",
+              "linear-gradient(to bottom, #030710 0%, rgba(3,7,16,0.0) 100%)",
           }}
-        ></div> */}
-        {/* <section className="theme-hero">
-          <img
-            className="theme-hero-bg"
-            src="/images/studio/hero.jpeg"
-            alt=""
-          />
-          <h1 className="caps">Theme</h1>
-        </section> */}
+        ></div>
         <div className="theme-desktop">
           <WhoWeAre />
         </div>
         {/* <Schedule /> */}
 
-        {/* <section className="theme-header">
-          <div className="theme-header-copy ">
-            <Copy>
-              <h2>
-                The IEEE Sri Lanka Section Students | Young Professionals |
-                Women in Engineering (IEEE SLSYW) Congress is the flagship
-                event organized by the IEEE Sri Lanka Section. This event serves
-                as the largest technical congress bridging the gap between our
-                nation and the global community, whilst honouring the
-                outstanding volunteers and their endeavours for their impactful
-                contributions made for the country.
-              </h2>
-            </Copy>
-          </div>
-        </section> */}
-
         <section
           className="mission-intro relative overflow-hidden"
           style={{
-            // background:
-            //   "radial-gradient(ellipse at 60% 40%, #1A2A6C 0%, #0A0F1C 80%)",
+            backgroundColor: "#030710",
             color: "#aefcff",
           }}
           id="about"
         >
+          <AnimatedBackground showNeuralNetwork={true} />
           {/* Animated Gradient Background (from Hero/About) removed as using global AnimatedBackground */}
           {/* Top fader for smooth transition from previous section */}
           <div
             className="pointer-events-none absolute top-0 left-0 w-full h-24 z-20"
             style={{
               background:
-                "linear-gradient(to bottom, #0A2232 0%, rgba(11,17,34,0.0) 100%)",
+                "linear-gradient(to bottom, #030710 0%, rgba(3,7,16,0.0) 100%)",
             }}
           ></div>
           <div className="mission-intro-col-sm flex items-center justify-center ">
@@ -192,9 +167,9 @@ const Theme = () => {
 
         <About />
         <div className="theme-desktop">
-          {/* <Marquee text={"Location"} /> */}
+          <Marquee text={"Location"} />
         </div>
-        {/* <Location /> */}
+        <Location />
         <div id="schedule">
           <div className="theme-desktop">
             {/* <Marquee text={"Schedule"} /> */}

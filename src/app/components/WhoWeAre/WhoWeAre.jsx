@@ -4,6 +4,7 @@ import "./WhoWeAre.css";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AnimatedBackground from "../ui/AnimatedBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -41,26 +42,6 @@ const WhoWeAre = () => {
       { id: "#whoweare-img-4", endTranslateX: -1000 },
       { id: "#whoweare-img-5", endTranslateX: -900 },
     ];
-
-    ScrollTrigger.create({
-      trigger: ".whoweare",
-      start: "top bottom",
-      end: `bottom+=${window.innerHeight * 2} top`,
-      scrub: 1,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const clipPathValue = Math.min(progress * 100, 100);
-
-        gsap.set(".whoweare-container", {
-          clipPath: `circle(${clipPathValue}% at 50% 50%)`,
-        });
-      },
-      onComplete: () => {
-        gsap.set(".whoweare-container", {
-          clipPath: `circle(100% at 50% 50%)`,
-        });
-      },
-    });
 
     ScrollTrigger.create({
       trigger: ".whoweare",
@@ -139,6 +120,7 @@ const WhoWeAre = () => {
 
   return (
     <section id="about" className="whoweare z-20">
+      <AnimatedBackground showNeuralNetwork={true} />
       <div className="whoweare-container">
         <div className="whoweare-scroll">
           <div className="whoweare-header">

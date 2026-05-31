@@ -1,102 +1,45 @@
 "use client";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 import "./Marquee.css";
 
-const ANIMATION_DURATION = 30;
-
 const Marquee = ({ text }) => {
+  const containerRef = useRef(null);
   const wrapperRef = useRef(null);
-  const animationRef = useRef(null);
-  const directionRef = useRef(-1);
 
-  useEffect(() => {
+  useGSAP(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    if (!wrapperRef.current) return;
+
     const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
     const content = wrapper.children[0];
 
-    for (let i = 0; i < 3; i++) {
+    // Duplicate content for seamless loop effect
+    for (let i = 0; i < 2; i++) {
       const clone = content.cloneNode(true);
       wrapper.appendChild(clone);
     }
 
-    const singleWidth = content.offsetWidth;
-    const totalWidth = singleWidth * 2;
-
-    const createAnimation = () => {
-      if (animationRef.current) {
-        animationRef.current.kill();
-      }
-
-      let currentX = gsap.getProperty(wrapper, "x");
-
-      if (currentX <= -totalWidth) {
-        currentX = currentX % singleWidth;
-        gsap.set(wrapper, { x: currentX });
-      } else if (currentX >= 0) {
-        currentX = -singleWidth + (currentX % singleWidth);
-        gsap.set(wrapper, { x: currentX });
-      }
-
-      const targetX =
-        directionRef.current === -1
-          ? currentX - singleWidth
-          : currentX + singleWidth;
-
-      const remainingDistance = Math.abs(targetX - currentX);
-      const remainingDuration =
-        (remainingDistance / singleWidth) * ANIMATION_DURATION;
-
-      animationRef.current = gsap.to(wrapper, {
-        x: targetX,
-        duration: remainingDuration,
-        ease: "none",
-        repeat: -1,
-        onRepeat: () => {
-          let resetX = gsap.getProperty(wrapper, "x");
-
-          if (directionRef.current === -1 && resetX <= -totalWidth) {
-            resetX = resetX % singleWidth;
-          } else if (directionRef.current === 1 && resetX >= 0) {
-            resetX = -singleWidth + (resetX % singleWidth);
-          }
-
-          gsap.set(wrapper, { x: resetX });
-        },
-      });
-    };
-
-    createAnimation();
-
-    let lastScrollTop = 0;
-    const handleScroll = () => {
-      const st = window.pageYOffset || document.documentElement.scrollTop;
-      const newDirection = st > lastScrollTop ? -1 : 1;
-
-      if (newDirection !== directionRef.current) {
-        directionRef.current = newDirection;
-        createAnimation();
-      }
-
-      lastScrollTop = st <= 0 ? 0 : st;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (animationRef.current) {
-        animationRef.current.kill();
-      }
-    };
-  }, []);
+    gsap.to(wrapper, {
+      x: "-2%", // Absolute minimum movement for nearly stationary feel
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: 5, // Extremely high lag for intense slow-motion effect
+      },
+    });
+  }, { scope: containerRef });
 
   return (
-    <div className="marquee">
+    <div className="marquee" ref={containerRef}>
       <div className="marquee-wrapper" ref={wrapperRef}>
         <div className="marquee-content">
-          <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-[#004CF1] via-[#00ECEC] to-[#00B836] animate-gradient-move">
+          <h1 className="gold-text-shimmer">
             {text} — {text} — {text} — {text} — {text} — {text} — {text} —{" "}
             {text} —{text} — {text} — {text} — {text} — {text} — {text} — {text}{" "}
             — {text} —
