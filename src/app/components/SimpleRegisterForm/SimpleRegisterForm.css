@@ -256,18 +256,26 @@
 }
 
 .back-button {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
   color: #eafaff;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50px;
   font-weight: 600;
   transition: all 0.2s;
+  padding: 18px 40px;
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 350px;
+  cursor: pointer;
+  display: block;
+  text-align: center;
 }
 
 .back-button:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: #ffcb40;
   color: #ffcb40;
+  transform: translateY(-2px);
 }
 
 .error-message {
@@ -331,4 +339,191 @@
     padding: 16px 24px;
     font-size: 1rem;
   }
+  .radio-group-row {
+    flex-direction: column !important;
+  }
 }
+
+/* Custom Grid Systems for Compact Fields */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .form-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Horizontal Radio Button Group */
+.radio-group-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
+}
+
+.radio-group-row .radio-label.modern {
+  flex: 1;
+  justify-content: center;
+  margin: 0;
+  padding: 16px;
+  text-align: center;
+}
+
+/* Progress Steps Indicator */
+.registration-stepper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+  padding: 0 10px;
+}
+
+.registration-stepper::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
+.step-indicator {
+  position: relative;
+  z-index: 2;
+  background: #0f172a;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-weight: 700;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.step-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: color 0.4s ease;
+}
+
+.step-item.active .step-indicator {
+  border-color: #ffcb40;
+  color: #ffcb40;
+  background: rgba(255, 203, 64, 0.1);
+  box-shadow: 0 0 20px rgba(255, 203, 64, 0.3);
+}
+
+.step-item.active .step-label {
+  color: #ffcb40;
+}
+
+.step-item.completed .step-indicator {
+  border-color: #00B836;
+  color: #00B836;
+  background: rgba(0, 184, 54, 0.1);
+  box-shadow: 0 0 20px rgba(0, 184, 54, 0.2);
+}
+
+.step-item.completed .step-label {
+  color: #eafaff;
+}
+
+/* Formatting for select dropdown arrows */
+.form-group select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffcb40' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+  background-size: 16px;
+  padding-right: 48px;
+}
+
+/* Notice box refinement */
+.notice-box {
+  background: rgba(255, 203, 64, 0.03);
+  border: 1px solid rgba(255, 203, 64, 0.15);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+}
+
+.notice-icon {
+  color: #ffcb40;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.notice-content h4 {
+  color: #ffcb40;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  font-size: 1rem;
+}
+
+.notice-content p {
+  color: #94a3b8;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.highlight-text {
+  color: #ffcb40;
+  font-weight: 600;
+}
+
+/* Button groups spacing */
+.form-buttons {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 16px;
+  margin-top: 40px;
+  width: 100%;
+  justify-content: center;
+}
+
+.form-buttons button {
+  margin: 0 !important;
+  width: 100% !important;
+  max-width: 280px !important;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .form-buttons {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .form-buttons button {
+    flex: 1;
+    max-width: 280px !important;
+  }
+}
+

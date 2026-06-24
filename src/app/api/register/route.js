@@ -37,6 +37,7 @@ const validateFormData = (data) => {
     "email",
     "contactNumber",
     "gender",
+    "tshirtSize",
     "privacy",
     "consent",
   ];
@@ -143,7 +144,7 @@ export async function POST(request) {
     // Append data to Google Sheets
     const result = await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: "Sheet1!A:Q",
+      range: "Sheet1!A:T",
       valueInputOption: "RAW",
       resource: { values: [rowData] },
     });

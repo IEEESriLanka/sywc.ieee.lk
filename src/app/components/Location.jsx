@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -23,6 +23,7 @@ export default function Location({
   buttonText = "See Hotel",
 }) {
   const containerRef = useRef(null);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   useGSAP(() => {
     if (!containerRef.current) return;
@@ -85,15 +86,26 @@ export default function Location({
 
         // Subtly move the image inside the container for a parallax window effect
         const img = card.querySelector('img');
-        gsap.to(img, {
-          yPercent: 15,
-          ease: "none",
-          scrollTrigger: {
-            trigger: card,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          }
+        if (img) {
+          gsap.to(img, {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            }
+          });
+        }
+
+        // Trigger background image change when this card is in focus
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 60%",
+          end: "bottom 40%",
+          onEnter: () => setActiveImageIndex(index),
+          onEnterBack: () => setActiveImageIndex(index),
         });
       });
 
@@ -104,6 +116,25 @@ export default function Location({
 
   return (
     <div id="location" ref={containerRef} className="relative w-full text-white py-24 md:py-32 overflow-hidden">
+      {/* Dynamic Fading Background Image for the whole section */}
+      <div className="absolute inset-0 pointer-events-none z-10 overflow-hidden">
+        {images.map((img, i) => (
+          <div
+            key={i}
+            className="absolute inset-0 transition-opacity duration-1000 ease-in-out bg-cover bg-center"
+            style={{
+              opacity: activeImageIndex === i ? 0.3 : 0, // Improved opacity for better visibility
+              backgroundImage: `url(${img})`,
+            }}
+          />
+        ))}
+        {/* Soft edge gradients and radial gradients to blend into the dark theme (#030710) and ensure readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#030710] via-[#030710]/50 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030710] via-transparent to-[#030710]"></div>
+        {/* Blue tone wash/overlay to match current blue color style */}
+        <div className="absolute inset-0 bg-[#0a2d77]/20 mix-blend-color"></div>
+      </div>
+
       {/* Background that fits the theme */}
       <AnimatedBackground className="absolute inset-0 z-0 pointer-events-none" showNeuralNetwork={false} />
       

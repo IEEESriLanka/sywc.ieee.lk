@@ -22,7 +22,7 @@ const menuLinks = [
   // { label: "Schedule", href: "#schedule" },
   { label: "Organizers", href: "#organizers" },
   { label: "Past Congress", href: "/past-congress" },
-  // { label: "Register", href: "#register" },
+  { label: "Register", href: "/register" },
 ];
 
 const Navbar = () => {
@@ -133,13 +133,13 @@ const Navbar = () => {
         <div className="nav-logo-wrapper cursor-pointer transition-transform duration-300 hover:scale-105">
           <div className="nav-logo-border-bg"></div>
           <div className="nav-logo-inner">
-            <Link href="/" className="no-underline flex items-center">
+            <a href="/" className="no-underline flex items-center">
               <img
                 src="/main-logo.svg"
                 alt="IEEE SLSYWC Logo"
                 className="h-8 md:h-[3rem] w-auto"
               />
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -268,7 +268,7 @@ const Navbar = () => {
 
         {/* Back Button - shown only on registration page */}
         {isRegistrationPage && (
-          <Link
+          <a
             href="/"
             className="group relative inline-flex items-center justify-center px-3 py-1.5 md:px-6 md:py-3 text-xs md:text-sm font-bold text-[#0f172a] bg-gradient-to-r from-[#b4860b] via-[#ffcb40] to-[#fbf5b7] rounded-full overflow-hidden transition-all duration-300 hover:scale-105 shadow-[0_0_20px_rgba(255,203,64,0.4)] hover:shadow-[0_0_30px_rgba(255,203,64,0.6)]"
             style={{ minWidth: "unset" }}
@@ -290,7 +290,7 @@ const Navbar = () => {
               Back to Home
             </span>
             <div className="absolute inset-0 bg-white/20 blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-          </Link>
+          </a>
         )}
       </nav>
 

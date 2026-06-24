@@ -57,7 +57,7 @@ function RegPage() {
               </div>
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 mr-2" />
-                Jie Jie Beach, Panadura
+                Club Palm Bay, Marawila
               </div>
               <div className="flex items-center">
                 <Users className="w-4 h-4 mr-2" />

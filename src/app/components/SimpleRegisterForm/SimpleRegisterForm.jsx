@@ -169,6 +169,10 @@ const SimpleRegisterForm = () => {
       }
     }
 
+    // T-shirt size validation
+    if (!formData.tshirtSize)
+      newErrors.tshirtSize = "T-shirt size is required";
+
     // Terms validation
     if (!formData.privacy)
       newErrors.privacy = "Please agree to the privacy policy";
@@ -363,10 +367,7 @@ const SimpleRegisterForm = () => {
                 </span>
               )}
             </div>
-            <div
-              className="form-group"
-              style={{ display: "flex", gap: "1rem" }}
-            >
+            <div className="form-buttons">
               <button
                 type="button"
                 className="submit-button"
@@ -383,7 +384,7 @@ const SimpleRegisterForm = () => {
                   }
                 }}
               >
-                Continue to Registration
+                Continue
               </button>
               <button
                 type="button"
@@ -505,7 +506,7 @@ const SimpleRegisterForm = () => {
           <div className="form-group radio-group-modern">
             <label className="radio-group-label">7. Gender </label>
             <div className="radio-group">
-              {["Male", "Female", "Other"].map((gender) => (
+              {["Male", "Female"].map((gender) => (
                 <label key={gender} className="radio-label modern">
                   <input
                     type="radio"
@@ -750,8 +751,8 @@ const SimpleRegisterForm = () => {
             }}
           >
             <div style={{ flex: 1, minWidth: 200 }}>
-              <label htmlFor="tShirtSize" className="no-required-star">
-                T-Shirt Size{" "}
+              <label htmlFor="tshirtSize">
+                T-Shirt Size <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
               </label>
               <select
                 id="tshirtSize"
@@ -883,7 +884,7 @@ const SimpleRegisterForm = () => {
                 a <span className="highlight-text">confirmation email</span>.
                 <br />
                 The foreign delegate fee is{" "}
-                <span className="highlight-text">USD 250</span>, which will be
+                <span className="highlight-text">USD 150</span>, which will be
                 collected on <span className="highlight-text">Day 01</span>,
                 before the event starts.
               </p>
