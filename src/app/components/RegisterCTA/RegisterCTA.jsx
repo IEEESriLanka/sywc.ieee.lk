@@ -260,16 +260,14 @@ const RegisterCTA = () => {
           padding: 1.25rem 3.5rem;
           font-size: 1.25rem;
           font-weight: 700;
-          color: #ffcb40;
-          background: rgba(16, 24, 40, 0.6);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 203, 64, 0.3);
+          color: #0f172a;
+          background: linear-gradient(135deg, #b4860b 0%, #ffcb40 50%, #fbf5b7 100%);
+          border: none;
           border-radius: 50px;
           text-decoration: none;
           overflow: hidden;
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2),
-            inset 0 0 0 1px rgba(255, 203, 64, 0.1);
+          box-shadow: 0 4px 20px rgba(255, 203, 64, 0.3);
           letter-spacing: 0.05em;
           text-transform: uppercase;
           margin-bottom: 0.5rem;
@@ -277,12 +275,9 @@ const RegisterCTA = () => {
 
         .register-button:hover {
           transform: translateY(-2px);
-          background: rgba(16, 24, 40, 0.8);
-          border-color: #ffcb40;
           color: #0f172a;
-          box-shadow: 0 0 20px rgba(255, 203, 64, 0.4),
-            0 0 40px rgba(255, 203, 64, 0.2),
-            inset 0 0 0 1px rgba(255, 203, 64, 0.5);
+          box-shadow: 0 0 25px rgba(255, 203, 64, 0.6),
+            0 0 50px rgba(255, 203, 64, 0.3);
         }
 
         .register-button::before {
