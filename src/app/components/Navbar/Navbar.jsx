@@ -7,7 +7,6 @@ import { useRegistrationStatus } from "../../hooks/useRegistrationStatus";
 import {
   FaInstagram,
   FaLinkedin,
-  FaTwitter,
   FaTimes,
   FaEnvelope,
 } from "react-icons/fa";
@@ -353,28 +352,20 @@ const Navbar = () => {
           <div className="w-full flex flex-col md:flex-row justify-between items-center gap-6 p-6 border-t border-white/20 ">
             <div className="flex gap-4 items-center">
               <a
-                href="#"
+                href="https://www.instagram.com/ieeeslsywc"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#E4405F] hover:text-[#00ECEC] text-2xl transition-colors duration-300"
+                className="text-[#E4405F] hover:text-[#ffcb40] text-2xl transition-colors duration-300"
               >
                 <FaInstagram />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/sacsrilanka/?originalSubdomain=lk"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#0077B5] hover:text-[#00ECEC] text-2xl transition-colors duration-300"
+                className="text-[#0077B5] hover:text-[#ffcb40] text-2xl transition-colors duration-300"
               >
                 <FaLinkedin />
-              </a>
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#1DA1F2] hover:text-[#00ECEC] text-2xl transition-colors duration-300"
-              >
-                <FaTwitter />
               </a>
             </div>
             <div className="flex gap-4 items-center">
