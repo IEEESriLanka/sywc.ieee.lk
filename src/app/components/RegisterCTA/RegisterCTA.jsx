@@ -200,10 +200,16 @@ const RegisterCTA = () => {
                 <span>Registration Closed</span>
               </div>
             ) : isRegistrationOpen ? (
-              <a href="/register" className="register-button">
-                <span className="button-text">Register Now</span>
-                <div className="button-glow"></div>
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="/register" className="register-button">
+                  <span className="button-text">Register Now</span>
+                  <div className="button-glow"></div>
+                </a>
+                <a href="/register?mode=merch" className="merch-button">
+                  <span className="button-text">Purchase Merch</span>
+                  <div className="button-glow"></div>
+                </a>
+              </div>
             ) : (
               <div className="relative group p-[2px] rounded-full bg-gradient-to-r from-[#ffcb40] via-[#b4860b] to-[#ffcb40] bg-[length:200%_auto] animate-gradient-move">
                 <div className="bg-[#030712] rounded-full px-10 py-5 flex items-center gap-3 relative overflow-hidden group-hover:bg-[#0a0f1c] transition-colors duration-300">
@@ -230,9 +236,9 @@ const RegisterCTA = () => {
 
             <a
               href="/past-congress"
-              className="group flex items-center gap-3 px-8 py-4 rounded-full border border-[#ffcb40]/40 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-[#ffcb40] transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,203,64,0.3)] shadow-[0_0_10px_rgba(255,203,64,0.1)]"
+              className="group flex items-center gap-3 px-8 py-4 rounded-full border-2 border-[#ffcb40]/70 bg-[#0f172a]/95 backdrop-blur-md hover:bg-[#ffcb40]/10 hover:border-[#ffcb40] transition-all duration-300 transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(255,203,64,0.5)] shadow-[0_4px_15px_rgba(0,0,0,0.5)]"
             >
-              <span className="text-[#ffcb40] font-medium tracking-wider uppercase text-sm group-hover:text-[#ffdb70] transition-colors border-b border-[#ffcb40]/30 pb-0.5">See Past Congresses</span>
+              <span className="text-[#ffcb40] font-bold tracking-wider uppercase text-sm group-hover:text-white transition-colors">See Past Congresses</span>
               <svg
                 className="w-5 h-5 text-white/70 group-hover:text-[#ffcb40] transition-all duration-300 group-hover:translate-x-1"
                 fill="none"
@@ -261,13 +267,13 @@ const RegisterCTA = () => {
           font-size: 1.25rem;
           font-weight: 700;
           color: #0f172a;
-          background: linear-gradient(135deg, #b4860b 0%, #ffcb40 50%, #fbf5b7 100%);
+          background: linear-gradient(135deg, #ff9900 0%, #ffcc00 50%, #ffe680 100%);
           border: none;
           border-radius: 50px;
           text-decoration: none;
           overflow: hidden;
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 4px 20px rgba(255, 203, 64, 0.3);
+          box-shadow: 0 4px 20px rgba(255, 203, 64, 0.35);
           letter-spacing: 0.05em;
           text-transform: uppercase;
           margin-bottom: 0.5rem;
@@ -276,8 +282,8 @@ const RegisterCTA = () => {
         .register-button:hover {
           transform: translateY(-2px);
           color: #0f172a;
-          box-shadow: 0 0 25px rgba(255, 203, 64, 0.6),
-            0 0 50px rgba(255, 203, 64, 0.3);
+          box-shadow: 0 0 25px rgba(255, 203, 64, 0.75),
+            0 0 50px rgba(255, 203, 64, 0.4);
         }
 
         .register-button::before {
@@ -286,11 +292,11 @@ const RegisterCTA = () => {
           inset: 0;
           background: linear-gradient(
             90deg,
-            #b4860b,
-            #ffcb40,
-            #fbf5b7,
-            #ffcb40,
-            #b4860b
+            #ff9900,
+            #ffcc00,
+            #ffe680,
+            #ffcc00,
+            #ff9900
           );
           background-size: 200% auto;
           opacity: 0;
@@ -333,6 +339,62 @@ const RegisterCTA = () => {
         }
 
         .register-button:hover .button-glow {
+          left: 150%;
+          transition: 0.7s ease-in-out;
+        }
+
+        .merch-button {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.25rem 3.5rem;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #0f172a;
+          background: linear-gradient(135deg, #0055ff 0%, #00d9ff 50%, #3feeff 100%);
+          border: none;
+          border-radius: 50px;
+          text-decoration: none;
+          overflow: hidden;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 4px 20px rgba(0, 184, 184, 0.35);
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          margin-bottom: 0.5rem;
+        }
+
+        .merch-button:hover {
+          transform: translateY(-2px);
+          color: #0f172a;
+          box-shadow: 0 0 25px rgba(0, 184, 184, 0.75),
+            0 0 50px rgba(0, 184, 184, 0.4);
+        }
+
+        .merch-button::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            90deg,
+            #0055ff,
+            #00d9ff,
+            #3feeff,
+            #00d9ff,
+            #0055ff
+          );
+          background-size: 200% auto;
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          z-index: 0;
+          animation: shine 3s linear infinite;
+        }
+
+        .merch-button:hover::before {
+          opacity: 1;
+        }
+
+        .merch-button:hover .button-glow {
           left: 150%;
           transition: 0.7s ease-in-out;
         }

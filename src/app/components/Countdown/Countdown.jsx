@@ -14,7 +14,7 @@ const Countdown = () => {
 
   useEffect(() => {
     // Set the target date: September 1st, 2026 at 12:00 AM
-    const targetDate = new Date("2026-09-01T00:00:00");
+    const targetDate = new Date("2026-07-01T00:00:00");
 
     const calculateTimeLeft = () => {
       const now = new Date();
