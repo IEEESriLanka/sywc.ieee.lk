@@ -1106,17 +1106,8 @@ import "./SimpleRegisterForm.css";
           {isEventFlow && (
             <div className="form-section">
               <h3>Delegate Pack</h3>
-              <div
-                className="form-group"
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "flex-start",
-                  gap: "2rem",
-                  flexWrap: "wrap",
-                }}
-              >
-                <div style={{ flex: 1, minWidth: 200 }}>
+              <div className="form-group delegate-pack-container">
+                <div className="delegate-pack-select">
                   <label htmlFor="tshirtSize">
                     T-Shirt Size <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
                   </label>
@@ -1138,27 +1129,13 @@ import "./SimpleRegisterForm.css";
                     <span className="error-message">{errors.tshirtSize}</span>
                   )}
                 </div>
-                <div
-                  style={{
-                    flex: 1,
-                    minWidth: 220,
-                    maxWidth: 400,
-                    textAlign: "center",
-                  }}
-                >
+                <div className="delegate-pack-chart">
                   <img
                     src="/tshirt.jpeg"
                     alt="T-shirt Size Chart"
-                    style={{
-                      width: "100%",
-                      maxWidth: 380,
-                      borderRadius: 12,
-                      boxShadow: "0 2px 12px #0038b822",
-                    }}
+                    className="delegate-pack-chart-img"
                   />
-                  <div
-                    style={{ fontSize: "0.95em", color: "#b8eaff", marginTop: 8 }}
-                  >
+                  <div className="delegate-pack-chart-caption">
                     T-shirt size chart for reference
                   </div>
                 </div>
