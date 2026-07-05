@@ -30,22 +30,20 @@ const initializeGoogleSheets = async () => {
 // Validate form data
 const validateFormData = (data) => {
   const errors = {};
+  const registrationType = data.registrationType || "event";
+  const isEventFlow = registrationType !== "merch";
+  const isMerchFlow = registrationType !== "event";
+
   const requiredFields = [
     "nameWithInitials",
     "firstName",
     "lastName",
     "email",
     "contactNumber",
-    "gender",
-    "tshirtSize",
     "privacy",
     "consent",
   ];
-  if (data.isSriLankanCitizen === "Yes") {
-    requiredFields.push("nic", "branch");
-  } else {
-    requiredFields.push("region", "organizationalUnit");
-  }
+
   requiredFields.forEach((field) => {
     if (
       !data[field] ||
@@ -54,6 +52,64 @@ const validateFormData = (data) => {
       errors[field] = `${field} is required`;
     }
   });
+
+  if (isEventFlow) {
+    if (!data.isSriLankanCitizen) {
+      errors.isSriLankanCitizen = "isSriLankanCitizen is required";
+    }
+
+    if (data.isSriLankanCitizen === "Yes") {
+      if (!data.nic || data.nic.trim() === "") {
+        errors.nic = "nic is required";
+      }
+      if (!data.gender || data.gender.trim() === "") {
+        errors.gender = "gender is required";
+      }
+      if (!data.branch || data.branch.trim() === "") {
+        errors.branch = "branch is required";
+      }
+      if (data.branch === "23. Other" && (!data.otherAffiliation || data.otherAffiliation.trim() === "")) {
+        errors.otherAffiliation = "otherAffiliation is required";
+      }
+      if (!data.partOfExCo || data.partOfExCo.trim() === "") {
+        errors.partOfExCo = "partOfExCo is required";
+      }
+      if (!data.tshirtSize || data.tshirtSize.trim() === "") {
+        errors.tshirtSize = "tshirtSize is required";
+      }
+    }
+
+    if (data.isSriLankanCitizen === "No") {
+      if (!data.region || data.region.trim() === "") {
+        errors.region = "region is required";
+      }
+      if (!data.organizationalUnit || data.organizationalUnit.trim() === "") {
+        errors.organizationalUnit = "organizationalUnit is required";
+      }
+      if (!data.gender || data.gender.trim() === "") {
+        errors.gender = "gender is required";
+      }
+      if (!data.tshirtSize || data.tshirtSize.trim() === "") {
+        errors.tshirtSize = "tshirtSize is required";
+      }
+    }
+  }
+
+  const merchItems = data.merchItems && typeof data.merchItems === "object" ? data.merchItems : {};
+  const merchQuantities = Object.values(merchItems).map((quantity) => Number(quantity || 0));
+  const hasMerchSelection = merchQuantities.some((quantity) => quantity > 0);
+
+  if (registrationType === "merch" && !hasMerchSelection) {
+    errors.merchItems = "At least one merch item must be selected";
+  }
+
+  if (
+    (Number(merchItems.tshirt || 0) > 0 || Number(merchItems.merchPackOversized || 0) > 0) &&
+    (!data.merchPackSize || data.merchPackSize.trim() === "")
+  ) {
+    errors.merchPackSize = "merchPackSize is required";
+  }
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (data.email && !emailRegex.test(data.email)) {
     errors.email = "Invalid email format";
@@ -114,8 +170,33 @@ export async function POST(request) {
     console.log("Google Sheets initialized, preparing data...");
 
     // Prepare data for Google Sheets
+    const merchItems =
+      formData.merchItems && typeof formData.merchItems === "object"
+        ? formData.merchItems
+        : {};
+    const merchSummary = Object.entries(merchItems)
+      .filter(([, quantity]) => Number(quantity || 0) > 0)
+      .map(([key, quantity]) => `${key}:${quantity}`)
+      .join(" | ");
+    const merchTotalQuantity = Object.values(merchItems).reduce(
+      (sum, quantity) => sum + Number(quantity || 0),
+      0
+    );
+    const merchPriceMap = {
+      merchPackOversized: 3500,
+      tshirt: 2000,
+      wristband: 250,
+      bucketHat: 1200,
+    };
+    const merchTotalAmount = Object.entries(merchItems).reduce(
+      (sum, [key, quantity]) =>
+        sum + Number(quantity || 0) * Number(merchPriceMap[key] || 0),
+      0
+    );
+
     const rowData = [
       new Date().toISOString(),
+      formData.registrationType || "event",
       formData.isSriLankanCitizen || "",
       formData.region || "",
       formData.organizationalUnit || "",
@@ -137,6 +218,14 @@ export async function POST(request) {
       formData.tshirtSize || "",
       formData.privacy || "",
       formData.consent || "",
+      formData.merchPackSize || "",
+      Number(merchItems.merchPackOversized || 0),
+      Number(merchItems.tshirt || 0),
+      Number(merchItems.wristband || 0),
+      Number(merchItems.bucketHat || 0),
+      merchTotalQuantity,
+      merchTotalAmount,
+      merchSummary,
     ];
 
     console.log("Attempting to append data to Google Sheets...");
@@ -144,7 +233,8 @@ export async function POST(request) {
     // Append data to Google Sheets
     const result = await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: "Sheet1!A:T",
+      range: "Sheet1!A1",
+      insertDataOption: "INSERT_ROWS",
       valueInputOption: "RAW",
       resource: { values: [rowData] },
     });
@@ -157,8 +247,17 @@ export async function POST(request) {
       timestamp: new Date().toISOString(),
     });
 
+    const isActuallyMerch = merchTotalQuantity > 0;
     return NextResponse.json(
-      { message: "Registration successful", success: true },
+      {
+        message:
+          formData.registrationType === "merch"
+            ? "Merch order successful"
+            : (formData.registrationType === "both" && isActuallyMerch)
+            ? "Registration and merch order successful"
+            : "Registration successful",
+        success: true,
+      },
       { status: 200, headers }
     );
   } catch (error) {

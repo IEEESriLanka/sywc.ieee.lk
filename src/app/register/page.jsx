@@ -116,8 +116,8 @@ function RegPage() {
               </h1>
               
               <p className="text-lg md:text-xl text-[#b8eaff] mb-8 max-w-2xl mx-auto leading-relaxed">
-                Secure your seat at the flagship event of the IEEE Sri Lanka Section. 
-                Please fill in the fields below with your correct details to submit your official registration.
+                Secure your seat at the flagship event of the IEEE Sri Lanka Section.
+                You can also pre-order merch here, even if you are not registering for the event.
               </p>
 
               {/* Event Info Details Pills */}

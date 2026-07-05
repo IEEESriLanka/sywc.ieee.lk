@@ -12,8 +12,8 @@ export const useRegistrationStatus = () => {
   });
 
   useEffect(() => {
-    // Registration opens: Update this date when registration is officially open
-    const registrationOpenDate = new Date("2026-09-01T00:00:00");
+    // Registration is open again
+    const registrationOpenDate = new Date("2026-07-01T00:00:00");
     // Registration closes: August 13, 2026 at 11:59 PM
     const registrationCloseDate = new Date("2026-08-13T23:59:59");
 
