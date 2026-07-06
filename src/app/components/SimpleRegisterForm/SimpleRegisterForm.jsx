@@ -84,8 +84,11 @@ import "./SimpleRegisterForm.css";
     consent: "",
   });
 
-  const SimpleRegisterForm = () => {
-    const [formData, setFormData] = useState(createInitialFormData);
+  const SimpleRegisterForm = ({ formMode = "register" }) => {
+    const [formData, setFormData] = useState(() => ({
+      ...createInitialFormData(),
+      registrationType: formMode === "merch" ? "merch" : "both",
+    }));
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -210,15 +213,6 @@ import "./SimpleRegisterForm.css";
       });
     };
 
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        const params = new URLSearchParams(window.location.search);
-        const mode = params.get("mode") || params.get("type") || params.get("regType");
-        if (mode === "merch") {
-          handleRegistrationTypeChange("merch");
-        }
-      }
-    }, []);
 
     const handleInputChange = (e) => {
       const { name, value, type, checked } = e.target;
@@ -391,7 +385,10 @@ import "./SimpleRegisterForm.css";
             : formData.registrationType;
           setSubmittedMode(finalMode);
           setShowSuccess(true);
-          setFormData(createInitialFormData());
+          setFormData({
+            ...createInitialFormData(),
+            registrationType: formMode === "merch" ? "merch" : "both",
+          });
           setInternationalStepComplete(false);
         } else {
           setErrors(result.errors || {});
@@ -1218,11 +1215,17 @@ import "./SimpleRegisterForm.css";
               </div>
               <div className="notice-content">
                 <h4>Important Notice</h4>
-                <p>
-                  If you are selected after registering or placing a merch order, you will receive a confirmation email.
-                  <br/>
-                  The foreign delegate fee is USD 150, which will be collected on Day 01, before the event starts.
-                </p>
+                {formMode === "merch" ? (
+                  <p>
+                    If you place a merch order, you will receive a confirmation email.
+                  </p>
+                ) : (
+                  <p>
+                    If you are selected after registering or placing a merch order, you will receive a confirmation email.
+                    <br/>
+                    The foreign delegate fee is USD 150, which will be collected on Day 01, before the event starts.
+                  </p>
+                )}
               </div>
             </div>
           </div>
@@ -1241,7 +1244,7 @@ import "./SimpleRegisterForm.css";
                 ? (getMerchTotalQuantity() > 0 ? "Register & Order" : "Register Now")
                 : "Register Now"}
             </button>
-            {isEventFlow && (
+            {isEventFlow ? (
               <button
                 type="button"
                 className="back-button"
@@ -1253,6 +1256,16 @@ import "./SimpleRegisterForm.css";
                     region: "",
                     organizationalUnit: "",
                   }));
+                }}
+              >
+                Back
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="back-button"
+                onClick={() => {
+                  window.location.href = "/";
                 }}
               >
                 Back
@@ -1290,8 +1303,13 @@ import "./SimpleRegisterForm.css";
     return (
       <div className="simple-register-form">
         <form onSubmit={handleSubmit} className="form-container">
-          <h2>IEEE SLSYWC 2026 Registration & Merch Order Form</h2>
-          {renderModeSelector()}
+          <h2>
+            {formMode === "merch"
+              ? "IEEE SLSYWC 2026 Merchandise Order Form"
+              : "IEEE SLSYWC 2026 Registration & Merch Order Form"}
+          </h2>
+          {/* Hide mode selector since it's determined by the page */}
+          {/* {renderModeSelector()} */}
           {renderRegistrationEntry()}
           {renderPersonalInformation()}
         </form>
