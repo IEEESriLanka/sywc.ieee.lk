@@ -68,7 +68,7 @@ function RegPage() {
 
           {/* Registration Form */}
           <div className="mb-12">
-            <SimpleRegisterForm />
+            <SimpleRegisterForm formMode="register" />
           </div>
 
           {/* Information Cards */}

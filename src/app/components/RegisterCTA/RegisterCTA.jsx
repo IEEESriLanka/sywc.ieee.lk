@@ -205,7 +205,7 @@ const RegisterCTA = () => {
                   <span className="button-text">Register Now</span>
                   <div className="button-glow"></div>
                 </a>
-                <a href="/register?mode=merch" className="merch-button">
+                <a href="/merch" className="merch-button">
                   <span className="button-text">Purchase Merch</span>
                   <div className="button-glow"></div>
                 </a>
