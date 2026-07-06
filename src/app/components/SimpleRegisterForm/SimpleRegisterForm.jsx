@@ -22,7 +22,8 @@ import "./SimpleRegisterForm.css";
     {
       id: "merchPackOversized",
       name: "Merch pack",
-      price: 3500,
+      priceLKR: 3500,
+      priceUSD: 15,
       image: "/merch/merch_pack_oversized.png",
       description:
         "Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1",
@@ -31,21 +32,24 @@ import "./SimpleRegisterForm.css";
     {
       id: "tshirt",
       name: "T-shirt",
-      price: 2000,
+      priceLKR: 2000,
+      priceUSD: 10,
       image: "/tshirt.jpeg",
       description: "Branded congress T-shirt.",
     },
     {
       id: "wristband",
       name: "Wristband",
-      price: 250,
+      priceLKR: 250,
+      priceUSD: 2,
       image: "/merch/white_wristband.png",
       description: "Clean wristband with branded artwork.",
     },
     {
       id: "bucketHat",
       name: "Bucket Hat",
-      price: 1200,
+      priceLKR: 1200,
+      priceUSD: 5,
       image: "/merch/bucket_hat.png",
       description: "Double sided bucket hat with event branding.",
     },
@@ -61,6 +65,7 @@ import "./SimpleRegisterForm.css";
 
   const createInitialFormData = () => ({
     registrationType: "both",
+    currency: "LKR",
     isSriLankanCitizen: "",
     region: "",
     organizationalUnit: "",
@@ -87,7 +92,8 @@ import "./SimpleRegisterForm.css";
   const SimpleRegisterForm = ({ formMode = "register" }) => {
     const [formData, setFormData] = useState(() => ({
       ...createInitialFormData(),
-      registrationType: formMode === "merch" ? "merch" : "both",
+      registrationType: formMode === "merch" ? "merch" : "event",
+      currency: "LKR",
     }));
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -155,7 +161,7 @@ import "./SimpleRegisterForm.css";
     const getMerchTotalAmount = () =>
       merchCatalog.reduce(
         (sum, product) =>
-          sum + Number(formData.merchItems[product.id] || 0) * product.price,
+          sum + Number(formData.merchItems[product.id] || 0) * (formData.currency === "USD" ? product.priceUSD : product.priceLKR),
         0
       );
 
@@ -213,6 +219,13 @@ import "./SimpleRegisterForm.css";
       });
     };
 
+
+    const handleCurrencyChange = (newCurrency) => {
+      setFormData((prev) => ({
+        ...prev,
+        currency: newCurrency,
+      }));
+    };
 
     const handleInputChange = (e) => {
       const { name, value, type, checked } = e.target;
@@ -387,7 +400,8 @@ import "./SimpleRegisterForm.css";
           setShowSuccess(true);
           setFormData({
             ...createInitialFormData(),
-            registrationType: formMode === "merch" ? "merch" : "both",
+            registrationType: formMode === "merch" ? "merch" : "event",
+            currency: "LKR",
           });
           setInternationalStepComplete(false);
         } else {
@@ -582,7 +596,8 @@ import "./SimpleRegisterForm.css";
       }
 
       return (
-        <div className="form-section">
+        <>
+          <div className="form-section">
           <h3>{isMerchFlow && !isEventFlow ? "Buyer Information" : "Personal Information"}</h3>
 
           <div className="form-group">
@@ -874,12 +889,38 @@ import "./SimpleRegisterForm.css";
             </>
           )}
 
+          </div>
+
           {isMerchFlow && (
             <div className="form-section merch-section">
               <h3>Merchandise</h3>
               <p className="form-hint">
-                Pre-order merch with or without event registration. Your order details will also be saved to the spreadsheet.
+                Pre-order merch with or without event registration.
               </p>
+
+              <div className="foreigner-notice-box">
+                <strong>Important:</strong> If you are an international delegate/buyer, please select and complete your purchase in <strong>USD ($)</strong> currency.
+              </div>
+
+              <div className="currency-selector-container">
+                <span className="currency-label">Pricing Currency:</span>
+                <div className="currency-toggle">
+                  <button
+                    type="button"
+                    className={`currency-btn ${formData.currency === "LKR" ? "active" : ""}`}
+                    onClick={() => handleCurrencyChange("LKR")}
+                  >
+                    LKR (Rs.)
+                  </button>
+                  <button
+                    type="button"
+                    className={`currency-btn ${formData.currency === "USD" ? "active" : ""}`}
+                    onClick={() => handleCurrencyChange("USD")}
+                  >
+                    USD ($)
+                  </button>
+                </div>
+              </div>
 
               <div className="merch-featured-card">
                 <div className="merch-featured-image">
@@ -894,7 +935,9 @@ import "./SimpleRegisterForm.css";
                   <p>
                     Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1
                   </p>
-                  <div className="merch-price">3500 LKR</div>
+                  <div className="merch-price">
+                    {formData.currency === "USD" ? "$15" : "3500 LKR"}
+                  </div>
 
                   <div className="form-group no-margin-bottom">
                     <label htmlFor="merchPackSize" className="no-required-star">
@@ -991,7 +1034,9 @@ import "./SimpleRegisterForm.css";
                       </div>
                       <div className="merch-card-content">
                         <h4>{product.name}</h4>
-                        <div className="merch-price">{product.price} LKR</div>
+                          <div className="merch-price">
+                            {formData.currency === "USD" ? `$${product.priceUSD}` : `${product.priceLKR} LKR`}
+                          </div>
                         <p>{product.description}</p>
                         <div className="quantity-stepper">
                           <button
@@ -1091,7 +1136,9 @@ import "./SimpleRegisterForm.css";
                 </div>
                 <div>
                   <span className="merch-summary-label">Estimated total</span>
-                  <strong>{getMerchTotalAmount()} LKR</strong>
+                  <strong>
+                    {formData.currency === "USD" ? `$${getMerchTotalAmount()}` : `${getMerchTotalAmount()} LKR`}
+                  </strong>
                 </div>
               </div>
               {errors.merchItems && (
@@ -1272,7 +1319,7 @@ import "./SimpleRegisterForm.css";
               </button>
             )}
           </div>
-        </div>
+        </>
       );
     };
 
@@ -1293,6 +1340,17 @@ import "./SimpleRegisterForm.css";
               ? "Thank you for registering and pre-ordering merch for IEEE SLSYWC 2026. We will contact you soon with further details."
               : "Thank you for registering for IEEE SLSYWC 2026. We will contact you soon with further details."}
           </p>
+          {submittedMode === "event" && (
+            <div className="merch-motivation-box">
+              <h3>Complete Your Congress Experience!</h3>
+              <p>
+                Pre-order the official SLSYWC 2026 merchandise pack, custom T-shirts, wristbands, and bucket hats now to commemorate your journey.
+              </p>
+              <a href="/merch" className="merch-preorder-button">
+                <span>Pre-order Merchandise</span>
+              </a>
+            </div>
+          )}
           <button onClick={() => window.location.reload()}>
             Submit Another Request
           </button>
