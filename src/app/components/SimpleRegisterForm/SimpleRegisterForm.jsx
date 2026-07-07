@@ -1264,16 +1264,16 @@ import "./SimpleRegisterForm.css";
               
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", fontSize: "0.9rem" }}>
                 <div>
-                  <strong>Account Name:</strong> IEEE Sri Lanka Section
+                  <strong>Account Name:</strong> A I MUNASINGHE
                 </div>
                 <div>
-                  <strong>Bank:</strong> Bank of Ceylon (BOC)
+                  <strong>Bank:</strong> SAMPATH BANK PLC
                 </div>
                 <div>
-                  <strong>Account Number:</strong> 1234567890
+                  <strong>Account Number:</strong> 1010 5297 6654
                 </div>
                 <div>
-                  <strong>Branch:</strong> Torrington, Colombo
+                  <strong>Branch:</strong> MATARA SUPER BRANCH
                 </div>
               </div>
             </div>
