@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./SimpleRegisterForm.css";
 
   const registrationModes = [
@@ -21,7 +21,7 @@ import "./SimpleRegisterForm.css";
   const merchCatalog = [
     {
       id: "merchPack",
-      name: "Merch pack",
+      name: "Combo pack",
       priceLKR: 3500,
       priceUSD: 15,
       image: "/merch/merch_pack_oversized.png",
@@ -91,6 +91,7 @@ import "./SimpleRegisterForm.css";
     privacy: "",
     consent: "",
     paymentSlipUrl: "",
+    photoUrl: "",
   });
 
   const SimpleRegisterForm = ({ formMode = "register" }) => {
@@ -108,6 +109,8 @@ import "./SimpleRegisterForm.css";
     const [showSizeChart, setShowSizeChart] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState("");
+    const [isPhotoUploading, setIsPhotoUploading] = useState(false);
+    const [photoUploadError, setPhotoUploadError] = useState("");
     const [lightboxImage, setLightboxImage] = useState(null);
 
     useEffect(() => {
@@ -120,6 +123,17 @@ import "./SimpleRegisterForm.css";
         document.body.style.overflow = "";
       };
     }, [lightboxImage]);
+
+    const successRef = useRef(null);
+
+    useEffect(() => {
+      if (showSuccess && successRef.current) {
+        const yOffset = -100; // Offset for fixed navigation header
+        const element = successRef.current;
+        const y = element.getBoundingClientRect().top + (window.pageYOffset || window.scrollY) + yOffset;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }, [showSuccess]);
 
     const branches = [
       "1. University of Moratuwa (UOM)",
@@ -308,6 +322,59 @@ import "./SimpleRegisterForm.css";
       }
     };
 
+    const handlePhotoChange = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        setPhotoUploadError("Please upload an image file (JPEG or PNG)");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        setPhotoUploadError("File size exceeds 5MB limit");
+        return;
+      }
+
+      setIsPhotoUploading(true);
+      setPhotoUploadError("");
+
+      try {
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "djp3p2ypt";
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "slsywc_bank_slips";
+        
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", uploadPreset);
+
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          {
+            method: "POST",
+            body: data,
+          }
+        );
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          const errMsg = errData.error?.message || "Failed to upload image. Please check your network or try again.";
+          throw new Error(errMsg);
+        }
+
+        const resData = await response.json();
+        setFormData((prev) => ({
+          ...prev,
+          photoUrl: resData.secure_url,
+        }));
+        setErrors((prev) => ({ ...prev, photoUrl: "" }));
+      } catch (err) {
+        console.error("Cloudinary photo upload error:", err);
+        setPhotoUploadError(err.message || "Failed to upload photo. Please check your network or try again.");
+      } finally {
+        setIsPhotoUploading(false);
+      }
+    };
+
     const handleCurrencyChange = (newCurrency) => {
       setFormData((prev) => ({
         ...prev,
@@ -388,12 +455,6 @@ import "./SimpleRegisterForm.css";
       if (!formData.nameWithInitials.trim()) {
         newErrors.nameWithInitials = "Name with initials is required";
       }
-      if (!formData.firstName.trim()) {
-        newErrors.firstName = "First name is required";
-      }
-      if (!formData.lastName.trim()) {
-        newErrors.lastName = "Last name is required";
-      }
       if (!formData.email.trim()) {
         newErrors.email = "Email is required";
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -404,6 +465,12 @@ import "./SimpleRegisterForm.css";
       }
 
       if (isEventFlow) {
+        if (!formData.firstName.trim()) {
+          newErrors.firstName = "First name is required";
+        }
+        if (!formData.lastName.trim()) {
+          newErrors.lastName = "Last name is required";
+        }
         if (!formData.isSriLankanCitizen) {
           newErrors.isSriLankanCitizen = "Please select a citizenship option";
         }
@@ -448,6 +515,9 @@ import "./SimpleRegisterForm.css";
 
         if (!formData.tshirtSize) {
           newErrors.tshirtSize = "T-shirt size is required";
+        }
+        if (!formData.photoUrl) {
+          newErrors.photoUrl = "Professional photo is required for event registration";
         }
       }
 
@@ -721,7 +791,7 @@ import "./SimpleRegisterForm.css";
           <h3>{isMerchFlow && !isEventFlow ? "Buyer Information" : "Personal Information"}</h3>
 
           <div className="form-group">
-            <label htmlFor="nameWithInitials">1. Name with Initials </label>
+            <label htmlFor="nameWithInitials">Name with Initials </label>
             <input
               type="text"
               id="nameWithInitials"
@@ -735,38 +805,42 @@ import "./SimpleRegisterForm.css";
             )}
           </div>
 
-          <div className="form-group">
-            <label htmlFor="firstName">2. First Name </label>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              className={errors.firstName ? "error" : ""}
-            />
-            {errors.firstName && (
-              <span className="error-message">{errors.firstName}</span>
-            )}
-          </div>
+          {isEventFlow && (
+            <>
+              <div className="form-group">
+                <label htmlFor="firstName">First Name </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                  className={errors.firstName ? "error" : ""}
+                />
+                {errors.firstName && (
+                  <span className="error-message">{errors.firstName}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="lastName">Last Name </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                  className={errors.lastName ? "error" : ""}
+                />
+                {errors.lastName && (
+                  <span className="error-message">{errors.lastName}</span>
+                )}
+              </div>
+            </>
+          )}
 
           <div className="form-group">
-            <label htmlFor="lastName">3. Last Name </label>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              className={errors.lastName ? "error" : ""}
-            />
-            {errors.lastName && (
-              <span className="error-message">{errors.lastName}</span>
-            )}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">4. Email </label>
+            <label htmlFor="email">Email </label>
             <input
               type="email"
               id="email"
@@ -779,7 +853,7 @@ import "./SimpleRegisterForm.css";
           </div>
 
           <div className="form-group">
-            <label htmlFor="contactNumber">5. Contact Number (WhatsApp)</label>
+            <label htmlFor="contactNumber">Contact Number (WhatsApp)</label>
             <input
               type="tel"
               id="contactNumber"
@@ -813,7 +887,7 @@ import "./SimpleRegisterForm.css";
           {isEventFlow && (
             <>
               <div className="form-group">
-                <label htmlFor="nic">6. NIC Number/Passport Number </label>
+                <label htmlFor="nic">NIC Number/Passport Number </label>
                 <input
                   type="text"
                   id="nic"
@@ -826,7 +900,7 @@ import "./SimpleRegisterForm.css";
               </div>
 
               <div className="form-group radio-group-modern">
-                <label className="radio-group-label">7. Gender </label>
+                <label className="radio-group-label">Gender </label>
                 <div className="radio-group radio-group-row">
                   {["Male", "Female"].map((gender) => (
                     <label key={gender} className="radio-label modern">
@@ -846,10 +920,10 @@ import "./SimpleRegisterForm.css";
                 )}
               </div>
 
-              {/* 8. IEEE Membership Number */}
+              {/* IEEE Membership Number */}
               <div className="form-group">
                 <label htmlFor="membershipNo">
-                  8. Please provide your IEEE Membership Number.
+                  Please provide your IEEE Membership Number.
                 </label>
                 <input
                   type="text"
@@ -864,10 +938,10 @@ import "./SimpleRegisterForm.css";
                 )}
               </div>
 
-              {/* 9. Membership Category */}
+              {/* Membership Category */}
               <div className="form-group">
                 <label htmlFor="membershipCategory">
-                  9. Membership Category
+                  Membership Category
                 </label>
                 <select
                   id="membershipCategory"
@@ -896,7 +970,7 @@ import "./SimpleRegisterForm.css";
                 <>
                   <div className="form-group">
                     <label htmlFor="selectedEntity">
-                      10. Select the Entity
+                      Select the Entity
                     </label>
                     <select
                       id="selectedEntity"
@@ -952,7 +1026,7 @@ import "./SimpleRegisterForm.css";
                     <>
                       <div className="form-group">
                         <label htmlFor="branch">
-                          11. IEEE Student Branch Affiliation{" "}
+                          IEEE Student Branch Affiliation{" "}
                         </label>
                         <select
                           id="branch"
@@ -1002,6 +1076,96 @@ import "./SimpleRegisterForm.css";
               )}
 
 
+              {/* Professional Photo Upload */}
+              <div className="form-group">
+                <label htmlFor="photoUrl" className="required">
+                  Upload a Professional Photo
+                </label>
+                <p className="form-hint" style={{ fontSize: "0.85rem", marginTop: "-4px", marginBottom: "12px" }}>
+                  Please upload a professional photograph of yourself. This will be used for congress ID cards and promotional materials.
+                </p>
+                
+                <div style={{
+                  border: "2px dashed rgba(255, 255, 255, 0.15)",
+                  borderRadius: "12px",
+                  padding: "30px",
+                  textAlign: "center",
+                  background: "rgba(255, 255, 255, 0.02)",
+                  position: "relative",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease"
+                }}
+                className="upload-dropzone"
+                onClick={() => document.getElementById("photoFile").click()}
+                >
+                  <input
+                    type="file"
+                    id="photoFile"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    style={{ display: "none" }}
+                  />
+                  
+                  {isPhotoUploading ? (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                      <div className="upload-spinner" style={{
+                        width: "36px",
+                        height: "36px",
+                        border: "4px solid rgba(255, 255, 255, 0.1)",
+                        borderTop: "4px solid #ffcb40",
+                        borderRadius: "50%",
+                        animation: "spin 1s linear infinite"
+                      }}></div>
+                      <span style={{ fontSize: "0.95rem", color: "#fbf5b7" }}>Uploading your photo...</span>
+                    </div>
+                  ) : formData.photoUrl ? (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                      <img 
+                        src={formData.photoUrl} 
+                        alt="Delegate Professional Photo" 
+                        style={{ 
+                          width: "80px", 
+                          height: "80px", 
+                          objectFit: "cover", 
+                          borderRadius: "50%", 
+                          border: "2px solid #ffcb40" 
+                        }} 
+                      />
+                      <span style={{ fontSize: "0.95rem", color: "#22c55e", fontWeight: "bold" }}>Photo Uploaded Successfully!</span>
+                      <a
+                        href={formData.photoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: "0.85rem", color: "#ffcb40", textDecoration: "underline" }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        View Photo
+                      </a>
+                    </div>
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                      </svg>
+                      <span style={{ fontSize: "0.95rem" }}>Drag & drop or Click to upload photo</span>
+                      <span style={{ fontSize: "0.8rem", opacity: 0.5 }}>Accepts JPEG, PNG (Max 5MB)</span>
+                    </div>
+                  )}
+                </div>
+                
+                {photoUploadError && (
+                  <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
+                    {photoUploadError}
+                  </span>
+                )}
+                {errors.photoUrl && (
+                  <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
+                    {errors.photoUrl}
+                  </span>
+                )}
+              </div>
             </>
           )}
 
@@ -1039,15 +1203,15 @@ import "./SimpleRegisterForm.css";
               </div>
 
               <div className="merch-featured-card">
-                <div className="merch-featured-image" onClick={() => setLightboxImage({ src: "/merch/merch_pack_oversized.png", alt: "Merch pack" })}>
+                <div className="merch-featured-image" onClick={() => setLightboxImage({ src: "/merch/merch_pack_oversized.png", alt: "Combo pack" })}>
                   <img
                     src="/merch/merch_pack_oversized.png"
-                    alt="Merch pack oversized"
+                    alt="Combo pack"
                   />
                 </div>
                 <div className="merch-featured-content">
                   <div className="merch-badge">Pre-order</div>
-                  <h4>Merch pack</h4>
+                  <h4>Combo pack</h4>
                   <p>
                     Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1
                   </p>
@@ -1057,7 +1221,7 @@ import "./SimpleRegisterForm.css";
 
                   <div className="form-group no-margin-bottom">
                     <label htmlFor="merchPackSize" className="no-required-star">
-                      Pack Size
+                      Combo Pack Size
                     </label>
                     <div className="merch-size-options">
                       {tShirtSizes.map((size) => (
@@ -1557,7 +1721,7 @@ import "./SimpleRegisterForm.css";
 
     if (showSuccess) {
       return (
-        <div className="success-message">
+        <div className="success-message" ref={successRef}>
           <h2>
             {submittedMode === "merch"
               ? "Order Submitted Successfully!"
@@ -1576,10 +1740,11 @@ import "./SimpleRegisterForm.css";
             <div className="merch-motivation-box">
               <h3>Complete Your Congress Experience!</h3>
               <p>
-                Pre-order the official SLSYWC 2026 merchandise pack, custom T-shirts, wristbands, and bucket hats now to commemorate your journey.
+                Pre-order the official SLSYWC 2026 combo pack, custom T-shirts, wristbands, and bucket hats now to commemorate your journey.
               </p>
               <a href="/merch" className="merch-preorder-button">
-                <span>Pre-order Merchandise</span>
+                <span className="button-text">Pre-order Merchandise</span>
+                <div className="button-glow"></div>
               </a>
             </div>
           )}
