@@ -57,6 +57,12 @@ const validateFormData = (data) => {
     if (!data.isSriLankanCitizen) {
       errors.isSriLankanCitizen = "isSriLankanCitizen is required";
     }
+    if (!data.membershipNo || data.membershipNo.trim() === "") {
+      errors.membershipNo = "membershipNo is required";
+    }
+    if (!data.membershipCategory || data.membershipCategory.trim() === "") {
+      errors.membershipCategory = "membershipCategory is required";
+    }
 
     if (data.isSriLankanCitizen === "Yes") {
       if (!data.nic || data.nic.trim() === "") {
@@ -71,6 +77,11 @@ const validateFormData = (data) => {
         }
         if (data.branch === "23. Other" && (!data.otherAffiliation || data.otherAffiliation.trim() === "")) {
           errors.otherAffiliation = "otherAffiliation is required";
+        }
+      }
+      if (data.selectedEntity === "IEEE Sri Lanka Section Technical Society Chapter") {
+        if (!data.techSociety || data.techSociety.trim() === "") {
+          errors.techSociety = "techSociety is required";
         }
       }
       if (!data.selectedEntity || data.selectedEntity.trim() === "") {
@@ -106,7 +117,7 @@ const validateFormData = (data) => {
   }
 
   if (
-    (Number(merchItems.tshirt || 0) > 0 || Number(merchItems.merchPackOversized || 0) > 0) &&
+    (Number(merchItems.tshirt || 0) > 0 || Number(merchItems.merchPack || 0) > 0) &&
     (!data.merchPackSize || data.merchPackSize.trim() === "")
   ) {
     errors.merchPackSize = "merchPackSize is required";
@@ -117,7 +128,11 @@ const validateFormData = (data) => {
     errors.email = "Invalid email format";
   }
 
-  if (!data.paymentSlipUrl || data.paymentSlipUrl.trim() === "") {
+  if (registrationType === "merch" && (!data.shippingAddress || data.shippingAddress.trim() === "")) {
+    errors.shippingAddress = "shippingAddress is required";
+  }
+
+  if (registrationType === "merch" && (!data.paymentSlipUrl || data.paymentSlipUrl.trim() === "")) {
     errors.paymentSlipUrl = "paymentSlipUrl is required";
   }
 
@@ -192,13 +207,13 @@ export async function POST(request) {
     const currency = formData.currency || "LKR";
     const merchPriceMap = currency === "USD"
       ? {
-          merchPackOversized: 15,
+          merchPack: 15,
           tshirt: 10,
           wristband: 2,
           bucketHat: 5,
         }
       : {
-          merchPackOversized: 3500,
+          merchPack: 3500,
           tshirt: 2000,
           wristband: 250,
           bucketHat: 1200,
@@ -220,8 +235,9 @@ export async function POST(request) {
           formData.lastName || "",
           formData.email || "",
           formData.contactNumber || "",
+          formData.shippingAddress || "",
           formData.merchPackSize || "",
-          Number(merchItems.merchPackOversized || 0),
+          Number(merchItems.merchPack || 0),
           Number(merchItems.tshirt || 0),
           Number(merchItems.wristband || 0),
           Number(merchItems.bucketHat || 0),
@@ -250,11 +266,8 @@ export async function POST(request) {
           formData.selectedEntity || "",
           formData.membershipNo || "",
           formData.membershipCategory || "",
-          Array.isArray(formData.excoEntities)
-            ? formData.excoEntities.join(", ")
-            : "",
+          formData.techSociety || "",
           formData.tshirtSize || "",
-          formData.paymentSlipUrl || "",
           formData.privacy || "",
           formData.consent || "",
         ];
