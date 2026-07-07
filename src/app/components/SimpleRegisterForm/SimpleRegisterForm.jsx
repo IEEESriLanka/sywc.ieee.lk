@@ -20,7 +20,7 @@ import "./SimpleRegisterForm.css";
 
   const merchCatalog = [
     {
-      id: "merchPackOversized",
+      id: "merchPack",
       name: "Merch pack",
       priceLKR: 3500,
       priceUSD: 15,
@@ -74,6 +74,7 @@ import "./SimpleRegisterForm.css";
     firstName: "",
     lastName: "",
     contactNumber: "",
+    shippingAddress: "",
     nic: "",
     gender: "",
     branch: "",
@@ -450,12 +451,18 @@ import "./SimpleRegisterForm.css";
         }
       }
 
+      if (formData.registrationType === "merch") {
+        if (!formData.shippingAddress || !formData.shippingAddress.trim()) {
+          newErrors.shippingAddress = "Shipping address is required";
+        }
+      }
+
       if (formData.registrationType === "merch" && !hasMerchSelection) {
         newErrors.merchItems = "Select at least one merch item";
       }
 
       if (
-        (formData.merchItems.tshirt > 0 || formData.merchItems.merchPackOversized > 0) &&
+        (formData.merchItems.tshirt > 0 || formData.merchItems.merchPack > 0) &&
         !formData.merchPackSize
       ) {
         newErrors.merchPackSize = "Choose a size";
@@ -786,6 +793,23 @@ import "./SimpleRegisterForm.css";
             )}
           </div>
 
+          {!isEventFlow && (
+            <div className="form-group">
+              <label htmlFor="shippingAddress">Shipping Address</label>
+              <textarea
+                id="shippingAddress"
+                name="shippingAddress"
+                value={formData.shippingAddress || ""}
+                onChange={handleInputChange}
+                className={errors.shippingAddress ? "error" : ""}
+                placeholder="Provide your shipping address in case in-person handover is not possible."
+              />
+              {errors.shippingAddress && (
+                <span className="error-message">{errors.shippingAddress}</span>
+              )}
+            </div>
+          )}
+
           {isEventFlow && (
             <>
               <div className="form-group">
@@ -1097,17 +1121,17 @@ import "./SimpleRegisterForm.css";
                     <button
                       type="button"
                       className="quantity-button"
-                      onClick={() => updateMerchQuantity("merchPackOversized", -1)}
+                      onClick={() => updateMerchQuantity("merchPack", -1)}
                     >
                       -
                     </button>
                     <span className="quantity-value">
-                      {formData.merchItems.merchPackOversized}
+                      {formData.merchItems.merchPack}
                     </span>
                     <button
                       type="button"
                       className="quantity-button"
-                      onClick={() => updateMerchQuantity("merchPackOversized", 1)}
+                      onClick={() => updateMerchQuantity("merchPack", 1)}
                     >
                       +
                     </button>
