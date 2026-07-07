@@ -464,7 +464,7 @@ const Hero = () => {
       <AnimatedBackground />
       <div ref={heroHeaderRef} className="hero-header z-10 flex flex-col items-center !w-full">
         <h1
-          className="main-title !text-6xl md:!text-[3rem] font-extrabold text-center gold-text mb-2 opacity-0 whitespace-nowrap" // Reduced to optimal size
+          className="main-title !text-6xl md:!text-[3rem] font-extrabold text-center gold-text leading-normal pb-2 mb-2 opacity-0 whitespace-nowrap" // Reduced to optimal size
         >
           IEEE Sri Lanka Section 
           <br />
@@ -627,6 +627,8 @@ const Hero = () => {
           background-size: 200% auto;
           animation: shine 8s linear infinite;
           filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.8));
+          line-height: 1.35;
+          padding-bottom: 0.15em;
         }
 
         @keyframes shine {

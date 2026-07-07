@@ -65,14 +65,16 @@ const validateFormData = (data) => {
       if (!data.gender || data.gender.trim() === "") {
         errors.gender = "gender is required";
       }
-      if (!data.branch || data.branch.trim() === "") {
-        errors.branch = "branch is required";
+      if (data.selectedEntity === "Student Branch Representatives") {
+        if (!data.branch || data.branch.trim() === "") {
+          errors.branch = "branch is required";
+        }
+        if (data.branch === "23. Other" && (!data.otherAffiliation || data.otherAffiliation.trim() === "")) {
+          errors.otherAffiliation = "otherAffiliation is required";
+        }
       }
-      if (data.branch === "23. Other" && (!data.otherAffiliation || data.otherAffiliation.trim() === "")) {
-        errors.otherAffiliation = "otherAffiliation is required";
-      }
-      if (!data.partOfExCo || data.partOfExCo.trim() === "") {
-        errors.partOfExCo = "partOfExCo is required";
+      if (!data.selectedEntity || data.selectedEntity.trim() === "") {
+        errors.selectedEntity = "selectedEntity is required";
       }
       if (!data.tshirtSize || data.tshirtSize.trim() === "") {
         errors.tshirtSize = "tshirtSize is required";
@@ -114,6 +116,11 @@ const validateFormData = (data) => {
   if (data.email && !emailRegex.test(data.email)) {
     errors.email = "Invalid email format";
   }
+
+  if (!data.paymentSlipUrl || data.paymentSlipUrl.trim() === "") {
+    errors.paymentSlipUrl = "paymentSlipUrl is required";
+  }
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors,
@@ -221,6 +228,7 @@ export async function POST(request) {
           merchTotalQuantity,
           merchTotalAmountFormatted,
           merchSummary,
+          formData.paymentSlipUrl || "",
           formData.privacy || "",
           formData.consent || "",
         ]
@@ -239,13 +247,14 @@ export async function POST(request) {
           formData.gender || "",
           formData.branch || "",
           formData.otherAffiliation || "",
-          formData.partOfExCo || "",
+          formData.selectedEntity || "",
           formData.membershipNo || "",
           formData.membershipCategory || "",
           Array.isArray(formData.excoEntities)
             ? formData.excoEntities.join(", ")
             : "",
           formData.tshirtSize || "",
+          formData.paymentSlipUrl || "",
           formData.privacy || "",
           formData.consent || "",
         ];
