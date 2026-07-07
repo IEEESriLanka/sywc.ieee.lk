@@ -34,7 +34,7 @@ import "./SimpleRegisterForm.css";
       name: "T-shirt",
       priceLKR: 2000,
       priceUSD: 10,
-      image: "/tshirt.jpeg",
+      image: "/merch/t-shirt.png",
       description: "Branded congress T-shirt.",
     },
     {
@@ -106,6 +106,18 @@ import "./SimpleRegisterForm.css";
     const [showSizeChart, setShowSizeChart] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState("");
+    const [lightboxImage, setLightboxImage] = useState(null);
+
+    useEffect(() => {
+      if (lightboxImage) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "";
+      }
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }, [lightboxImage]);
 
     const branches = [
       "1. University of Moratuwa (UOM)",
@@ -982,7 +994,7 @@ import "./SimpleRegisterForm.css";
               </div>
 
               <div className="merch-featured-card">
-                <div className="merch-featured-image">
+                <div className="merch-featured-image" onClick={() => setLightboxImage({ src: "/merch/merch_pack_oversized.png", alt: "Merch pack" })}>
                   <img
                     src="/merch/merch_pack_oversized.png"
                     alt="Merch pack oversized"
@@ -1042,12 +1054,14 @@ import "./SimpleRegisterForm.css";
                           <img
                             src="/merch/tshirt_size.jpeg"
                             alt="T-shirt Size Chart"
+                            onClick={() => setLightboxImage({ src: "/merch/tshirt_size.jpeg", alt: "T-shirt Size Chart" })}
                             style={{
                               width: "100%",
                               maxWidth: 320,
                               borderRadius: 12,
                               boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-                              border: "1px solid rgba(255,203,64,0.3)"
+                              border: "1px solid rgba(255,203,64,0.3)",
+                              cursor: "zoom-in"
                             }}
                           />
                         </div>
@@ -1085,7 +1099,7 @@ import "./SimpleRegisterForm.css";
                   .filter((product) => !product.featured)
                   .map((product) => (
                     <div key={product.id} className="merch-card">
-                      <div className="merch-card-image">
+                      <div className="merch-card-image" onClick={() => setLightboxImage({ src: product.image, alt: product.name })}>
                         <img src={product.image} alt={product.name} />
                         <span className="merch-badge merch-badge-small">
                           Pre-order
@@ -1540,6 +1554,18 @@ import "./SimpleRegisterForm.css";
           {renderRegistrationEntry()}
           {renderPersonalInformation()}
         </form>
+
+        {lightboxImage && (
+          <div className="lightbox-overlay" onClick={() => setLightboxImage(null)}>
+            <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+              <button className="lightbox-close" onClick={() => setLightboxImage(null)}>
+                &times;
+              </button>
+              <img src={lightboxImage.src} alt={lightboxImage.alt} className="lightbox-image" />
+              {lightboxImage.alt && <div className="lightbox-caption">{lightboxImage.alt}</div>}
+            </div>
+          </div>
+        )}
       </div>
     );
   };
