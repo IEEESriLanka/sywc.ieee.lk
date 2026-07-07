@@ -36,8 +36,6 @@ const validateFormData = (data) => {
 
   const requiredFields = [
     "nameWithInitials",
-    "firstName",
-    "lastName",
     "email",
     "contactNumber",
     "privacy",
@@ -54,6 +52,12 @@ const validateFormData = (data) => {
   });
 
   if (isEventFlow) {
+    if (!data.firstName || data.firstName.trim() === "") {
+      errors.firstName = "firstName is required";
+    }
+    if (!data.lastName || data.lastName.trim() === "") {
+      errors.lastName = "lastName is required";
+    }
     if (!data.isSriLankanCitizen) {
       errors.isSriLankanCitizen = "isSriLankanCitizen is required";
     }
@@ -62,6 +66,9 @@ const validateFormData = (data) => {
     }
     if (!data.membershipCategory || data.membershipCategory.trim() === "") {
       errors.membershipCategory = "membershipCategory is required";
+    }
+    if (!data.photoUrl || data.photoUrl.trim() === "") {
+      errors.photoUrl = "photoUrl is required";
     }
 
     if (data.isSriLankanCitizen === "Yes") {
@@ -231,8 +238,6 @@ export async function POST(request) {
           new Date().toISOString(),
           formData.registrationType || "merch",
           formData.nameWithInitials || "",
-          formData.firstName || "",
-          formData.lastName || "",
           formData.email || "",
           formData.contactNumber || "",
           formData.shippingAddress || "",
@@ -268,6 +273,7 @@ export async function POST(request) {
           formData.membershipCategory || "",
           formData.techSociety || "",
           formData.tshirtSize || "",
+          formData.photoUrl || "",
           formData.privacy || "",
           formData.consent || "",
         ];

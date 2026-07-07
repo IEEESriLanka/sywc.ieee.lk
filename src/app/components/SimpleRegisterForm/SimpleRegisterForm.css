@@ -1193,10 +1193,12 @@
 }
 
 .merch-preorder-button {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #b4860b 0%, #ffcb40 50%, #fbf5b7 100%);
+  background: linear-gradient(135deg, #0055ff 0%, #00d9ff 50%, #3feeff 100%);
   color: #0f172a !important;
   text-decoration: none;
   font-weight: 700;
@@ -1204,7 +1206,7 @@
   padding: 12px 28px;
   border-radius: 30px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 203, 64, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 184, 184, 0.2);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin: 0 auto;
@@ -1212,11 +1214,42 @@
 
 .merch-preorder-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 203, 64, 0.4);
+  box-shadow: 0 6px 20px rgba(0, 184, 184, 0.4);
 }
 
-.merch-preorder-button span {
+.merch-preorder-button .button-text {
+  position: relative;
+  z-index: 2;
   color: #0f172a !important;
+}
+
+.merch-preorder-button .button-glow {
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-25deg);
+  z-index: 1;
+  animation: auto-shine 3.5s ease-in-out infinite;
+}
+
+@keyframes auto-shine {
+  0% {
+    left: -150%;
+  }
+  20% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
 }
 
 /* Currency Selector Capsule Toggle */
