@@ -22,7 +22,8 @@ import "./SimpleRegisterForm.css";
     {
       id: "merchPackOversized",
       name: "Merch pack",
-      price: 3500,
+      priceLKR: 3500,
+      priceUSD: 15,
       image: "/merch/merch_pack_oversized.png",
       description:
         "Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1",
@@ -31,21 +32,24 @@ import "./SimpleRegisterForm.css";
     {
       id: "tshirt",
       name: "T-shirt",
-      price: 2000,
+      priceLKR: 2000,
+      priceUSD: 10,
       image: "/tshirt.jpeg",
       description: "Branded congress T-shirt.",
     },
     {
       id: "wristband",
       name: "Wristband",
-      price: 250,
+      priceLKR: 250,
+      priceUSD: 2,
       image: "/merch/white_wristband.png",
       description: "Clean wristband with branded artwork.",
     },
     {
       id: "bucketHat",
       name: "Bucket Hat",
-      price: 1200,
+      priceLKR: 1200,
+      priceUSD: 5,
       image: "/merch/bucket_hat.png",
       description: "Double sided bucket hat with event branding.",
     },
@@ -61,6 +65,7 @@ import "./SimpleRegisterForm.css";
 
   const createInitialFormData = () => ({
     registrationType: "both",
+    currency: "LKR",
     isSriLankanCitizen: "",
     region: "",
     organizationalUnit: "",
@@ -74,6 +79,7 @@ import "./SimpleRegisterForm.css";
     branch: "",
     otherAffiliation: "",
     partOfExCo: "",
+    selectedEntity: "",
     membershipNo: "",
     membershipCategory: "",
     excoEntities: [],
@@ -82,12 +88,14 @@ import "./SimpleRegisterForm.css";
     merchItems: createEmptyMerchItems(),
     privacy: "",
     consent: "",
+    paymentSlipUrl: "",
   });
 
   const SimpleRegisterForm = ({ formMode = "register" }) => {
     const [formData, setFormData] = useState(() => ({
       ...createInitialFormData(),
-      registrationType: formMode === "merch" ? "merch" : "both",
+      registrationType: formMode === "merch" ? "merch" : "event",
+      currency: "LKR",
     }));
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -96,6 +104,8 @@ import "./SimpleRegisterForm.css";
     const [internationalStepComplete, setInternationalStepComplete] =
       useState(false);
     const [showSizeChart, setShowSizeChart] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadError, setUploadError] = useState("");
 
     const branches = [
       "1. University of Moratuwa (UOM)",
@@ -155,7 +165,7 @@ import "./SimpleRegisterForm.css";
     const getMerchTotalAmount = () =>
       merchCatalog.reduce(
         (sum, product) =>
-          sum + Number(formData.merchItems[product.id] || 0) * product.price,
+          sum + Number(formData.merchItems[product.id] || 0) * (formData.currency === "USD" ? product.priceUSD : product.priceLKR),
         0
       );
 
@@ -181,12 +191,14 @@ import "./SimpleRegisterForm.css";
             branch: "",
             otherAffiliation: "",
             partOfExCo: "",
+            selectedEntity: "",
             membershipNo: "",
             membershipCategory: "",
             excoEntities: [],
             tshirtSize: "",
             merchPackSize: "",
             merchItems: createEmptyMerchItems(),
+            paymentSlipUrl: "",
           };
         }
 
@@ -202,10 +214,12 @@ import "./SimpleRegisterForm.css";
             branch: "",
             otherAffiliation: "",
             partOfExCo: "",
+            selectedEntity: "",
             membershipNo: "",
             membershipCategory: "",
             excoEntities: [],
             tshirtSize: "",
+            paymentSlipUrl: "",
           };
         }
 
@@ -213,6 +227,61 @@ import "./SimpleRegisterForm.css";
       });
     };
 
+
+    const handleFileChange = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        setUploadError("File size exceeds 5MB limit");
+        return;
+      }
+
+      setIsUploading(true);
+      setUploadError("");
+
+      try {
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "djp3p2ypt";
+        const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "slsywc_bank_slips";
+        
+        const data = new FormData();
+        data.append("file", file);
+        data.append("upload_preset", uploadPreset);
+
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          {
+            method: "POST",
+            body: data,
+          }
+        );
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          const errMsg = errData.error?.message || "Failed to upload image. Please check your network or try again.";
+          throw new Error(errMsg);
+        }
+
+        const resData = await response.json();
+        setFormData((prev) => ({
+          ...prev,
+          paymentSlipUrl: resData.secure_url,
+        }));
+        setErrors((prev) => ({ ...prev, paymentSlipUrl: "" }));
+      } catch (err) {
+        console.error("Cloudinary upload error:", err);
+        setUploadError(err.message || "Failed to upload file to Cloudinary");
+      } finally {
+        setIsUploading(false);
+      }
+    };
+
+    const handleCurrencyChange = (newCurrency) => {
+      setFormData((prev) => ({
+        ...prev,
+        currency: newCurrency,
+      }));
+    };
 
     const handleInputChange = (e) => {
       const { name, value, type, checked } = e.target;
@@ -236,7 +305,18 @@ import "./SimpleRegisterForm.css";
             next.branch = "";
             next.otherAffiliation = "";
             next.partOfExCo = "";
+            next.selectedEntity = "";
             next.excoEntities = [];
+          }
+        }
+
+        if (name === "selectedEntity") {
+          if (value !== "IEEE Sri Lanka Section Executive Committee") {
+            next.excoEntities = [];
+          }
+          if (value !== "Student Branch Representatives") {
+            next.branch = "";
+            next.otherAffiliation = "";
           }
         }
 
@@ -300,14 +380,19 @@ import "./SimpleRegisterForm.css";
           if (!formData.gender) {
             newErrors.gender = "Gender is required";
           }
-          if (!formData.branch) {
-            newErrors.branch = "Branch is required";
+          if (formData.selectedEntity === "Student Branch Representatives") {
+            if (!formData.branch) {
+              newErrors.branch = "Branch is required";
+            }
+            if (formData.branch === "23. Other" && !formData.otherAffiliation.trim()) {
+              newErrors.otherAffiliation = "Please specify your affiliation";
+            }
           }
-          if (formData.branch === "23. Other" && !formData.otherAffiliation.trim()) {
-            newErrors.otherAffiliation = "Please specify your affiliation";
+          if (!formData.selectedEntity) {
+            newErrors.selectedEntity = "Please select the entity you represent";
           }
-          if (!formData.partOfExCo) {
-            newErrors.partOfExCo = "Please select an option";
+          if (formData.selectedEntity === "IEEE Sri Lanka Section Executive Committee" && (!formData.excoEntities || formData.excoEntities.length === 0)) {
+            newErrors.excoEntities = "Please select at least one ExCo entity";
           }
         }
 
@@ -334,6 +419,9 @@ import "./SimpleRegisterForm.css";
         !formData.merchPackSize
       ) {
         newErrors.merchPackSize = "Choose a size";
+      }
+      if (!formData.paymentSlipUrl) {
+        newErrors.paymentSlipUrl = "Please upload your bank payment slip to complete your submission";
       }
 
       if (!formData.privacy) {
@@ -387,7 +475,8 @@ import "./SimpleRegisterForm.css";
           setShowSuccess(true);
           setFormData({
             ...createInitialFormData(),
-            registrationType: formMode === "merch" ? "merch" : "both",
+            registrationType: formMode === "merch" ? "merch" : "event",
+            currency: "LKR",
           });
           setInternationalStepComplete(false);
         } else {
@@ -463,7 +552,6 @@ import "./SimpleRegisterForm.css";
             <div className="form-group radio-group-modern">
               <label className="radio-group-label">
                 Are you a Sri Lankan Citizen?
-                <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
               </label>
               <div className="radio-group radio-group-row">
                 <label className="radio-label modern">
@@ -501,7 +589,7 @@ import "./SimpleRegisterForm.css";
             <h3>International Delegate Information</h3>
             <div className="form-group">
               <label htmlFor="region">
-                What is your region? <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
+                What is your region?
               </label>
               <input
                 type="text"
@@ -515,8 +603,7 @@ import "./SimpleRegisterForm.css";
             </div>
             <div className="form-group">
               <label htmlFor="organizationalUnit">
-                What organizational unit are you representing?{" "}
-                <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
+                What organizational unit are you representing?
               </label>
               <input
                 type="text"
@@ -582,7 +669,8 @@ import "./SimpleRegisterForm.css";
       }
 
       return (
-        <div className="form-section">
+        <>
+          <div className="form-section">
           <h3>{isMerchFlow && !isEventFlow ? "Buyer Information" : "Personal Information"}</h3>
 
           <div className="form-group">
@@ -694,108 +782,10 @@ import "./SimpleRegisterForm.css";
                 )}
               </div>
 
-              {formData.isSriLankanCitizen === "Yes" && (
-                <div className="form-group">
-                  <label htmlFor="branch">
-                    8. IEEE Student Branch Affiliation{" "}
-                  </label>
-                  <select
-                    id="branch"
-                    name="branch"
-                    value={formData.branch}
-                    onChange={handleInputChange}
-                    className={errors.branch ? "error" : ""}
-                  >
-                    <option value="">Choose</option>
-                    {branches.map((branch) => (
-                      <option key={branch} value={branch}>
-                        {branch}
-                      </option>
-                    ))}
-                  </select>
-                  <small>
-                    Please mention the student branch affiliation you are volunteering, or you have volunteered.
-                  </small>
-                  {errors.branch && (
-                    <span className="error-message">{errors.branch}</span>
-                  )}
-                </div>
-              )}
-
-              {formData.isSriLankanCitizen === "Yes" &&
-                formData.branch === "23. Other" && (
-                  <div className="form-group">
-                    <label htmlFor="otherAffiliation">
-                      Please specify your affiliation
-                    </label>
-                    <textarea
-                      id="otherAffiliation"
-                      name="otherAffiliation"
-                      value={formData.otherAffiliation}
-                      onChange={handleInputChange}
-                      className={errors.otherAffiliation ? "error" : ""}
-                      placeholder="If you're not affiliated to any IEEE Student Branch, please provide the details."
-                    />
-                    {errors.otherAffiliation && (
-                      <span className="error-message">
-                        {errors.otherAffiliation}
-                      </span>
-                    )}
-                  </div>
-                )}
-
-              {formData.isSriLankanCitizen === "Yes" && (
-                <div className="form-group radio-group-modern">
-                  <label className="radio-group-label">
-                    If you are part of an Executive Committee of,
-                  </label>
-                  <ul className="block text-sm pl-5 text-white italic">
-                    <li className="text-[#b8eaff]"> 1. IEEE Sri Lanka Section</li>
-                    <li className="text-[#b8eaff]">
-                      2. IEEE Young Professionals Sri Lanka
-                    </li>
-                    <li className="text-[#b8eaff]">
-                      3. IEEE Women in Engineering Sri Lanka
-                    </li>
-                    <li className="text-[#b8eaff]">
-                      4. IEEE Sri Lanka Section SIGHT
-                    </li>
-                    <li className="text-[#b8eaff]">
-                      5. IEEE Technical Society Sri Lanka Chapter
-                    </li>
-                  </ul>
-                  <br></br>
-                  <div className="radio-group radio-group-row">
-                    <label className="radio-label modern">
-                      <input
-                        type="radio"
-                        name="partOfExCo"
-                        value="Yes"
-                        checked={formData.partOfExCo === "Yes"}
-                        onChange={handleInputChange}
-                      />
-                      Yes
-                    </label>
-                    <label className="radio-label modern">
-                      <input
-                        type="radio"
-                        name="partOfExCo"
-                        value="No"
-                        checked={formData.partOfExCo === "No"}
-                        onChange={handleInputChange}
-                      />
-                      No
-                    </label>
-                  </div>
-                  {errors.partOfExCo && (
-                    <span className="error-message">{errors.partOfExCo}</span>
-                  )}
-                </div>
-              )}
-
+              {/* 8. IEEE Membership Number */}
               <div className="form-group">
                 <label htmlFor="membershipNo" className="no-required-star">
-                  Please provide your IEEE Membership Number.
+                  8. Please provide your IEEE Membership Number.
                 </label>
                 <input
                   type="text"
@@ -810,9 +800,10 @@ import "./SimpleRegisterForm.css";
                 )}
               </div>
 
+              {/* 9. Membership Category */}
               <div className="form-group">
                 <label htmlFor="membershipCategory" className="no-required-star">
-                  Membership Category
+                  9. Membership Category
                 </label>
                 <select
                   id="membershipCategory"
@@ -837,49 +828,158 @@ import "./SimpleRegisterForm.css";
                 )}
               </div>
 
-              {formData.isSriLankanCitizen === "Yes" &&
-                formData.partOfExCo === "Yes" && (
-                  <div className="form-section" style={{ marginTop: 0 }}>
-                    <h3>Executive Committee Details</h3>
-                    <div className="form-group checkbox-group-modern">
-                      <label className="checkbox-group-label no-required-star">
-                        Select the entity/entities you are currently an Executive Committee Member in
-                      </label>
-                      <div className="checkbox-group">
-                        {excoEntities.map((entity) => (
-                          <label key={entity.id} className="checkbox-label modern">
-                            <input
-                              type="checkbox"
-                              checked={formData.excoEntities.includes(entity.id)}
-                              onChange={(event) =>
-                                handleCheckboxArrayChange(
-                                  "excoEntities",
-                                  entity.id,
-                                  event.target.checked
-                                )
-                              }
-                            />
-                            {entity.label}
-                          </label>
-                        ))}
-                      </div>
-                      {errors.excoEntities && (
-                        <span className="error-message">
-                          {errors.excoEntities}
-                        </span>
-                      )}
-                    </div>
+              {formData.isSriLankanCitizen === "Yes" && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="selectedEntity">
+                      10. Select the Entity
+                    </label>
+                    <select
+                      id="selectedEntity"
+                      name="selectedEntity"
+                      value={formData.selectedEntity}
+                      onChange={handleInputChange}
+                      className={errors.selectedEntity ? "error" : ""}
+                    >
+                      <option value="">Choose</option>
+                      <option value="IEEE Sri Lanka Section Executive Committee">IEEE Sri Lanka Section Executive Committee</option>
+                      <option value="IEEE Young Professionals Sri Lanka">IEEE Young Professionals Sri Lanka</option>
+                      <option value="IEEE Women in Engineering Sri Lanka">IEEE Women in Engineering Sri Lanka</option>
+                      <option value="IEEE Sri Lanka Section SIGHT">IEEE Sri Lanka Section SIGHT</option>
+                      <option value="IEEE Sri Lanka Section Technical Society Chapter">IEEE Sri Lanka Section Technical Society Chapter</option>
+                      <option value="SLSAC Leadership">SLSAC Leadership</option>
+                      <option value="Congress OC">Congress OC</option>
+                      <option value="SLSAC Coordinators">SLSAC Coordinators</option>
+                      <option value="Student Branch Representatives">Student Branch Representatives</option>
+                    </select>
+                    {errors.selectedEntity && (
+                      <span className="error-message">{errors.selectedEntity}</span>
+                    )}
                   </div>
-                )}
+
+                  {formData.selectedEntity === "IEEE Sri Lanka Section Executive Committee" && (
+                    <div className="form-section" style={{ marginTop: 0, paddingLeft: 0, paddingRight: 0, border: "none" }}>
+                      <h3 style={{ fontSize: "1.1rem", marginBottom: 12 }}>Executive Committee Details</h3>
+                      <div className="form-group checkbox-group-modern">
+                        <label className="checkbox-group-label no-required-star">
+                          Select the entity/entities you are currently an Executive Committee Member in
+                        </label>
+                        <div className="checkbox-group">
+                          {excoEntities.map((entity) => (
+                            <label key={entity.id} className="checkbox-label modern">
+                              <input
+                                type="checkbox"
+                                checked={formData.excoEntities.includes(entity.id)}
+                                onChange={(event) =>
+                                  handleCheckboxArrayChange(
+                                    "excoEntities",
+                                    entity.id,
+                                    event.target.checked
+                                  )
+                                }
+                              />
+                              {entity.label}
+                            </label>
+                          ))}
+                        </div>
+                        {errors.excoEntities && (
+                          <span className="error-message">
+                            {errors.excoEntities}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {formData.selectedEntity === "Student Branch Representatives" && (
+                    <>
+                      <div className="form-group">
+                        <label htmlFor="branch">
+                          11. IEEE Student Branch Affiliation{" "}
+                        </label>
+                        <select
+                          id="branch"
+                          name="branch"
+                          value={formData.branch}
+                          onChange={handleInputChange}
+                          className={errors.branch ? "error" : ""}
+                        >
+                          <option value="">Choose</option>
+                          {branches.map((branch) => (
+                            <option key={branch} value={branch}>
+                              {branch}
+                            </option>
+                          ))}
+                        </select>
+                        <small>
+                          Please mention the student branch affiliation you are volunteering, or you have volunteered.
+                        </small>
+                        {errors.branch && (
+                          <span className="error-message">{errors.branch}</span>
+                        )}
+                      </div>
+
+                      {formData.branch === "23. Other" && (
+                        <div className="form-group">
+                          <label htmlFor="otherAffiliation">
+                            Please specify your affiliation
+                          </label>
+                          <textarea
+                            id="otherAffiliation"
+                            name="otherAffiliation"
+                            value={formData.otherAffiliation}
+                            onChange={handleInputChange}
+                            className={errors.otherAffiliation ? "error" : ""}
+                            placeholder="If you're not affiliated to any IEEE Student Branch, please provide the details."
+                          />
+                          {errors.otherAffiliation && (
+                            <span className="error-message">
+                              {errors.otherAffiliation}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+
+
             </>
           )}
+
+          </div>
 
           {isMerchFlow && (
             <div className="form-section merch-section">
               <h3>Merchandise</h3>
               <p className="form-hint">
-                Pre-order merch with or without event registration. Your order details will also be saved to the spreadsheet.
+                Pre-order merch with or without event registration.
               </p>
+
+              <div className="foreigner-notice-box">
+                <strong>Important:</strong> If you are an international delegate/buyer, please select and complete your purchase in <strong>USD ($)</strong> currency.
+              </div>
+
+              <div className="currency-selector-container">
+                <span className="currency-label">Pricing Currency:</span>
+                <div className="currency-toggle">
+                  <button
+                    type="button"
+                    className={`currency-btn ${formData.currency === "LKR" ? "active" : ""}`}
+                    onClick={() => handleCurrencyChange("LKR")}
+                  >
+                    LKR (Rs.)
+                  </button>
+                  <button
+                    type="button"
+                    className={`currency-btn ${formData.currency === "USD" ? "active" : ""}`}
+                    onClick={() => handleCurrencyChange("USD")}
+                  >
+                    USD ($)
+                  </button>
+                </div>
+              </div>
 
               <div className="merch-featured-card">
                 <div className="merch-featured-image">
@@ -894,7 +994,9 @@ import "./SimpleRegisterForm.css";
                   <p>
                     Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1
                   </p>
-                  <div className="merch-price">3500 LKR</div>
+                  <div className="merch-price">
+                    {formData.currency === "USD" ? "$15" : "3500 LKR"}
+                  </div>
 
                   <div className="form-group no-margin-bottom">
                     <label htmlFor="merchPackSize" className="no-required-star">
@@ -991,7 +1093,9 @@ import "./SimpleRegisterForm.css";
                       </div>
                       <div className="merch-card-content">
                         <h4>{product.name}</h4>
-                        <div className="merch-price">{product.price} LKR</div>
+                          <div className="merch-price">
+                            {formData.currency === "USD" ? `$${product.priceUSD}` : `${product.priceLKR} LKR`}
+                          </div>
                         <p>{product.description}</p>
                         <div className="quantity-stepper">
                           <button
@@ -1020,7 +1124,7 @@ import "./SimpleRegisterForm.css";
               {formData.merchItems.tshirt > 0 && (
                 <div className="form-group" style={{ marginTop: 24 }}>
                   <label htmlFor="merchPackSize">
-                    T-Shirt Size <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
+                    T-Shirt Size
                   </label>
                   <div className="merch-size-options">
                     {tShirtSizes.map((size) => (
@@ -1091,7 +1195,9 @@ import "./SimpleRegisterForm.css";
                 </div>
                 <div>
                   <span className="merch-summary-label">Estimated total</span>
-                  <strong>{getMerchTotalAmount()} LKR</strong>
+                  <strong>
+                    {formData.currency === "USD" ? `$${getMerchTotalAmount()}` : `${getMerchTotalAmount()} LKR`}
+                  </strong>
                 </div>
               </div>
               {errors.merchItems && (
@@ -1106,7 +1212,7 @@ import "./SimpleRegisterForm.css";
               <div className="form-group delegate-pack-container">
                 <div className="delegate-pack-select">
                   <label htmlFor="tshirtSize">
-                    T-Shirt Size <span style={{ color: "#ef4444", marginLeft: 4 }}>*</span>
+                    T-Shirt Size
                   </label>
                   <select
                     id="tshirtSize"
@@ -1139,6 +1245,118 @@ import "./SimpleRegisterForm.css";
               </div>
             </div>
           )}
+
+          <div className="form-section">
+            <h3>Payment Verification</h3>
+            <div className="payment-instructions" style={{
+              background: "rgba(255, 203, 64, 0.05)",
+              border: "1px solid rgba(255, 203, 64, 0.2)",
+              borderRadius: "12px",
+              padding: "20px",
+              marginBottom: "24px"
+            }}>
+              <h4 style={{ color: "#ffcb40", marginTop: 0, marginBottom: "12px", fontSize: "1.1rem" }}>
+                Bank Transfer Instructions
+              </h4>
+              <p style={{ margin: "0 0 16px 0", fontSize: "0.95rem", opacity: 0.9, lineHeight: 1.5 }}>
+                Please make your payment to the bank account below and upload the receipt/slip to complete your registration or merchandise order.
+              </p>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", fontSize: "0.9rem" }}>
+                <div>
+                  <strong>Account Name:</strong> IEEE Sri Lanka Section
+                </div>
+                <div>
+                  <strong>Bank:</strong> Bank of Ceylon (BOC)
+                </div>
+                <div>
+                  <strong>Account Number:</strong> 1234567890
+                </div>
+                <div>
+                  <strong>Branch:</strong> Torrington, Colombo
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="paymentSlip" className="required">
+                Upload Bank Slip
+              </label>
+              
+              <div style={{
+                border: "2px dashed rgba(255, 255, 255, 0.15)",
+                borderRadius: "12px",
+                padding: "30px",
+                textAlign: "center",
+                background: "rgba(255, 255, 255, 0.02)",
+                position: "relative",
+                cursor: "pointer",
+                transition: "all 0.3s ease"
+              }}
+              className="upload-dropzone"
+              onClick={() => document.getElementById("paymentSlip").click()}
+              >
+                <input
+                  type="file"
+                  id="paymentSlip"
+                  accept="image/*,application/pdf"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+                
+                {isUploading ? (
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                    <div className="upload-spinner" style={{
+                      width: "36px",
+                      height: "36px",
+                      border: "4px solid rgba(255, 255, 255, 0.1)",
+                      borderTop: "4px solid #ffcb40",
+                      borderRadius: "50%",
+                      animation: "spin 1s linear infinite"
+                    }}></div>
+                    <span style={{ fontSize: "0.95rem", color: "#fbf5b7" }}>Uploading your receipt...</span>
+                  </div>
+                ) : formData.paymentSlipUrl ? (
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span style={{ fontSize: "0.95rem", color: "#22c55e", fontWeight: "bold" }}>Receipt Uploaded Successfully!</span>
+                    <a
+                      href={formData.paymentSlipUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontSize: "0.85rem", color: "#ffcb40", textDecoration: "underline" }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      View Uploaded Receipt
+                    </a>
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="17 8 12 3 7 8" />
+                      <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    <span style={{ fontSize: "0.95rem" }}>Drag & drop or Click to upload receipt</span>
+                    <span style={{ fontSize: "0.8rem", opacity: 0.5 }}>Accepts JPEG, PNG, or PDF (Max 5MB)</span>
+                  </div>
+                )}
+              </div>
+              
+              {uploadError && (
+                <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
+                  {uploadError}
+                </span>
+              )}
+              {errors.paymentSlipUrl && (
+                <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
+                  {errors.paymentSlipUrl}
+                </span>
+              )}
+            </div>
+          </div>
 
           <div className="form-section">
             <h3>Terms & Conditions</h3>
@@ -1222,8 +1440,6 @@ import "./SimpleRegisterForm.css";
                 ) : (
                   <p>
                     If you are selected after registering or placing a merch order, you will receive a confirmation email.
-                    <br/>
-                    The foreign delegate fee is USD 150, which will be collected on Day 01, before the event starts.
                   </p>
                 )}
               </div>
@@ -1272,7 +1488,7 @@ import "./SimpleRegisterForm.css";
               </button>
             )}
           </div>
-        </div>
+        </>
       );
     };
 
@@ -1293,6 +1509,17 @@ import "./SimpleRegisterForm.css";
               ? "Thank you for registering and pre-ordering merch for IEEE SLSYWC 2026. We will contact you soon with further details."
               : "Thank you for registering for IEEE SLSYWC 2026. We will contact you soon with further details."}
           </p>
+          {submittedMode === "event" && (
+            <div className="merch-motivation-box">
+              <h3>Complete Your Congress Experience!</h3>
+              <p>
+                Pre-order the official SLSYWC 2026 merchandise pack, custom T-shirts, wristbands, and bucket hats now to commemorate your journey.
+              </p>
+              <a href="/merch" className="merch-preorder-button">
+                <span>Pre-order Merchandise</span>
+              </a>
+            </div>
+          )}
           <button onClick={() => window.location.reload()}>
             Submit Another Request
           </button>
@@ -1306,7 +1533,7 @@ import "./SimpleRegisterForm.css";
           <h2>
             {formMode === "merch"
               ? "IEEE SLSYWC 2026 Merchandise Order Form"
-              : "IEEE SLSYWC 2026 Registration & Merch Order Form"}
+              : "IEEE SLSYWC 2026 Registration Form"}
           </h2>
           {/* Hide mode selector since it's determined by the page */}
           {/* {renderModeSelector()} */}

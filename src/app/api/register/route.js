@@ -65,14 +65,16 @@ const validateFormData = (data) => {
       if (!data.gender || data.gender.trim() === "") {
         errors.gender = "gender is required";
       }
-      if (!data.branch || data.branch.trim() === "") {
-        errors.branch = "branch is required";
+      if (data.selectedEntity === "Student Branch Representatives") {
+        if (!data.branch || data.branch.trim() === "") {
+          errors.branch = "branch is required";
+        }
+        if (data.branch === "23. Other" && (!data.otherAffiliation || data.otherAffiliation.trim() === "")) {
+          errors.otherAffiliation = "otherAffiliation is required";
+        }
       }
-      if (data.branch === "23. Other" && (!data.otherAffiliation || data.otherAffiliation.trim() === "")) {
-        errors.otherAffiliation = "otherAffiliation is required";
-      }
-      if (!data.partOfExCo || data.partOfExCo.trim() === "") {
-        errors.partOfExCo = "partOfExCo is required";
+      if (!data.selectedEntity || data.selectedEntity.trim() === "") {
+        errors.selectedEntity = "selectedEntity is required";
       }
       if (!data.tshirtSize || data.tshirtSize.trim() === "") {
         errors.tshirtSize = "tshirtSize is required";
@@ -114,6 +116,11 @@ const validateFormData = (data) => {
   if (data.email && !emailRegex.test(data.email)) {
     errors.email = "Invalid email format";
   }
+
+  if (!data.paymentSlipUrl || data.paymentSlipUrl.trim() === "") {
+    errors.paymentSlipUrl = "paymentSlipUrl is required";
+  }
+
   return {
     isValid: Object.keys(errors).length === 0,
     errors,
@@ -182,58 +189,118 @@ export async function POST(request) {
       (sum, quantity) => sum + Number(quantity || 0),
       0
     );
-    const merchPriceMap = {
-      merchPackOversized: 3500,
-      tshirt: 2000,
-      wristband: 250,
-      bucketHat: 1200,
-    };
-    const merchTotalAmount = Object.entries(merchItems).reduce(
+    const currency = formData.currency || "LKR";
+    const merchPriceMap = currency === "USD"
+      ? {
+          merchPackOversized: 15,
+          tshirt: 10,
+          wristband: 2,
+          bucketHat: 5,
+        }
+      : {
+          merchPackOversized: 3500,
+          tshirt: 2000,
+          wristband: 250,
+          bucketHat: 1200,
+        };
+    const merchTotalAmountVal = Object.entries(merchItems).reduce(
       (sum, [key, quantity]) =>
         sum + Number(quantity || 0) * Number(merchPriceMap[key] || 0),
       0
     );
+    const merchTotalAmountFormatted = `${merchTotalAmountVal} ${currency}`;
 
-    const rowData = [
-      new Date().toISOString(),
-      formData.registrationType || "event",
-      formData.isSriLankanCitizen || "",
-      formData.region || "",
-      formData.organizationalUnit || "",
-      formData.nameWithInitials || "",
-      formData.firstName || "",
-      formData.lastName || "",
-      formData.email || "",
-      formData.contactNumber || "",
-      formData.nic || "",
-      formData.gender || "",
-      formData.branch || "",
-      formData.otherAffiliation || "",
-      formData.partOfExCo || "",
-      formData.membershipNo || "",
-      formData.membershipCategory || "",
-      Array.isArray(formData.excoEntities)
-        ? formData.excoEntities.join(", ")
-        : "",
-      formData.tshirtSize || "",
-      formData.privacy || "",
-      formData.consent || "",
-      formData.merchPackSize || "",
-      Number(merchItems.merchPackOversized || 0),
-      Number(merchItems.tshirt || 0),
-      Number(merchItems.wristband || 0),
-      Number(merchItems.bucketHat || 0),
-      merchTotalQuantity,
-      merchTotalAmount,
-      merchSummary,
-    ];
+    // Build different row structures based on registration type to separate sheets data logically
+    const rowData = formData.registrationType === "merch" 
+      ? [
+          new Date().toISOString(),
+          formData.registrationType || "merch",
+          formData.nameWithInitials || "",
+          formData.firstName || "",
+          formData.lastName || "",
+          formData.email || "",
+          formData.contactNumber || "",
+          formData.merchPackSize || "",
+          Number(merchItems.merchPackOversized || 0),
+          Number(merchItems.tshirt || 0),
+          Number(merchItems.wristband || 0),
+          Number(merchItems.bucketHat || 0),
+          merchTotalQuantity,
+          merchTotalAmountFormatted,
+          merchSummary,
+          formData.paymentSlipUrl || "",
+          formData.privacy || "",
+          formData.consent || "",
+        ]
+      : [
+          new Date().toISOString(),
+          formData.registrationType || "event",
+          formData.isSriLankanCitizen || "",
+          formData.region || "",
+          formData.organizationalUnit || "",
+          formData.nameWithInitials || "",
+          formData.firstName || "",
+          formData.lastName || "",
+          formData.email || "",
+          formData.contactNumber || "",
+          formData.nic || "",
+          formData.gender || "",
+          formData.branch || "",
+          formData.otherAffiliation || "",
+          formData.selectedEntity || "",
+          formData.membershipNo || "",
+          formData.membershipCategory || "",
+          Array.isArray(formData.excoEntities)
+            ? formData.excoEntities.join(", ")
+            : "",
+          formData.tshirtSize || "",
+          formData.paymentSlipUrl || "",
+          formData.privacy || "",
+          formData.consent || "",
+        ];
 
     console.log("Attempting to append data to Google Sheets...");
+
+    // Determine target sheet tab dynamically
+    const targetRange = formData.registrationType === "merch" ? "Merchandise!A1" : "Sheet1!A1";
+    console.log(`Routing data to sheet range: ${targetRange}`);
+
+    const sheetTabName = targetRange.split("!")[0];
+
+    // Automatically verify that the sheet tab exists, and create it if missing
+    try {
+      const spreadsheetInfo = await sheets.spreadsheets.get({ spreadsheetId });
+      const sheetExists = spreadsheetInfo.data.sheets.some(
+        (s) => s.properties.title === sheetTabName
+      );
+
+      if (!sheetExists) {
+        console.log(`Sheet tab "${sheetTabName}" does not exist. Creating it...`);
+        await sheets.spreadsheets.batchUpdate({
+          spreadsheetId,
+          resource: {
+            requests: [
+              {
+                addSheet: {
+                  properties: {
+                    title: sheetTabName,
+                  },
+                },
+              },
+            ],
+          },
+        });
+        console.log(`Sheet tab "${sheetTabName}" successfully created.`);
+      }
+    } catch (sheetCheckError) {
+      console.error("Error verifying/creating target sheet tab:", sheetCheckError);
+      // Proceed anyway, let append attempt fail normally if there's a different issue
+    }
 
     // Append data to Google Sheets
     const result = await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: "Sheet1!A1",
+      range: targetRange,
       insertDataOption: "INSERT_ROWS",
       valueInputOption: "RAW",
       resource: { values: [rowData] },

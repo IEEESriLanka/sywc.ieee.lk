@@ -183,6 +183,18 @@ const EventCountdown = () => {
           </div>
         )}
 
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 relative z-20">
+          <a href="/register" className="register-button">
+            <span className="button-text">Register Now</span>
+            <div className="button-glow"></div>
+          </a>
+          <a href="/merch" className="merch-button">
+            <span className="button-text">Purchase Merch</span>
+            <div className="button-glow"></div>
+          </a>
+        </div>
+
         {/* Event Info Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-12 w-full max-w-5xl mx-auto px-4">
           <div className="event-info-card group">
@@ -464,6 +476,38 @@ const EventCountdown = () => {
           left: 100%;
         }
 
+        .merch-button {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.25rem 3rem;
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: #0f172a;
+          background: linear-gradient(135deg, #0055ff 0%, #00d9ff 50%, #3feeff 100%);
+          border: 1px solid rgba(0, 217, 255, 0.5);
+          border-radius: 50px;
+          text-decoration: none;
+          overflow: hidden;
+          transition: all 0.3s ease;
+          box-shadow:
+            0 10px 30px rgba(0, 217, 255, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .merch-button:hover {
+          transform: translateY(-2px) scale(1.05);
+          border-color: #00d9ff;
+          box-shadow:
+            0 20px 40px rgba(0, 217, 255, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .merch-button:hover .button-glow {
+          left: 100%;
+        }
+
         .event-live-button {
           position: relative;
           display: inline-flex;
@@ -498,9 +542,12 @@ const EventCountdown = () => {
             letter-spacing: 1px;
           }
 
-          .register-button {
-            padding: 1rem 2rem;
+          .register-button,
+          .merch-button {
+            padding: 1rem 2.5rem;
             font-size: 1.125rem;
+            width: 80%;
+            max-width: 280px;
           }
 
           .event-info-card {

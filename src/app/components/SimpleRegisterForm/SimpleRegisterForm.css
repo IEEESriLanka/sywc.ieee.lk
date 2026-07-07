@@ -788,12 +788,12 @@
   display: grid;
   grid-template-columns: minmax(200px, 0.8fr) minmax(0, 1fr);
   gap: 28px;
-  padding: 24px;
-  background: linear-gradient(135deg, rgba(5, 8, 16, 0.92), rgba(10, 16, 26, 0.82));
-  border: 1px solid rgba(255, 203, 64, 0.16);
-  border-radius: 22px;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.18);
-  margin-bottom: 8px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 30px;
   align-items: center;
 }
 
@@ -997,26 +997,24 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(5, 8, 16, 0.6);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
   transition: all 0.3s ease;
 }
 
 .merch-card:hover {
-  border-color: rgba(255, 203, 64, 0.3);
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 203, 64, 0.1);
 }
 
 .merch-card-image {
   position: relative;
   padding-top: 70%;
   overflow: hidden;
-  background: radial-gradient(circle at top, rgba(255, 203, 64, 0.05), transparent 70%), rgba(255, 255, 255, 0.01);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  background: radial-gradient(circle at top, rgba(255, 203, 64, 0.04), transparent 75%), rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
 }
 
 .merch-card-image img {
@@ -1035,7 +1033,7 @@
 }
 
 .merch-card-content {
-  padding: 16px;
+  padding: 16px 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -1068,11 +1066,12 @@
   justify-content: space-between;
   align-items: center;
   gap: 16px;
-  padding: 18px 20px;
-  margin-top: 24px;
-  border-radius: 16px;
-  background: rgba(255, 203, 64, 0.05);
-  border: 1px solid rgba(255, 203, 64, 0.15);
+  padding: 20px 0 0 0;
+  margin-top: 30px;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  border-top: 1px solid rgba(255, 203, 64, 0.15);
 }
 
 .merch-summary > div {
@@ -1131,15 +1130,164 @@
 @media (max-width: 767px) {
   .merch-featured-card {
     grid-template-columns: 1fr;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
   }
 
   .merch-grid {
     grid-template-columns: 1fr;
   }
 
+  .merch-card {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+  }
+
+  .merch-card:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+
   .merch-summary {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* Merchandise Motivation Box on Success Page */
+.merch-motivation-box {
+  margin: 30px 0 20px 0;
+  padding: 24px;
+  background: rgba(255, 203, 64, 0.04);
+  border: 1px dashed rgba(255, 203, 64, 0.25);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: inset 0 0 15px rgba(255, 203, 64, 0.02);
+}
+
+.merch-motivation-box h3 {
+  color: #ffcb40;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 12px;
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+
+.merch-motivation-box p {
+  color: #b8eaff;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.merch-preorder-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #b4860b 0%, #ffcb40 50%, #fbf5b7 100%);
+  color: #0f172a !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 28px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 203, 64, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 auto;
+}
+
+.merch-preorder-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 203, 64, 0.4);
+}
+
+.merch-preorder-button span {
+  color: #0f172a !important;
+}
+
+/* Currency Selector Capsule Toggle */
+.currency-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 16px;
+  border-radius: 50px;
+  align-self: flex-start;
+  max-width: fit-content;
+}
+
+.currency-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #b8eaff;
+  letter-spacing: 0.02em;
+}
+
+.currency-toggle {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 4px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.currency-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.currency-btn:hover:not(.active) {
+  color: #eafaff;
+}
+
+.currency-btn.active {
+  background: linear-gradient(135deg, #b4860b 0%, #ffcb40 100%);
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(255, 203, 64, 0.3);
+}
+
+@media (max-width: 768px) {
+  .currency-selector-container {
+    align-self: stretch;
+    max-width: 100%;
+    justify-content: space-between;
+    padding: 6px 12px;
+  }
+}
+
+/* Foreigner Notice Box on Merch Store */
+.foreigner-notice-box {
+  margin: 12px 0 24px 0;
+  padding: 14px 18px;
+  background: rgba(255, 203, 64, 0.04);
+  border: 1px solid rgba(255, 203, 64, 0.15);
+  border-left: 4px solid #ffcb40;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #b8eaff;
+  text-align: left;
+}
+
+.foreigner-notice-box strong {
+  color: #ffcb40;
 }
 
