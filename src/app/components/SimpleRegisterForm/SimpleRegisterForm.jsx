@@ -80,6 +80,7 @@ import "./SimpleRegisterForm.css";
     otherAffiliation: "",
     partOfExCo: "",
     selectedEntity: "",
+    techSociety: "",
     membershipNo: "",
     membershipCategory: "",
     excoEntities: [],
@@ -142,7 +143,25 @@ import "./SimpleRegisterForm.css";
       "20. South Eastern University of Sri Lanka (SEUSL)",
       "21. National Institute of Business Management (NIBM)",
       "22. Colombo International Nautical and Engineering College (CINEC)",
-      "23. Other",
+      "23. International College of Business and Technology (ICBT)",
+      "24. Curtin University Sri Lanka",
+      "25. Other",
+    ];
+
+    const techSocietyChapters = [
+      "CAS / CEDA Joint Chapter",
+      "Communications Society (ComSoc)",
+      "Computational Intelligence Society (CIS)",
+      "Computer Society",
+      "Engineering in Medicine and Biology Society (EMBS)",
+      "Geoscience and Remote Sensing Society (GRSS)",
+      "Industrial Electronics Society (IES)",
+      "Industry Applications Society (IAS)",
+      "Microwave Theory and Techniques Society (MTT-S)",
+      "Power and Energy Society (PES)",
+      "Power Electronics Society (PELS)",
+      "Robotics and Automation Society (RAS)",
+      "Signal Processing Society (SPS)"
     ];
 
     const excoEntities = [
@@ -330,6 +349,9 @@ import "./SimpleRegisterForm.css";
             next.branch = "";
             next.otherAffiliation = "";
           }
+          if (value !== "IEEE Sri Lanka Section Technical Society Chapter") {
+            next.techSociety = "";
+          }
         }
 
         return next;
@@ -384,6 +406,12 @@ import "./SimpleRegisterForm.css";
         if (!formData.isSriLankanCitizen) {
           newErrors.isSriLankanCitizen = "Please select a citizenship option";
         }
+        if (!formData.membershipNo.trim()) {
+          newErrors.membershipNo = "IEEE Membership Number is required";
+        }
+        if (!formData.membershipCategory) {
+          newErrors.membershipCategory = "Membership Category is required";
+        }
 
         if (formData.isSriLankanCitizen === "Yes") {
           if (!formData.nic.trim()) {
@@ -400,11 +428,11 @@ import "./SimpleRegisterForm.css";
               newErrors.otherAffiliation = "Please specify your affiliation";
             }
           }
+          if (formData.selectedEntity === "IEEE Sri Lanka Section Technical Society Chapter" && !formData.techSociety) {
+            newErrors.techSociety = "Please select your Technical Society Chapter";
+          }
           if (!formData.selectedEntity) {
             newErrors.selectedEntity = "Please select the entity you represent";
-          }
-          if (formData.selectedEntity === "IEEE Sri Lanka Section Executive Committee" && (!formData.excoEntities || formData.excoEntities.length === 0)) {
-            newErrors.excoEntities = "Please select at least one ExCo entity";
           }
         }
 
@@ -432,7 +460,7 @@ import "./SimpleRegisterForm.css";
       ) {
         newErrors.merchPackSize = "Choose a size";
       }
-      if (!formData.paymentSlipUrl) {
+      if (formMode === "merch" && !formData.paymentSlipUrl) {
         newErrors.paymentSlipUrl = "Please upload your bank payment slip to complete your submission";
       }
 
@@ -796,7 +824,7 @@ import "./SimpleRegisterForm.css";
 
               {/* 8. IEEE Membership Number */}
               <div className="form-group">
-                <label htmlFor="membershipNo" className="no-required-star">
+                <label htmlFor="membershipNo">
                   8. Please provide your IEEE Membership Number.
                 </label>
                 <input
@@ -814,7 +842,7 @@ import "./SimpleRegisterForm.css";
 
               {/* 9. Membership Category */}
               <div className="form-group">
-                <label htmlFor="membershipCategory" className="no-required-star">
+                <label htmlFor="membershipCategory">
                   9. Membership Category
                 </label>
                 <select
@@ -869,39 +897,32 @@ import "./SimpleRegisterForm.css";
                     )}
                   </div>
 
-                  {formData.selectedEntity === "IEEE Sri Lanka Section Executive Committee" && (
-                    <div className="form-section" style={{ marginTop: 0, paddingLeft: 0, paddingRight: 0, border: "none" }}>
-                      <h3 style={{ fontSize: "1.1rem", marginBottom: 12 }}>Executive Committee Details</h3>
-                      <div className="form-group checkbox-group-modern">
-                        <label className="checkbox-group-label no-required-star">
-                          Select the entity/entities you are currently an Executive Committee Member in
-                        </label>
-                        <div className="checkbox-group">
-                          {excoEntities.map((entity) => (
-                            <label key={entity.id} className="checkbox-label modern">
-                              <input
-                                type="checkbox"
-                                checked={formData.excoEntities.includes(entity.id)}
-                                onChange={(event) =>
-                                  handleCheckboxArrayChange(
-                                    "excoEntities",
-                                    entity.id,
-                                    event.target.checked
-                                  )
-                                }
-                              />
-                              {entity.label}
-                            </label>
-                          ))}
-                        </div>
-                        {errors.excoEntities && (
-                          <span className="error-message">
-                            {errors.excoEntities}
-                          </span>
-                        )}
-                      </div>
+                  {formData.selectedEntity === "IEEE Sri Lanka Section Technical Society Chapter" && (
+                    <div className="form-group">
+                      <label htmlFor="techSociety" className="required">
+                        Technical Society Chapter
+                      </label>
+                      <select
+                        id="techSociety"
+                        name="techSociety"
+                        value={formData.techSociety || ""}
+                        onChange={handleInputChange}
+                        className={errors.techSociety ? "error" : ""}
+                      >
+                        <option value="">Choose Chapter</option>
+                        {techSocietyChapters.map((chapter) => (
+                          <option key={chapter} value={chapter}>
+                            {chapter}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.techSociety && (
+                        <span className="error-message">{errors.techSociety}</span>
+                      )}
                     </div>
                   )}
+
+
 
                   {formData.selectedEntity === "Student Branch Representatives" && (
                     <>
@@ -1260,117 +1281,119 @@ import "./SimpleRegisterForm.css";
             </div>
           )}
 
-          <div className="form-section">
-            <h3>Payment Verification</h3>
-            <div className="payment-instructions" style={{
-              background: "rgba(255, 203, 64, 0.05)",
-              border: "1px solid rgba(255, 203, 64, 0.2)",
-              borderRadius: "12px",
-              padding: "20px",
-              marginBottom: "24px"
-            }}>
-              <h4 style={{ color: "#ffcb40", marginTop: 0, marginBottom: "12px", fontSize: "1.1rem" }}>
-                Bank Transfer Instructions
-              </h4>
-              <p style={{ margin: "0 0 16px 0", fontSize: "0.95rem", opacity: 0.9, lineHeight: 1.5 }}>
-                Please make your payment to the bank account below and upload the receipt/slip to complete your registration or merchandise order.
-              </p>
-              
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", fontSize: "0.9rem" }}>
-                <div>
-                  <strong>Account Name:</strong> A I MUNASINGHE
-                </div>
-                <div>
-                  <strong>Bank:</strong> SAMPATH BANK PLC
-                </div>
-                <div>
-                  <strong>Account Number:</strong> 1010 5297 6654
-                </div>
-                <div>
-                  <strong>Branch:</strong> MATARA SUPER BRANCH
+          {formMode === "merch" && (
+            <div className="form-section">
+              <h3>Payment Verification</h3>
+              <div className="payment-instructions" style={{
+                background: "rgba(255, 203, 64, 0.05)",
+                border: "1px solid rgba(255, 203, 64, 0.2)",
+                borderRadius: "12px",
+                padding: "20px",
+                marginBottom: "24px"
+              }}>
+                <h4 style={{ color: "#ffcb40", marginTop: 0, marginBottom: "12px", fontSize: "1.1rem" }}>
+                  Bank Transfer Instructions
+                </h4>
+                <p style={{ margin: "0 0 16px 0", fontSize: "0.95rem", opacity: 0.9, lineHeight: 1.5 }}>
+                  Please make your payment to the bank account below and upload the receipt/slip to complete your registration or merchandise order.
+                </p>
+                
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", fontSize: "0.9rem" }}>
+                  <div>
+                    <strong>Account Name:</strong> A I MUNASINGHE
+                  </div>
+                  <div>
+                    <strong>Bank:</strong> SAMPATH BANK PLC
+                  </div>
+                  <div>
+                    <strong>Account Number:</strong> 1010 5297 6654
+                  </div>
+                  <div>
+                    <strong>Branch:</strong> MATARA SUPER BRANCH
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="form-group">
-              <label htmlFor="paymentSlip" className="required">
-                Upload Bank Slip
-              </label>
-              
-              <div style={{
-                border: "2px dashed rgba(255, 255, 255, 0.15)",
-                borderRadius: "12px",
-                padding: "30px",
-                textAlign: "center",
-                background: "rgba(255, 255, 255, 0.02)",
-                position: "relative",
-                cursor: "pointer",
-                transition: "all 0.3s ease"
-              }}
-              className="upload-dropzone"
-              onClick={() => document.getElementById("paymentSlip").click()}
-              >
-                <input
-                  type="file"
-                  id="paymentSlip"
-                  accept="image/*,application/pdf"
-                  onChange={handleFileChange}
-                  style={{ display: "none" }}
-                />
+              <div className="form-group">
+                <label htmlFor="paymentSlip" className="required">
+                  Upload Bank Slip
+                </label>
                 
-                {isUploading ? (
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-                    <div className="upload-spinner" style={{
-                      width: "36px",
-                      height: "36px",
-                      border: "4px solid rgba(255, 255, 255, 0.1)",
-                      borderTop: "4px solid #ffcb40",
-                      borderRadius: "50%",
-                      animation: "spin 1s linear infinite"
-                    }}></div>
-                    <span style={{ fontSize: "0.95rem", color: "#fbf5b7" }}>Uploading your receipt...</span>
-                  </div>
-                ) : formData.paymentSlipUrl ? (
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="20 6 9 17 4 12" />
-                    </svg>
-                    <span style={{ fontSize: "0.95rem", color: "#22c55e", fontWeight: "bold" }}>Receipt Uploaded Successfully!</span>
-                    <a
-                      href={formData.paymentSlipUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontSize: "0.85rem", color: "#ffcb40", textDecoration: "underline" }}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      View Uploaded Receipt
-                    </a>
-                  </div>
-                ) : (
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="17 8 12 3 7 8" />
-                      <line x1="12" y1="3" x2="12" y2="15" />
-                    </svg>
-                    <span style={{ fontSize: "0.95rem" }}>Drag & drop or Click to upload receipt</span>
-                    <span style={{ fontSize: "0.8rem", opacity: 0.5 }}>Accepts JPEG, PNG, or PDF (Max 5MB)</span>
-                  </div>
+                <div style={{
+                  border: "2px dashed rgba(255, 255, 255, 0.15)",
+                  borderRadius: "12px",
+                  padding: "30px",
+                  textAlign: "center",
+                  background: "rgba(255, 255, 255, 0.02)",
+                  position: "relative",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease"
+                }}
+                className="upload-dropzone"
+                onClick={() => document.getElementById("paymentSlip").click()}
+                >
+                  <input
+                    type="file"
+                    id="paymentSlip"
+                    accept="image/*,application/pdf"
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                  />
+                  
+                  {isUploading ? (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                      <div className="upload-spinner" style={{
+                        width: "36px",
+                        height: "36px",
+                        border: "4px solid rgba(255, 255, 255, 0.1)",
+                        borderTop: "4px solid #ffcb40",
+                        borderRadius: "50%",
+                        animation: "spin 1s linear infinite"
+                      }}></div>
+                      <span style={{ fontSize: "0.95rem", color: "#fbf5b7" }}>Uploading your receipt...</span>
+                    </div>
+                  ) : formData.paymentSlipUrl ? (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      <span style={{ fontSize: "0.95rem", color: "#22c55e", fontWeight: "bold" }}>Receipt Uploaded Successfully!</span>
+                      <a
+                        href={formData.paymentSlipUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: "0.85rem", color: "#ffcb40", textDecoration: "underline" }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        View Uploaded Receipt
+                      </a>
+                    </div>
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+                      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                      </svg>
+                      <span style={{ fontSize: "0.95rem" }}>Drag & drop or Click to upload receipt</span>
+                      <span style={{ fontSize: "0.8rem", opacity: 0.5 }}>Accepts JPEG, PNG, or PDF (Max 5MB)</span>
+                    </div>
+                  )}
+                </div>
+                
+                {uploadError && (
+                  <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
+                    {uploadError}
+                  </span>
+                )}
+                {errors.paymentSlipUrl && (
+                  <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
+                    {errors.paymentSlipUrl}
+                  </span>
                 )}
               </div>
-              
-              {uploadError && (
-                <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
-                  {uploadError}
-                </span>
-              )}
-              {errors.paymentSlipUrl && (
-                <span className="error-message" style={{ display: "block", marginTop: "8px" }}>
-                  {errors.paymentSlipUrl}
-                </span>
-              )}
             </div>
-          </div>
+          )}
 
           <div className="form-section">
             <h3>Terms & Conditions</h3>
@@ -1418,8 +1441,10 @@ import "./SimpleRegisterForm.css";
                   checked={formData.consent === "I Agree"}
                   onChange={handleInputChange}
                 />
-                I give my consent for IEEE SLSYWC Congress 2026 to share my
-                information with partners.
+                <span>
+                  I give my consent for IEEE SLSYWC Congress 2026 to share my
+                  information with partners.
+                </span>
               </label>
               {errors.consent && (
                 <span className="error-message">{errors.consent}</span>

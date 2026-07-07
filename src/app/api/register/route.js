@@ -57,6 +57,12 @@ const validateFormData = (data) => {
     if (!data.isSriLankanCitizen) {
       errors.isSriLankanCitizen = "isSriLankanCitizen is required";
     }
+    if (!data.membershipNo || data.membershipNo.trim() === "") {
+      errors.membershipNo = "membershipNo is required";
+    }
+    if (!data.membershipCategory || data.membershipCategory.trim() === "") {
+      errors.membershipCategory = "membershipCategory is required";
+    }
 
     if (data.isSriLankanCitizen === "Yes") {
       if (!data.nic || data.nic.trim() === "") {
@@ -71,6 +77,11 @@ const validateFormData = (data) => {
         }
         if (data.branch === "23. Other" && (!data.otherAffiliation || data.otherAffiliation.trim() === "")) {
           errors.otherAffiliation = "otherAffiliation is required";
+        }
+      }
+      if (data.selectedEntity === "IEEE Sri Lanka Section Technical Society Chapter") {
+        if (!data.techSociety || data.techSociety.trim() === "") {
+          errors.techSociety = "techSociety is required";
         }
       }
       if (!data.selectedEntity || data.selectedEntity.trim() === "") {
@@ -117,7 +128,7 @@ const validateFormData = (data) => {
     errors.email = "Invalid email format";
   }
 
-  if (!data.paymentSlipUrl || data.paymentSlipUrl.trim() === "") {
+  if (registrationType === "merch" && (!data.paymentSlipUrl || data.paymentSlipUrl.trim() === "")) {
     errors.paymentSlipUrl = "paymentSlipUrl is required";
   }
 
@@ -250,9 +261,7 @@ export async function POST(request) {
           formData.selectedEntity || "",
           formData.membershipNo || "",
           formData.membershipCategory || "",
-          Array.isArray(formData.excoEntities)
-            ? formData.excoEntities.join(", ")
-            : "",
+          formData.techSociety || "",
           formData.tshirtSize || "",
           formData.paymentSlipUrl || "",
           formData.privacy || "",

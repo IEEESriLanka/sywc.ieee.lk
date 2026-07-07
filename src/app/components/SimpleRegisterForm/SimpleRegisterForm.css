@@ -130,6 +130,11 @@
   backdrop-filter: blur(10px);
 }
 
+.form-group select option {
+  background-color: #0c1220;
+  color: #eafaff;
+}
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -208,6 +213,7 @@
   width: 20px;
   height: 20px;
   accent-color: #ffcb40;
+  flex-shrink: 0;
 }
 
 .registration-mode-group {
