@@ -22,8 +22,8 @@ import "./SimpleRegisterForm.css";
     {
       id: "merchPack",
       name: "Combo pack",
-      priceLKR: 3500,
-      priceUSD: 15,
+      priceLKR: 2500,
+      priceUSD: 8,
       image: "/merch/merch_pack_oversized.png",
       description:
         "Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1",
@@ -32,8 +32,8 @@ import "./SimpleRegisterForm.css";
     {
       id: "tshirt",
       name: "T-shirt",
-      priceLKR: 2000,
-      priceUSD: 10,
+      priceLKR: 1300,
+      priceUSD: 4,
       image: "/merch/t-shirt.png",
       description: "Branded congress T-shirt.",
     },
@@ -41,7 +41,7 @@ import "./SimpleRegisterForm.css";
       id: "wristband",
       name: "Wristband",
       priceLKR: 250,
-      priceUSD: 2,
+      priceUSD: 1,
       image: "/merch/white_wristband.png",
       description: "Clean wristband with branded artwork.",
     },
@@ -49,7 +49,7 @@ import "./SimpleRegisterForm.css";
       id: "bucketHat",
       name: "Bucket Hat",
       priceLKR: 1200,
-      priceUSD: 5,
+      priceUSD: 3.5,
       image: "/merch/bucket_hat.png",
       description: "Double sided bucket hat with event branding.",
     },
@@ -106,12 +106,12 @@ import "./SimpleRegisterForm.css";
     const [submittedMode, setSubmittedMode] = useState("event");
     const [internationalStepComplete, setInternationalStepComplete] =
       useState(false);
-    const [showSizeChart, setShowSizeChart] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState("");
     const [isPhotoUploading, setIsPhotoUploading] = useState(false);
     const [photoUploadError, setPhotoUploadError] = useState("");
     const [lightboxImage, setLightboxImage] = useState(null);
+    const [showCheckoutForm, setShowCheckoutForm] = useState(false);
 
     useEffect(() => {
       if (lightboxImage) {
@@ -552,6 +552,33 @@ import "./SimpleRegisterForm.css";
       return Object.keys(newErrors).length === 0;
     };
 
+    const handleProceedToCheckout = () => {
+      const hasMerchSelection = getMerchTotalQuantity() > 0;
+      const needsSize = Number(formData.merchItems.tshirt || 0) > 0 || Number(formData.merchItems.merchPack || 0) > 0;
+      
+      const newErrors = {};
+      if (!hasMerchSelection) {
+        newErrors.merchItems = "Please select at least one merchandise item to proceed.";
+      }
+      if (needsSize && !formData.merchPackSize) {
+        newErrors.merchPackSize = "Please select a size for your Combo pack / T-shirt.";
+      }
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+
+      setErrors({});
+      setShowCheckoutForm(true);
+      setTimeout(() => {
+        const titleEl = document.querySelector(".form-container h2");
+        if (titleEl) {
+          titleEl.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 50);
+    };
+
     const handleSubmit = async (e) => {
       e.preventDefault();
 
@@ -596,6 +623,7 @@ import "./SimpleRegisterForm.css";
             currency: "LKR",
           });
           setInternationalStepComplete(false);
+          setShowCheckoutForm(false);
         } else {
           setErrors(result.errors || {});
           throw new Error(result.message || "Submission failed");
@@ -787,8 +815,56 @@ import "./SimpleRegisterForm.css";
 
       return (
         <>
-          <div className="form-section">
-          <h3>{isMerchFlow && !isEventFlow ? "Buyer Information" : "Personal Information"}</h3>
+          {/* Checkout Order Summary Card */}
+          {formMode === "merch" && showCheckoutForm && (
+            <div className="form-section checkout-summary-card" style={{
+              background: "rgba(255, 255, 255, 0.02)",
+              border: "1px solid rgba(255, 255, 255, 0.08)",
+              borderRadius: "12px",
+              padding: "24px",
+              marginBottom: "24px"
+            }}>
+              <h3 style={{ color: "#ffcb40", margin: "0 0 16px 0", fontSize: "1.2rem", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "12px" }}>
+                Order Summary
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                {Object.entries(formData.merchItems).map(([productId, qty]) => {
+                  if (Number(qty || 0) <= 0) return null;
+                  const product = merchCatalog.find(p => p.id === productId);
+                  if (!product) return null;
+                  return (
+                    <div key={productId} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.95rem" }}>
+                      <div>
+                        <strong style={{ color: "#fff" }}>{product.name}</strong>
+                        {(productId === "merchPack" || productId === "tshirt") && formData.merchPackSize && (
+                          <span style={{ marginLeft: "8px", fontSize: "0.85rem", color: "#ffcb40", background: "rgba(255,203,64,0.1)", padding: "2px 6px", borderRadius: "4px" }}>
+                            Size: {formData.merchPackSize}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ display: "flex", gap: "24px" }}>
+                        <span style={{ opacity: 0.7 }}>Qty: {qty}</span>
+                        <span style={{ fontWeight: "600" }}>
+                          {formData.currency === "USD" ? `$${product.priceUSD * qty}` : `${product.priceLKR * qty} LKR`}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+                <hr style={{ border: "none", borderTop: "1px solid rgba(255, 255, 255, 0.08)", margin: "12px 0 4px 0" }} />
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "1.1rem" }}>
+                  <span>Estimated Total</span>
+                  <span style={{ color: "#ffcb40" }}>
+                    {formData.currency === "USD" ? `$${getMerchTotalAmount()}` : `${getMerchTotalAmount()} LKR`}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {(!isMerchFlow || isEventFlow || showCheckoutForm) && (
+            <div className="form-section">
+              <h3>{isMerchFlow && !isEventFlow ? "Buyer Information" : "Personal Information"}</h3>
 
           <div className="form-group">
             <label htmlFor="nameWithInitials">Name with Initials </label>
@@ -1170,8 +1246,9 @@ import "./SimpleRegisterForm.css";
           )}
 
           </div>
+          )}
 
-          {isMerchFlow && (
+          {isMerchFlow && !showCheckoutForm && (
             <div className="form-section merch-section">
               <h3>Merchandise</h3>
               <p className="form-hint">
@@ -1216,90 +1293,112 @@ import "./SimpleRegisterForm.css";
                     Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1
                   </p>
                   <div className="merch-price">
-                    {formData.currency === "USD" ? "$15" : "3500 LKR"}
+                    {formData.currency === "USD" ? "$15" : "2500 LKR"}
                   </div>
 
-                  <div className="form-group no-margin-bottom">
-                    <label htmlFor="merchPackSize" className="no-required-star">
-                      Combo Pack Size
-                    </label>
-                    <div className="merch-size-options">
-                      {tShirtSizes.map((size) => (
-                        <label
-                          key={size}
-                          className={`merch-size-option ${
-                            formData.merchPackSize === size ? "selected" : ""
-                          }`}
-                        >
-                          <input
-                            type="radio"
-                            name="merchPackSize"
-                            value={size}
-                            checked={formData.merchPackSize === size}
-                            onChange={handleInputChange}
-                          />
-                          <span>{size}</span>
+                  {formData.merchItems.merchPack === 0 ? (
+                    <button
+                      type="button"
+                      className="add-to-cart-btn"
+                      style={{
+                        background: "linear-gradient(135deg, #0055ff 0%, #3feeff 100%)",
+                        color: "#fff",
+                        border: "none",
+                        padding: "12px 24px",
+                        borderRadius: "8px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        marginTop: "16px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        width: "100%",
+                        boxShadow: "0 4px 10px rgba(0, 85, 255, 0.2)",
+                        transition: "all 0.2s ease"
+                      }}
+                      onClick={() => {
+                        updateMerchQuantity("merchPack", 1);
+                        if (!formData.merchPackSize) {
+                          setFormData(prev => ({ ...prev, merchPackSize: "M" }));
+                        }
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                      </svg>
+                      Add to Cart
+                    </button>
+                  ) : (
+                    <>
+                      <div className="form-group no-margin-bottom" style={{ marginTop: "16px" }}>
+                        <label htmlFor="merchPackSize" className="no-required-star">
+                          Combo Pack Size
                         </label>
-                      ))}
-                    </div>
-                    <div style={{ marginTop: 8 }}>
-                      <button
-                        type="button"
-                        onClick={() => setShowSizeChart(!showSizeChart)}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          color: "#ffcb40",
-                          cursor: "pointer",
-                          fontSize: "0.9em",
-                          textDecoration: "underline",
-                          padding: 0
-                        }}
-                      >
-                        {showSizeChart ? "Hide Size Guide" : "View T-Shirt Size Guide"}
-                      </button>
-                      {showSizeChart && (
-                        <div style={{ marginTop: 12, textAlign: "center" }}>
-                          <img
-                            src="/merch/tshirt_size.jpeg"
-                            alt="T-shirt Size Chart"
+                        <div className="merch-size-options">
+                          {tShirtSizes.map((size) => (
+                            <label
+                              key={size}
+                              className={`merch-size-option ${
+                                formData.merchPackSize === size ? "selected" : ""
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="merchPackSize"
+                                value={size}
+                                checked={formData.merchPackSize === size}
+                                onChange={handleInputChange}
+                              />
+                              <span>{size}</span>
+                            </label>
+                          ))}
+                        </div>
+                        <div style={{ marginTop: 8 }}>
+                          <button
+                            type="button"
                             onClick={() => setLightboxImage({ src: "/merch/tshirt_size.jpeg", alt: "T-shirt Size Chart" })}
                             style={{
-                              width: "100%",
-                              maxWidth: 320,
-                              borderRadius: 12,
-                              boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-                              border: "1px solid rgba(255,203,64,0.3)",
-                              cursor: "zoom-in"
+                              background: "none",
+                              border: "none",
+                              color: "#ffcb40",
+                              cursor: "pointer",
+                              fontSize: "0.9em",
+                              textDecoration: "underline",
+                              padding: 0
                             }}
-                          />
+                          >
+                            View T-Shirt Size Guide
+                          </button>
                         </div>
-                      )}
-                    </div>
-                    {errors.merchPackSize && (
-                      <span className="error-message">{errors.merchPackSize}</span>
-                    )}
-                  </div>
+                        {errors.merchPackSize && (
+                          <span className="error-message">{errors.merchPackSize}</span>
+                        )}
+                      </div>
 
-                  <div className="quantity-stepper">
-                    <button
-                      type="button"
-                      className="quantity-button"
-                      onClick={() => updateMerchQuantity("merchPack", -1)}
-                    >
-                      -
-                    </button>
-                    <span className="quantity-value">
-                      {formData.merchItems.merchPack}
-                    </span>
-                    <button
-                      type="button"
-                      className="quantity-button"
-                      onClick={() => updateMerchQuantity("merchPack", 1)}
-                    >
-                      +
-                    </button>
-                  </div>
+                      <div className="quantity-stepper" style={{ marginTop: "16px" }}>
+                        <button
+                          type="button"
+                          className="quantity-button"
+                          onClick={() => updateMerchQuantity("merchPack", -1)}
+                        >
+                          -
+                        </button>
+                        <span className="quantity-value">
+                          {formData.merchItems.merchPack}
+                        </span>
+                        <button
+                          type="button"
+                          className="quantity-button"
+                          onClick={() => updateMerchQuantity("merchPack", 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -1314,102 +1413,119 @@ import "./SimpleRegisterForm.css";
                           Pre-order
                         </span>
                       </div>
-                      <div className="merch-card-content">
+                      <div className="merch-card-content" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                         <h4>{product.name}</h4>
-                          <div className="merch-price">
-                            {formData.currency === "USD" ? `$${product.priceUSD}` : `${product.priceLKR} LKR`}
-                          </div>
-                        <p>{product.description}</p>
-                        <div className="quantity-stepper">
-                          <button
-                            type="button"
-                            className="quantity-button"
-                            onClick={() => updateMerchQuantity(product.id, -1)}
-                          >
-                            -
-                          </button>
-                          <span className="quantity-value">
-                            {formData.merchItems[product.id]}
-                          </span>
-                          <button
-                            type="button"
-                            className="quantity-button"
-                            onClick={() => updateMerchQuantity(product.id, 1)}
-                          >
-                            +
-                          </button>
+                        <div className="merch-price">
+                          {formData.currency === "USD" ? `$${product.priceUSD}` : `${product.priceLKR} LKR`}
                         </div>
+                        <p style={{ minHeight: "36px", marginBottom: "8px" }}>{product.description}</p>
+                        
+                        {formData.merchItems[product.id] === 0 ? (
+                          <button
+                            type="button"
+                            className="add-to-cart-btn"
+                            style={{
+                              background: "rgba(255, 255, 255, 0.05)",
+                              border: "1px solid rgba(255, 255, 255, 0.1)",
+                              color: "#fff",
+                              padding: "10px 16px",
+                              borderRadius: "8px",
+                              fontWeight: "600",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              gap: "8px",
+                              width: "100%",
+                              marginTop: "auto",
+                              transition: "all 0.2s ease"
+                            }}
+                            onClick={() => {
+                              updateMerchQuantity(product.id, 1);
+                              if (product.id === "tshirt" && !formData.merchPackSize) {
+                                setFormData(prev => ({ ...prev, merchPackSize: "M" }));
+                              }
+                            }}
+                          >
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <line x1="12" y1="5" x2="12" y2="19" />
+                              <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            Add to Cart
+                          </button>
+                        ) : (
+                          <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: "8px", width: "100%" }}>
+                            {product.id === "tshirt" && (
+                              <div className="form-group no-margin-bottom" style={{ marginBottom: "8px" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                                  <label htmlFor="tshirtSizeSelect" style={{ fontSize: "0.8rem", opacity: 0.8, margin: 0 }} className="no-required-star">
+                                    Size
+                                  </label>
+                                  <button
+                                    type="button"
+                                    onClick={() => setLightboxImage({ src: "/merch/tshirt_size.jpeg", alt: "T-shirt Size Chart" })}
+                                    style={{
+                                      background: "none",
+                                      border: "none",
+                                      color: "#ffcb40",
+                                      cursor: "pointer",
+                                      fontSize: "0.75rem",
+                                      textDecoration: "underline",
+                                      padding: 0
+                                    }}
+                                  >
+                                    Size Guide
+                                  </button>
+                                </div>
+                                <div className="merch-size-options" style={{ gap: "4px" }}>
+                                  {tShirtSizes.map((size) => (
+                                    <label
+                                      key={size}
+                                      className={`merch-size-option ${
+                                        formData.merchPackSize === size ? "selected" : ""
+                                      }`}
+                                      style={{ padding: "4px 8px", fontSize: "0.8rem" }}
+                                    >
+                                      <input
+                                        type="radio"
+                                        name="merchPackSize"
+                                        value={size}
+                                        checked={formData.merchPackSize === size}
+                                        onChange={handleInputChange}
+                                      />
+                                      <span>{size}</span>
+                                    </label>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            <div className="quantity-stepper">
+                              <button
+                                type="button"
+                                className="quantity-button"
+                                onClick={() => updateMerchQuantity(product.id, -1)}
+                              >
+                                -
+                              </button>
+                              <span className="quantity-value">
+                                {formData.merchItems[product.id]}
+                              </span>
+                              <button
+                                type="button"
+                                className="quantity-button"
+                                onClick={() => updateMerchQuantity(product.id, 1)}
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
               </div>
 
-              {formData.merchItems.tshirt > 0 && (
-                <div className="form-group" style={{ marginTop: 24 }}>
-                  <label htmlFor="merchPackSize">
-                    T-Shirt Size
-                  </label>
-                  <div className="merch-size-options">
-                    {tShirtSizes.map((size) => (
-                      <label
-                        key={size}
-                        className={`merch-size-option ${
-                          formData.merchPackSize === size ? "selected" : ""
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="merchPackSize"
-                          value={size}
-                          checked={formData.merchPackSize === size}
-                          onChange={handleInputChange}
-                        />
-                        <span>{size}</span>
-                      </label>
-                    ))}
-                  </div>
-                  <small style={{ display: "block", marginBottom: 4 }}>
-                    Required when ordering a T-shirt.
-                  </small>
-                  <div style={{ marginTop: 8, marginBottom: 12 }}>
-                    <button
-                      type="button"
-                      onClick={() => setShowSizeChart(!showSizeChart)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        color: "#ffcb40",
-                        cursor: "pointer",
-                        fontSize: "0.9em",
-                        textDecoration: "underline",
-                        padding: 0
-                      }}
-                    >
-                      {showSizeChart ? "Hide Size Guide" : "View T-Shirt Size Guide"}
-                    </button>
-                    {showSizeChart && (
-                      <div style={{ marginTop: 12, textAlign: "center" }}>
-                        <img
-                          src="/merch/tshirt_size.jpeg"
-                          alt="T-shirt Size Chart"
-                          style={{
-                            width: "100%",
-                            maxWidth: 320,
-                            borderRadius: 12,
-                            boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-                            border: "1px solid rgba(255,203,64,0.3)"
-                          }}
-                        />
-                      </div>
-                    )}
-                  </div>
-                  {errors.merchPackSize && (
-                    <span className="error-message">
-                      {errors.merchPackSize}
-                    </span>
-                  )}
-                </div>
-              )}
+
 
               <div className="merch-summary">
                 <div>
@@ -1425,6 +1541,28 @@ import "./SimpleRegisterForm.css";
               </div>
               {errors.merchItems && (
                 <span className="error-message">{errors.merchItems}</span>
+              )}
+
+              {/* Proceed to Checkout Button for Merch Store Step 1 */}
+              {formMode === "merch" && (
+                <div className="form-buttons" style={{ marginTop: "32px" }}>
+                  <button
+                    type="button"
+                    className="back-button"
+                    onClick={() => {
+                      window.location.href = "/";
+                    }}
+                  >
+                    Back to Home
+                  </button>
+                  <button
+                    type="button"
+                    className="submit-button"
+                    onClick={handleProceedToCheckout}
+                  >
+                    Proceed to Checkout
+                  </button>
+                </div>
               )}
             </div>
           )}
@@ -1469,7 +1607,7 @@ import "./SimpleRegisterForm.css";
             </div>
           )}
 
-          {formMode === "merch" && (
+          {formMode === "merch" && showCheckoutForm && (
             <div className="form-section">
               <h3>Payment Verification</h3>
               <div className="payment-instructions" style={{
@@ -1583,8 +1721,10 @@ import "./SimpleRegisterForm.css";
             </div>
           )}
 
-          <div className="form-section">
-            <h3>Terms & Conditions</h3>
+          {(!isMerchFlow || isEventFlow || showCheckoutForm) && (
+            <>
+              <div className="form-section">
+                <h3>Terms & Conditions</h3>
 
             <div className="form-group checkbox-group-modern">
               <label className="checkbox-label modern">
@@ -1674,19 +1814,6 @@ import "./SimpleRegisterForm.css";
           </div>
 
           <div className="form-buttons">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="submit-button"
-            >
-              {isSubmitting
-                ? "Submitting..."
-                : formData.registrationType === "merch"
-                ? "Submit Order"
-                : formData.registrationType === "both"
-                ? (getMerchTotalQuantity() > 0 ? "Register & Order" : "Register Now")
-                : "Register Now"}
-            </button>
             {isEventFlow ? (
               <button
                 type="button"
@@ -1708,15 +1835,41 @@ import "./SimpleRegisterForm.css";
                 type="button"
                 className="back-button"
                 onClick={() => {
-                  window.location.href = "/";
+                  if (showCheckoutForm) {
+                    setErrors({});
+                    setShowCheckoutForm(false);
+                    setTimeout(() => {
+                      const titleEl = document.querySelector(".form-container h2");
+                      if (titleEl) {
+                        titleEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }, 50);
+                  } else {
+                    window.location.href = "/";
+                  }
                 }}
               >
-                Back
+                {showCheckoutForm ? "Back to Store" : "Back"}
               </button>
             )}
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="submit-button"
+            >
+              {isSubmitting
+                ? "Submitting..."
+                : formData.registrationType === "merch"
+                ? "Submit Order"
+                : formData.registrationType === "both"
+                ? (getMerchTotalQuantity() > 0 ? "Register & Order" : "Register Now")
+                : "Register Now"}
+            </button>
           </div>
         </>
-      );
+      )}
+    </>
+  );
     };
 
     if (showSuccess) {
@@ -1760,9 +1913,27 @@ import "./SimpleRegisterForm.css";
         <form onSubmit={handleSubmit} className="form-container">
           <h2>
             {formMode === "merch"
-              ? "IEEE SLSYWC 2026 Merchandise Order Form"
+              ? "IEEE SLSYWC 2026 Official Merchandise Store"
               : "IEEE SLSYWC 2026 Registration Form"}
           </h2>
+
+          {formMode === "merch" && (
+            <div className="checkout-steps" style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "12px",
+              marginBottom: "32px",
+              fontSize: "0.9rem",
+              fontWeight: "600",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em"
+            }}>
+              <span style={{ color: !showCheckoutForm ? "#ffcb40" : "#94a3b8", transition: "color 0.2s ease" }}>1. Select Items</span>
+              <span style={{ color: "rgba(255, 255, 255, 0.15)" }}>───</span>
+              <span style={{ color: showCheckoutForm ? "#ffcb40" : "#94a3b8", transition: "color 0.2s ease" }}>2. Checkout Details</span>
+            </div>
+          )}
           {/* Hide mode selector since it's determined by the page */}
           {/* {renderModeSelector()} */}
           {renderRegistrationEntry()}

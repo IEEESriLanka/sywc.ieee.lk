@@ -214,14 +214,14 @@ export async function POST(request) {
     const currency = formData.currency || "LKR";
     const merchPriceMap = currency === "USD"
       ? {
-          merchPack: 15,
-          tshirt: 10,
-          wristband: 2,
-          bucketHat: 5,
+          merchPack: 8,
+          tshirt: 4,
+          wristband: 1,
+          bucketHat: 3.5,
         }
       : {
-          merchPack: 3500,
-          tshirt: 2000,
+          merchPack: 2500,
+          tshirt: 1300,
           wristband: 250,
           bucketHat: 1200,
         };
