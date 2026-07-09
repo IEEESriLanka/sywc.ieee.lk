@@ -56,7 +56,7 @@ import "./SimpleRegisterForm.css";
     },
   ];
 
-  const tShirtSizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+  const tShirtSizes = ["XS", "S", "M", "L", "XL", "2XL"];
 
   const createEmptyMerchItems = () =>
     merchCatalog.reduce((items, product) => {
