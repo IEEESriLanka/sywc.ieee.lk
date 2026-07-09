@@ -24,6 +24,9 @@ export default function SmoothScroll({ children }) {
     });
 
     setLenis(lenisInstance);
+    if (typeof window !== "undefined") {
+      window.lenis = lenisInstance;
+    }
 
     lenisInstance.on("scroll", ScrollTrigger.update);
 
@@ -48,6 +51,9 @@ export default function SmoothScroll({ children }) {
       window.removeEventListener("scroll-lock", handleScrollLock);
       lenisInstance.destroy();
       gsap.ticker.remove(lenisInstance.raf);
+      if (typeof window !== "undefined") {
+        delete window.lenis;
+      }
     };
   }, []);
 

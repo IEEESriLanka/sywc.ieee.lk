@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import "./SimpleRegisterForm.css";
 
   const registrationModes = [
@@ -126,12 +127,30 @@ import "./SimpleRegisterForm.css";
 
     const successRef = useRef(null);
 
+    const safeScrollTo = (target, offset = 0) => {
+      if (typeof window !== "undefined") {
+        if (window.lenis) {
+          window.lenis.scrollTo(target, { offset });
+        } else {
+          let topVal = 0;
+          if (typeof target === "number") {
+            topVal = target;
+          } else if (target instanceof HTMLElement) {
+            topVal = target.getBoundingClientRect().top + (window.pageYOffset || window.scrollY) + offset;
+          } else if (typeof target === "string") {
+            const el = document.querySelector(target);
+            if (el) {
+              topVal = el.getBoundingClientRect().top + (window.pageYOffset || window.scrollY) + offset;
+            }
+          }
+          window.scrollTo({ top: topVal, behavior: "smooth" });
+        }
+      }
+    };
+
     useEffect(() => {
       if (showSuccess && successRef.current) {
-        const yOffset = -100; // Offset for fixed navigation header
-        const element = successRef.current;
-        const y = element.getBoundingClientRect().top + (window.pageYOffset || window.scrollY) + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
+        safeScrollTo(successRef.current, -100);
       }
     }, [showSuccess]);
 
@@ -572,10 +591,7 @@ import "./SimpleRegisterForm.css";
       setErrors({});
       setShowCheckoutForm(true);
       setTimeout(() => {
-        const titleEl = document.querySelector(".form-container h2");
-        if (titleEl) {
-          titleEl.scrollIntoView({ behavior: "smooth" });
-        }
+        safeScrollTo(0);
       }, 50);
     };
 
@@ -1293,7 +1309,7 @@ import "./SimpleRegisterForm.css";
                     Includes: T-shirt x 1, Wristband x 1, Bucket Hat x 1
                   </p>
                   <div className="merch-price">
-                    {formData.currency === "USD" ? "$15" : "2500 LKR"}
+                    {formData.currency === "USD" ? "$8" : "2500 LKR"}
                   </div>
 
                   {formData.merchItems.merchPack === 0 ? (
@@ -1839,10 +1855,7 @@ import "./SimpleRegisterForm.css";
                     setErrors({});
                     setShowCheckoutForm(false);
                     setTimeout(() => {
-                      const titleEl = document.querySelector(".form-container h2");
-                      if (titleEl) {
-                        titleEl.scrollIntoView({ behavior: "smooth" });
-                      }
+                      safeScrollTo(0);
                     }, 50);
                   } else {
                     window.location.href = "/";
@@ -1940,7 +1953,7 @@ import "./SimpleRegisterForm.css";
           {renderPersonalInformation()}
         </form>
 
-        {lightboxImage && (
+        {lightboxImage && typeof window !== "undefined" && createPortal(
           <div className="lightbox-overlay" onClick={() => setLightboxImage(null)}>
             <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
               <button className="lightbox-close" onClick={() => setLightboxImage(null)}>
@@ -1949,7 +1962,8 @@ import "./SimpleRegisterForm.css";
               <img src={lightboxImage.src} alt={lightboxImage.alt} className="lightbox-image" />
               {lightboxImage.alt && <div className="lightbox-caption">{lightboxImage.alt}</div>}
             </div>
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     );

@@ -183,17 +183,6 @@ const EventCountdown = () => {
           </div>
         )}
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 relative z-20">
-          <a href="/register" className="register-button">
-            <span className="button-text">Register Now</span>
-            <div className="button-glow"></div>
-          </a>
-          <a href="/merch" className="merch-button">
-            <span className="button-text">Purchase Merch</span>
-            <div className="button-glow"></div>
-          </a>
-        </div>
 
         {/* Event Info Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-12 w-full max-w-5xl mx-auto px-4">
@@ -270,6 +259,17 @@ const EventCountdown = () => {
 
       </div>
 
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 relative z-20">
+          <a href="/register" className="register-button">
+            <span className="button-text">Register Now</span>
+            <div className="button-glow"></div>
+          </a>
+          <a href="/merch" className="merch-button">
+            <span className="button-text">Purchase Merch</span>
+            <div className="button-glow"></div>
+          </a>
+        </div>
       <style jsx>{`
         @keyframes shine {
           to {
