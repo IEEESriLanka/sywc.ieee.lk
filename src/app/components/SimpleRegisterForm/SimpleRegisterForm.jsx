@@ -968,7 +968,7 @@ import "./SimpleRegisterForm.css";
                 value={formData.shippingAddress || ""}
                 onChange={handleInputChange}
                 className={errors.shippingAddress ? "error" : ""}
-                placeholder="Provide your shipping address in case in-person handover is not possible."
+                placeholder="Provide your shipping address in case in-person handover is not possible. (courier fee will be charged if shipped)"
               />
               {errors.shippingAddress && (
                 <span className="error-message">{errors.shippingAddress}</span>
