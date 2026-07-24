@@ -23,7 +23,7 @@ export default function Home() {
 
       <Theme />
 
-      <div id="sponsorships" className="hidden">
+      <div id="sponsorships">
         <Sponsorships />
       </div>
 
