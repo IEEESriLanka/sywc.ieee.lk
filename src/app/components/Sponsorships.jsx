@@ -4,28 +4,24 @@ import Copy from "./Copy/Copy";
 import NeuralNetwork from "./NeuralNetwork";
 
 const sponsorships = [
-  "17-TA-323-EPSLogoModification_OriginalRev_R1 3.png",
-  "17-TA-323-EPSLogoModification_OriginalRev_R1.jpg",
-  "24-TA-99-007-FP-IEEE-IAS-Secondary-with-Tag-Logo-Color-RGB 1.png",
-  "Asset 2 1.png",
-  "Blue_Horizontal_Enclosed-Ts_Society-Name.png",
-  "CASS_CEDA_Logo_whiteBG.png",
-  "IEEE DEIS wordmark color CMYK-treeing is clear 1.png",
-  "IEEE-ComSoc_IEEE_Logos_Blue-Blue 1.png",
-  "IEEE-ComSoc_IEEE_Logos_Blue-Blue.png",
-  "Secondary logo 1.png",
-  "Sunday Times Logos.png",
-  "Trace Logo Final.png",
-  "Venue 1.png",
-  "ahz.jpg",
-  "deis.png",
-  "pearl bay.png",
-  "uber.png",
+  "BG removed sponsor logos 2 (1).png",
+  "BG removed sponsor logos 2 (2).png",
+  "BG removed sponsor logos 2 (3).png",
+  "BG removed sponsor logos 2 (4).png",
+  "BG removed sponsor logos 2 (6).png",
+  "BG removed sponsor logos 2.png",
+  "CAS-Logo-Color 1.png",
+  "EPS logo.png",
+  "Standars logo.png",
+  "image 3.png",
+  "image 31.png",
+  "image 33.png",
+  "logo-collabratec 1.png"
 ];
 
 function Sponsorships() {
   return (
-    <section className="sponsorships-section min-h-[60vh] flex items-center justify-center relative overflow-hidden hidden">
+    <section className="sponsorships-section min-h-[60vh] flex items-center justify-center relative overflow-hidden">
       <div className="sponsorships-glass-card w-full h-full flex items-center justify-center relative z-10">
         {/* Animated Gradient Background (matching other sections) */}
         <div className="absolute inset-0 w-full h-full -z-10">
@@ -71,7 +67,7 @@ function Sponsorships() {
           </div>
         </div>
 {/* Sponsorships */}
-        {/* <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <Copy>
               <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">
@@ -86,7 +82,7 @@ function Sponsorships() {
           </div>
 
           {/* Desktop Marquee */}
-          {/* <div className="hidden md:block mb-16">
+          <div className="hidden md:block mb-16">
             <div className="relative overflow-hidden">
               <div
                 className="flex animate-marquee"
@@ -104,7 +100,7 @@ function Sponsorships() {
                   </div>
                 ))}
                 {/* Duplicate for seamless loop */}
-                {/* {sponsorships.map((sponsorship, index) => (
+                {sponsorships.map((sponsorship, index) => (
                   <div
                     key={`duplicate-${index}`}
                     className="flex-shrink-0 mx-8 group"
@@ -120,10 +116,10 @@ function Sponsorships() {
                 ))}
               </div>
             </div>
-          </div> */}
+          </div>
 
           {/* Mobile Marquee */}
-          {/* <div className="md:hidden space-y-8">
+          <div className="md:hidden space-y-8">
             <div className="relative overflow-hidden">
               <div
                 className="flex animate-marquee-mobile"
@@ -141,7 +137,7 @@ function Sponsorships() {
                   </div>
                 ))}
                 {/* Duplicate for seamless loop */}
-                {/* {sponsorships.slice(0, 8).map((sponsorship, index) => (
+                {sponsorships.slice(0, 8).map((sponsorship, index) => (
                   <div
                     key={`duplicate-${index}`}
                     className="flex-shrink-0 mx-4 group"
@@ -175,7 +171,7 @@ function Sponsorships() {
                   </div>
                 ))}
                 {/* Duplicate for seamless loop */}
-                {/* {sponsorships.slice(8).map((sponsorship, index) => (
+                {sponsorships.slice(8).map((sponsorship, index) => (
                   <div
                     key={`duplicate-${index}`}
                     className="flex-shrink-0 mx-4 group"
@@ -192,7 +188,7 @@ function Sponsorships() {
               </div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
 
       <style jsx>{`
