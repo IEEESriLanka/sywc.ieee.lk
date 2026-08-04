@@ -1073,6 +1073,7 @@ import "./SimpleRegisterForm.css";
                     >
                       <option value="">Choose</option>
                       <option value="IEEE Sri Lanka Section Executive Committee">IEEE Sri Lanka Section Executive Committee</option>
+                      <option value="IEEE Sri Lanka Section Sub - Committee">IEEE Sri Lanka Section Sub - Committee</option>
                       <option value="IEEE Young Professionals Sri Lanka">IEEE Young Professionals Sri Lanka</option>
                       <option value="IEEE Women in Engineering Sri Lanka">IEEE Women in Engineering Sri Lanka</option>
                       <option value="IEEE Sri Lanka Section SIGHT">IEEE Sri Lanka Section SIGHT</option>

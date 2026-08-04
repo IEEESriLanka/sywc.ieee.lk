@@ -34,6 +34,7 @@ function Sponsorships() {
       if (!N || !containerRef.current) return;
 
       const width = containerRef.current.offsetWidth;
+      if (!width) return;
       // Dynamic orbital radii depending on container width
       const rx = width > 768 ? Math.min(width * 0.44, 530) : width * 0.35;
       const ry = width > 768 ? 75 : 35;
@@ -131,9 +132,9 @@ function Sponsorships() {
             </Copy>
           </div>
 
-          {/* Interactive 3D Elliptical Orbit space */}
+          {/* Desktop Interactive 3D Elliptical Orbit space (>=768px) */}
           <div 
-            className="orbit-container-wrapper relative w-full flex justify-center items-center select-none"
+            className="hidden md:flex orbit-container-wrapper relative w-full justify-center items-center select-none"
             ref={containerRef}
           >
             {/* Holographic Glowing Central Star */}
@@ -156,6 +157,24 @@ function Sponsorships() {
                     src={`/Sponsorship logos/${sponsorship}`}
                     alt={`Sponsor ${index + 1}`}
                     className="max-h-12 max-w-[120px] md:max-h-16 md:max-w-[150px] w-auto h-auto object-contain transition-all duration-300 group-hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile Clean Infinite Horizontal Marquee Ticker (<768px) */}
+          <div className="block md:hidden relative w-full overflow-hidden py-4 mobile-marquee-mask">
+            <div className="flex gap-4 animate-marquee-left whitespace-nowrap w-max">
+              {[...sponsorships, ...sponsorships].map((sponsorship, index) => (
+                <div
+                  key={index}
+                  className="w-[140px] h-[75px] bg-white rounded-xl border border-[#ffcb40]/40 flex items-center justify-center p-3 shrink-0 shadow-lg"
+                >
+                  <img
+                    src={`/Sponsorship logos/${sponsorship}`}
+                    alt={`Sponsor ${index + 1}`}
+                    className="max-h-11 max-w-[110px] w-auto h-auto object-contain"
                   />
                 </div>
               ))}
@@ -266,14 +285,22 @@ function Sponsorships() {
           animation: sponsorships-gradient-fade 8s ease-in-out infinite;
         }
 
-        @keyframes sponsorships-gradient-fade {
-          0%,
+        @keyframes marquee-left {
+          0% {
+            transform: translateX(0%);
+          }
           100% {
-            opacity: 0;
+            transform: translateX(-50%);
           }
-          50% {
-            opacity: 0.3;
-          }
+        }
+
+        .animate-marquee-left {
+          animation: marquee-left 25s linear infinite;
+        }
+
+        .mobile-marquee-mask {
+          mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
         }
       `}</style>
     </section>

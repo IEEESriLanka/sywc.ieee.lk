@@ -52,6 +52,7 @@ function Sponsors() {
       if (!N || !containerRef.current) return;
 
       const width = containerRef.current.offsetWidth;
+      if (!width) return;
       // Dynamic orbital radii depending on container width
       const rx = width > 768 ? Math.min(width * 0.46, 570) : width * 0.36;
       const ry = width > 768 ? 65 : 25;
@@ -195,9 +196,9 @@ function Sponsors() {
             </Copy>
           </div>
 
-          {/* Interactive 3D Elliptical Orbit space (Opposite direction & Dark glassmorphic styling) */}
+          {/* Desktop Interactive 3D Elliptical Orbit space (>=768px) */}
           <div 
-            className="orbit-container-wrapper relative w-full flex justify-center items-center select-none"
+            className="hidden md:flex orbit-container-wrapper relative w-full justify-center items-center select-none"
             ref={containerRef}
           >
             {/* Holographic Glowing Central Star */}
@@ -220,6 +221,41 @@ function Sponsors() {
                     src={`/sponsors/${sponsor}`}
                     alt={`Sponsor ${index + 1}`}
                     className="max-h-10 max-w-[100px] md:max-h-12 md:max-w-[125px] w-auto h-auto object-contain filter brightness-0 invert group-hover:brightness-100 group-hover:invert-0 transition-all duration-300 group-hover:scale-105"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile Clean 2-Row Infinite Marquee Ticker (<768px) */}
+          <div className="block md:hidden relative w-full overflow-hidden py-2 space-y-4 mobile-marquee-mask">
+            {/* Row 1: Scroll Left */}
+            <div className="flex gap-3 animate-marquee-left whitespace-nowrap w-max">
+              {[...sponsors.slice(0, 16), ...sponsors.slice(0, 16)].map((sponsor, index) => (
+                <div
+                  key={index}
+                  className="w-[110px] h-[60px] bg-[#10182a]/80 backdrop-blur-md rounded-xl border border-white/10 flex items-center justify-center p-2 shrink-0 shadow-md"
+                >
+                  <img
+                    src={`/sponsors/${sponsor}`}
+                    alt={`Sponsor ${index + 1}`}
+                    className="max-h-8 max-w-[85px] w-auto h-auto object-contain filter brightness-0 invert"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Row 2: Scroll Right */}
+            <div className="flex gap-3 animate-marquee-right whitespace-nowrap w-max">
+              {[...sponsors.slice(16), ...sponsors.slice(16)].map((sponsor, index) => (
+                <div
+                  key={index}
+                  className="w-[110px] h-[60px] bg-[#10182a]/80 backdrop-blur-md rounded-xl border border-white/10 flex items-center justify-center p-2 shrink-0 shadow-md"
+                >
+                  <img
+                    src={`/sponsors/${sponsor}`}
+                    alt={`Sponsor ${index + 17}`}
+                    className="max-h-8 max-w-[85px] w-auto h-auto object-contain filter brightness-0 invert"
                   />
                 </div>
               ))}
@@ -332,14 +368,35 @@ function Sponsors() {
           animation: sponsors-gradient-fade 8s ease-in-out infinite;
         }
 
-        @keyframes sponsors-gradient-fade {
-          0%,
+        @keyframes marquee-left {
+          0% {
+            transform: translateX(0%);
+          }
           100% {
-            opacity: 0;
+            transform: translateX(-50%);
           }
-          50% {
-            opacity: 0.3;
+        }
+
+        @keyframes marquee-right {
+          0% {
+            transform: translateX(-50%);
           }
+          100% {
+            transform: translateX(0%);
+          }
+        }
+
+        .animate-marquee-left {
+          animation: marquee-left 25s linear infinite;
+        }
+
+        .animate-marquee-right {
+          animation: marquee-right 25s linear infinite;
+        }
+
+        .mobile-marquee-mask {
+          mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
         }
       `}</style>
     </section>
