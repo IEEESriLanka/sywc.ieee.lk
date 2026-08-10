@@ -1082,6 +1082,7 @@ import "./SimpleRegisterForm.css";
                       <option value="Congress OC">Congress OC</option>
                       <option value="SLSAC Coordinators">SLSAC Coordinators</option>
                       <option value="Student Branch Representatives">Student Branch Representatives</option>
+                      <option value="Other">Other</option>
                     </select>
                     {errors.selectedEntity && (
                       <span className="error-message">{errors.selectedEntity}</span>

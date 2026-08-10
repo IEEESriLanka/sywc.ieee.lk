@@ -14,8 +14,8 @@ export const useRegistrationStatus = () => {
   useEffect(() => {
     // Registration is open again
     const registrationOpenDate = new Date("2026-07-01T00:00:00");
-    // Registration closes: August 13, 2026 at 11:59 PM
-    const registrationCloseDate = new Date("2026-08-13T23:59:59");
+    // Registration closes: August 11, 2026 at 8:00 AM Sri Lanka Time (+05:30)
+    const registrationCloseDate = new Date("2026-08-11T08:00:00+05:30");
 
     const calculateTimeLeft = () => {
       const now = new Date();

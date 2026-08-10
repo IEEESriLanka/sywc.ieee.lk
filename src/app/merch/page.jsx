@@ -27,23 +27,7 @@ function MerchPage() {
           <div className="max-w-4xl mx-auto text-center">
             {/* Header */}
             <div className="text-center mb-12">
-              <div className="mb-6">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-500 rounded-full shadow-lg mb-4">
-                  <svg
-                    className="w-10 h-10 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </div>
-              </div>
+
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-400 to-gray-600">
                   Pre-orders Closed
@@ -53,8 +37,8 @@ function MerchPage() {
                 Merchandise pre-orders for IEEE SLSYWC 2026 have ended
               </p>
               <p className="text-lg text-gray-400 mb-8">
-                Thank you for your interest. Pre-orders closed on August 13,
-                2026 at 11:59 PM.
+                Thank you for your interest. Pre-orders closed on August 11,
+                2026 at 8:00 AM.
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base text-gray-300">
                 <div className="flex items-center">
