@@ -155,19 +155,6 @@ const Navbar = () => {
                   className="relative z-10 flex items-center gap-1 md:gap-2 drop-shadow-lg"
                   style={{ textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}
                 >
-                  <svg
-                    className="w-3 h-3 md:w-4 md:h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
                   Registration Closed
                 </span>
               </div>

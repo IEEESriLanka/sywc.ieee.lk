@@ -183,22 +183,12 @@ const RegisterCTA = () => {
           {/* CTA Button */}
           <div className="mb-12 flex flex-col items-center gap-6">
             {isRegistrationEnded ? (
-              <div className="group relative inline-flex items-center gap-3 bg-gray-800 text-gray-400 font-bold px-12 py-6 rounded-full text-lg border border-gray-700 cursor-not-allowed">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+              <a
+                href="/register"
+                className="group relative inline-flex items-center justify-center gap-3 bg-gray-800/90 hover:bg-gray-800 text-gray-300 font-bold px-12 py-6 rounded-full text-lg border border-gray-700 transition-all duration-300 shadow-xl"
+              >
                 <span>Registration Closed</span>
-              </div>
+              </a>
             ) : isRegistrationOpen ? (
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <a href="/register" className="register-button">
