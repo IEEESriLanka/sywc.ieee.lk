@@ -80,11 +80,19 @@ export const useRegistrationStatus = () => {
     };
   };
 
+  const now = new Date();
+  const eventCloseDate = new Date("2026-08-11T08:00:00+05:30");
+  const isEventRegistrationEnded = now > eventCloseDate;
+  const isMerchRegistrationEnded = false; // Merch pre-orders remain open!
+
   return {
     registrationStatus,
     isRegistrationOpen: registrationStatus === "open",
     isRegistrationClosed: registrationStatus === "closed",
-    isRegistrationEnded: registrationStatus === "ended",
+    isRegistrationEnded: isEventRegistrationEnded,
+    isEventRegistrationEnded,
+    isMerchRegistrationEnded,
+    isMerchOpen: !isMerchRegistrationEnded,
     timeLeft: formatTimeLeft(),
     rawTimeLeft: timeLeft,
   };
