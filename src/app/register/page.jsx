@@ -68,11 +68,20 @@ function RegPage() {
               </div>
             </div>
 
-            {/* Back to Home Button */}
-            <div className="mt-12">
+            {/* Action Buttons */}
+            <div className="mt-12 flex flex-wrap justify-center gap-4">
+              <a
+                href="/merch"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#ffcb40] to-[#b4860b] text-slate-900 font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Pre-order Merchandise
+              </a>
               <a
                 href="/"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-500 to-gray-600 text-white font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 hover:scale-105"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-gray-700 to-gray-800 text-white font-bold px-8 py-4 rounded-2xl text-lg transition-all duration-300 hover:scale-105 border border-gray-600"
               >
                 <svg
                   className="w-5 h-5"

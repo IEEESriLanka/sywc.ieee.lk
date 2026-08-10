@@ -264,12 +264,17 @@ const EventCountdown = () => {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 relative z-20">
           {isRegistrationEnded ? (
-            <a
-              href="/register"
-              className="group relative inline-flex items-center justify-center gap-3 bg-gray-800/90 hover:bg-gray-800 text-gray-300 font-bold px-10 py-5 rounded-full text-lg border border-gray-700 transition-all duration-300 shadow-xl"
-            >
-              <span>Registration Closed</span>
-            </a>
+            <>
+              <div
+                className="group relative inline-flex items-center justify-center gap-3 bg-gray-800/90 text-gray-400 font-bold px-8 py-4 rounded-full text-base border border-gray-700 cursor-not-allowed shadow-xl"
+              >
+                <span>Event Registration Closed</span>
+              </div>
+              <a href="/merch" className="merch-button">
+                <span className="button-text">Purchase Merch</span>
+                <div className="button-glow"></div>
+              </a>
+            </>
           ) : (
             <>
               <a href="/register" className="register-button">

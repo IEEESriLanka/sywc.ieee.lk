@@ -15,14 +15,14 @@ import {
 import AnimatedBackground from "../components/ui/AnimatedBackground";
  
 function MerchPage() {
-  const { isRegistrationOpen, isRegistrationEnded } = useRegistrationStatus();
+  const { isRegistrationOpen, isMerchRegistrationEnded } = useRegistrationStatus();
  
   return (
     <div className="min-h-screen relative overflow-hidden pt-[10vh]">
       {/* Animated Background (from Hero/About) */}
       <AnimatedBackground showNeuralNetwork={true} />
       {/* Main Content: Countdown or Registration UI */}
-      {isRegistrationEnded ? (
+      {isMerchRegistrationEnded ? (
         <div className="container mx-auto px-4 py-8 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             {/* Header */}
