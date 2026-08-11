@@ -229,7 +229,7 @@ export default function Footer() {
               <a href="#schedule">Schedule</a>
             </p>
             <p className="text-[#9fb7d0]/80 hover:text-[#00b8b8] transition-colors duration-300">
-              <a href="/register">Register</a>
+              <a href="/merch">Store</a>
             </p>
           </div>
 
