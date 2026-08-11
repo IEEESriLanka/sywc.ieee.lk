@@ -22,7 +22,6 @@ const menuLinks = [
   { label: "Organizers", href: "#organizers" },
   { label: "Past Congress", href: "/past-congress" },
   { label: "Store", href: "/merch" },
-  { label: "Register", href: "/register" },
 ];
 
 const Navbar = () => {
