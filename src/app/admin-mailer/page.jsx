@@ -30,63 +30,68 @@ const LOGO_URL =
 const HTML_PRESETS = {
   invitation: {
     label: "Delegate Selection Invitation (Official)",
-    subject: "Delegate Selection Invitation: 15th IEEE SLSYWC '26",
+    subject: "You’re Invited – Welcome to IEEE SL SYW Congress 2026!",
     ctaText: "Delegate Handbook",
     ctaUrl: "https://slsywc.ieee.lk",
-    content: `<p style="margin-bottom: 16px; font-size: 15px; line-height: 1.7; color: #e3e3db;">
+    content: `<p style="margin-bottom: 16px; font-size: 15px; line-height: 1.7; color: #ffffff;">
   We are thrilled to inform you that you have been selected as a delegate for the <strong style="color: #fcd34d;">15th IEEE Sri Lanka Section Students | Young Professionals | Women in Engineering Congress (IEEE SLSYWC &apos;26)</strong>!
 </p>
 
-<p style="margin-bottom: 20px; font-size: 15px; line-height: 1.7; color: #cbd5e1;">
+<p style="margin-bottom: 20px; font-size: 15px; line-height: 1.7; color: #e2e8f0;">
   This year’s Congress will be held from <strong style="color: #fcd34d;">18th to 20th September 2026</strong> at <strong style="color: #fcd34d;">Club Palm Bay Hotel, Marawila</strong>. With over 250 participants expected from across Sri Lanka and beyond, this is your opportunity to be part of one of IEEE Sri Lanka Section’s major gatherings with three days of learning, networking, innovation, collaboration, and unforgettable experiences.
 </p>
 
-<div style="background: #060b14; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin: 24px 0;">
-  <h3 style="margin: 0 0 14px 0; font-size: 15px; color: #fef9c3; font-weight: 700; border-bottom: 1px solid #1e293b; padding-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
-    As Your Journey Begins…
-  </h3>
-  
-  <div style="margin-bottom: 14px;">
-    <strong style="color: #fcd34d; font-size: 14px;">Day 1 &ndash; 18th September:</strong>
-    <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-      Congress kick-off, engaging sessions, networking opportunities, and exciting activities to begin your Congress journey.
-    </p>
-  </div>
+<!-- Program Highlights Box -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#060b14" style="background-color: #060b14; border: 1px solid #1e293b; border-radius: 12px; margin: 24px 0;">
+  <tr>
+    <td style="padding: 20px;">
+      <h3 style="margin: 0 0 14px 0; font-size: 15px; color: #fef9c3; font-weight: 700; border-bottom: 1px solid #1e293b; padding-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+        As Your Journey Begins…
+      </h3>
+      
+      <div style="margin-bottom: 14px;">
+        <strong style="color: #fcd34d; font-size: 14px;">Day 1 &ndash; 18th September:</strong>
+        <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 13px; line-height: 1.6;">
+          Congress kick-off, engaging sessions, networking opportunities, and exciting activities to begin your Congress journey.
+        </p>
+      </div>
 
-  <div style="margin-bottom: 14px;">
-    <strong style="color: #fcd34d; font-size: 14px;">Day 2 &ndash; 19th September:</strong>
-    <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-      A day filled with technical sessions, leadership and professional development activities, networking, and the Congress experience.
-    </p>
-  </div>
+      <div style="margin-bottom: 14px;">
+        <strong style="color: #fcd34d; font-size: 14px;">Day 2 &ndash; 19th September:</strong>
+        <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 13px; line-height: 1.6;">
+          A day filled with technical sessions, leadership and professional development activities, networking, and the Congress experience.
+        </p>
+      </div>
 
-  <div>
-    <strong style="color: #fcd34d; font-size: 14px;">Day 3 &ndash; 20th September:</strong>
-    <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-      More insightful sessions, interactive activities, networking opportunities, and the closing ceremony to conclude an unforgettable Congress.
-    </p>
-  </div>
-</div>
+      <div>
+        <strong style="color: #fcd34d; font-size: 14px;">Day 3 &ndash; 20th September:</strong>
+        <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 13px; line-height: 1.6;">
+          More insightful sessions, interactive activities, networking opportunities, and the closing ceremony to conclude an unforgettable Congress.
+        </p>
+      </div>
+    </td>
+  </tr>
+</table>
 
-<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #cbd5e1;">
+<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #e2e8f0;">
   For the detailed schedule, list of items you should bring, important guidelines, and other information, please refer to the Delegate Handbook attached.
 </p>
 
-<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #cbd5e1;">
+<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #e2e8f0;">
   This year’s Congress, themed <strong style="color: #fcd34d;">&ldquo;Intelligence for Impact,&rdquo;</strong> is designed to bring together passionate individuals to explore ideas, exchange knowledge, build meaningful connections, and create impact through innovation and leadership.
 </p>
 
-<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #cbd5e1;">
+<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #e2e8f0;">
   This is your personal invitation to step into an inspiring space where ideas meet opportunities, connections become collaborations, and experiences become lifelong memories.
 </p>
 
-<p style="margin-bottom: 20px; font-size: 15px; line-height: 1.7; color: #cbd5e1;">
+<p style="margin-bottom: 20px; font-size: 14px; line-height: 1.7; color: #e2e8f0;">
   We can’t wait to welcome you to Club Palm Bay Hotel, Marawila, and share this incredible experience with you.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #fcd34d; font-weight: 600; margin-bottom: 24px;">
   See you at IEEE SLSYWC &apos;26!<br>
-  <span style="color: #94a3b8; font-weight: normal; font-size: 13px;">Until then, get ready for an unforgettable journey.</span>
+  <span style="color: #cbd5e1; font-weight: normal; font-size: 13px;">Until then, get ready for an unforgettable journey.</span>
 </p>`,
   },
   registration: {
