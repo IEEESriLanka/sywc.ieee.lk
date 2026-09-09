@@ -1,7 +1,7 @@
 const XLSX = require("xlsx");
 
 // Test functions inline mimicking the modules to verify parsing and templating
-const LOGO_URL = "https://res.cloudinary.com/q1juijf8/image/upload/v1788852242/main-logo_weonid.svg";
+const LOGO_URL = "https://res.cloudinary.com/q1juijf8/image/upload/v1788975345/Mail_cover_znbhyc.webp";
 
 function renderEmailTemplate(templateStr, data = {}) {
   let rendered = templateStr || `<!DOCTYPE html>
