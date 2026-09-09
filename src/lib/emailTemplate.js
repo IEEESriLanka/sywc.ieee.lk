@@ -166,7 +166,7 @@ export const DEFAULT_EMAIL_TEMPLATE = `<!DOCTYPE html>
                 You received this email because you are registered or affiliated with IEEE SLSYWC 2026.
               </p>
               <p style="margin: 8px 0 0 0; font-size: 12px; line-height: 18px; color: #475569;">
-                Copyright &copy; 2026 IEEE SLSYWC. All rights reserved. &bull; Club Palm Bay Hotel, Marawila, Sri Lanka
+                Copyright &copy; 2026 IEEE SLSYWC. All rights reserved. &bull;
               </p>
             </td>
           </tr>
