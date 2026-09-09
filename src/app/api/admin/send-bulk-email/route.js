@@ -24,7 +24,7 @@ export async function POST(request) {
   try {
     const contentType = request.headers.get("content-type") || "";
     let recipients = [];
-    let subject = "Update from IEEE SLSYWC 2026";
+    let subject = "You’re Invited – Welcome to IEEE SL SYW Congress 2026!";
     let templateHtml = null;
     let content = "";
     let ctaUrl = "";
