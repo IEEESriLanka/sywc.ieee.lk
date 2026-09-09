@@ -25,55 +25,68 @@ import {
 import AnimatedBackground from "../components/ui/AnimatedBackground";
 
 const LOGO_URL =
-  "https://res.cloudinary.com/q1juijf8/image/upload/v1788852242/main-logo_weonid.svg";
+  "https://res.cloudinary.com/q1juijf8/image/upload/v1788975345/Mail_cover_znbhyc.webp";
 
 const HTML_PRESETS = {
   invitation: {
-    label: "Delegate Invitation (Official)",
-    subject: "Delegate Selection Invitation: IEEE SLSYWC 2026",
-    ctaText: "View Delegate Handbook",
+    label: "Delegate Selection Invitation (Official)",
+    subject: "Delegate Selection Invitation: 15th IEEE SLSYWC '26",
+    ctaText: "Delegate Handbook",
     ctaUrl: "https://slsywc.ieee.lk",
     content: `<p style="margin-bottom: 16px; font-size: 15px; line-height: 1.7; color: #e3e3db;">
-  We are pleased to inform you that you have been selected as an official delegate for the <strong style="color: #fcd34d;">15th IEEE Sri Lanka Section Students | Young Professionals | Women in Engineering Congress (SLSYWC &apos;26)</strong>.
+  We are thrilled to inform you that you have been selected as a delegate for the <strong style="color: #fcd34d;">15th IEEE Sri Lanka Section Students | Young Professionals | Women in Engineering Congress (IEEE SLSYWC &apos;26)</strong>!
 </p>
 
 <p style="margin-bottom: 20px; font-size: 15px; line-height: 1.7; color: #cbd5e1;">
-  The Congress is scheduled to take place from <strong style="color: #fcd34d;">26th to 28th September 2026</strong> at <strong style="color: #fcd34d;">Club Palm Bay, Marawila, Sri Lanka</strong>. Gathering distinguished student leaders, young professionals, and industry experts across the nation, this event offers three days of technical enrichment, leadership development, and strategic networking.
+  This year’s Congress will be held from <strong style="color: #fcd34d;">18th to 20th September 2026</strong> at <strong style="color: #fcd34d;">Club Palm Bay Hotel, Marawila</strong>. With over 250 participants expected from across Sri Lanka and beyond, this is your opportunity to be part of one of IEEE Sri Lanka Section’s major gatherings with three days of learning, networking, innovation, collaboration, and unforgettable experiences.
 </p>
 
 <div style="background: #060b14; border: 1px solid #1e293b; border-radius: 12px; padding: 20px; margin: 24px 0;">
   <h3 style="margin: 0 0 14px 0; font-size: 15px; color: #fef9c3; font-weight: 700; border-bottom: 1px solid #1e293b; padding-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
-    Congress Program Schedule
+    As Your Journey Begins…
   </h3>
   
   <div style="margin-bottom: 14px;">
-    <strong style="color: #fcd34d; font-size: 14px;">Day 1 (26th September &bull; 12:00 PM onwards):</strong>
+    <strong style="color: #fcd34d; font-size: 14px;">Day 1 &ndash; 18th September:</strong>
     <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-      Official Inauguration and the Handewa cultural exchange session. Please bring traditional attire for the evening cultural proceedings.
+      Congress kick-off, engaging sessions, networking opportunities, and exciting activities to begin your Congress journey.
     </p>
   </div>
 
   <div style="margin-bottom: 14px;">
-    <strong style="color: #fcd34d; font-size: 14px;">Day 2 (27th September):</strong>
+    <strong style="color: #fcd34d; font-size: 14px;">Day 2 &ndash; 19th September:</strong>
     <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-      IEEE Region 10 Career and Leadership Program (CLAP) followed by the IEEE Sri Lanka Section Annual Awards Ceremony. Please bring formal attire for this gala night.
+      A day filled with technical sessions, leadership and professional development activities, networking, and the Congress experience.
     </p>
   </div>
 
   <div>
-    <strong style="color: #fcd34d; font-size: 14px;">Day 3 (28th September):</strong>
+    <strong style="color: #fcd34d; font-size: 14px;">Day 3 &ndash; 20th September:</strong>
     <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 13px; line-height: 1.6;">
-      Technical tracks, collaborative symposiums, and the Official Valedictory Ceremony.
+      More insightful sessions, interactive activities, networking opportunities, and the closing ceremony to conclude an unforgettable Congress.
     </p>
   </div>
 </div>
 
 <p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #cbd5e1;">
-  For comprehensive logistics, accommodation details, and required documentation, please consult the Official Delegate Handbook linked below.
+  For the detailed schedule, list of items you should bring, important guidelines, and other information, please refer to the Delegate Handbook attached.
 </p>
 
-<p style="font-size: 14px; line-height: 1.7; color: #94a3b8; margin-bottom: 24px;">
-  We look forward to welcoming you to Club Palm Bay, Marawila, for an exceptional Congress experience.
+<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #cbd5e1;">
+  This year’s Congress, themed <strong style="color: #fcd34d;">&ldquo;Intelligence for Impact,&rdquo;</strong> is designed to bring together passionate individuals to explore ideas, exchange knowledge, build meaningful connections, and create impact through innovation and leadership.
+</p>
+
+<p style="margin-bottom: 16px; font-size: 14px; line-height: 1.7; color: #cbd5e1;">
+  This is your personal invitation to step into an inspiring space where ideas meet opportunities, connections become collaborations, and experiences become lifelong memories.
+</p>
+
+<p style="margin-bottom: 20px; font-size: 15px; line-height: 1.7; color: #cbd5e1;">
+  We can’t wait to welcome you to Club Palm Bay Hotel, Marawila, and share this incredible experience with you.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #fcd34d; font-weight: 600; margin-bottom: 24px;">
+  See you at IEEE SLSYWC &apos;26!<br>
+  <span style="color: #94a3b8; font-weight: normal; font-size: 13px;">Until then, get ready for an unforgettable journey.</span>
 </p>`,
   },
   registration: {
@@ -837,14 +850,15 @@ export default function AdminMailerPage() {
                 ) : (
                   <div className="bg-[#101828] border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
                     
-                    {/* Header Logo */}
-                    <div className="p-8 pb-6 text-center border-b border-slate-800/80 bg-gradient-to-b from-amber-400/10 to-transparent">
-                      <img
-                        src={LOGO_URL}
-                        alt="IEEE SLSYWC 2026"
-                        className="h-11 mx-auto object-contain"
-                      />
-                      <div className="h-0.5 w-16 bg-gradient-to-r from-amber-200 to-amber-500 mx-auto mt-4 rounded-full" />
+                    {/* Header Cover Banner */}
+                    <div className="overflow-hidden border-b border-slate-800/80 bg-[#101828]">
+                      <a href="https://slsywc.ieee.lk" target="_blank" rel="noreferrer" className="block">
+                        <img
+                          src={LOGO_URL}
+                          alt="IEEE SLSYWC 2026 Header"
+                          className="w-full h-auto block object-cover"
+                        />
+                      </a>
                     </div>
 
                     {/* Email Body */}
@@ -875,17 +889,16 @@ export default function AdminMailerPage() {
 
                       {/* Sign-off */}
                       <div className="pt-8 border-t border-slate-800/80 text-xs text-gray-400 space-y-1">
-                        <p className="font-semibold text-gray-200">Best regards,</p>
-                        <p>Organizing Committee</p>
-                        <p className="text-amber-400 font-medium">IEEE SLSYWC 2026</p>
-                        <p className="text-gray-500">IEEE Sri Lanka Section</p>
+                        <p className="font-semibold text-gray-200">Warm Regards,</p>
+                        <p className="font-semibold text-slate-300">IEEE SLSYWC &apos;26 Organizing Committee</p>
+                        <p className="text-amber-400 font-medium">IEEE Sri Lanka Section</p>
+                        <p className="text-gray-400">Students | Young Professionals | Women in Engineering</p>
                       </div>
                     </div>
 
                     {/* Footer */}
                     <div className="bg-[#060b14] p-5 text-center text-[11px] text-gray-500 border-t border-slate-900">
                       <p>&copy; 2026 IEEE SLSYWC. All rights reserved.</p>
-                      <p className="mt-1 text-gray-600">Club Palm Bay, Marawila, Sri Lanka</p>
                     </div>
 
                   </div>
