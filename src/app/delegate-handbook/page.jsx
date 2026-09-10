@@ -240,11 +240,6 @@ export default function DelegateHandbookPage() {
                   className="w-full bg-[#030712] rounded-xl sm:rounded-2xl border-2 border-white/15 overflow-hidden shadow-[0_10px_35px_rgba(0,0,0,0.85)] relative transition-all duration-200 hover:border-[#ffcb40]/40"
                   style={{ aspectRatio: "3000/1688" }}
                 >
-                  {/* Page Number Badge */}
-                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md text-[#ffcb40] font-mono text-[11px] font-bold border border-white/10 z-10">
-                    {index + 1} / {TOTAL_PAGES}
-                  </div>
-
                   <img
                     src={pageSrc}
                     alt={`Delegate Handbook Page ${index + 1}`}
