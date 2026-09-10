@@ -10,6 +10,9 @@ export const LOGO_URL =
 export const DEFAULT_EMAIL_SUBJECT =
   "You’re Invited – Welcome to IEEE SL SYW Congress 2026!";
 
+export const DEFAULT_CTA_TEXT = "Delegate Handbook";
+export const DEFAULT_CTA_URL = "https://slsywc.ieee.lk/handbook";
+
 export const DEFAULT_EMAIL_CONTENT = `<p style="margin-bottom: 16px; font-size: 15px; line-height: 1.7; color: #ffffff;">
   We are thrilled to inform you that you have been selected as a delegate for the <strong style="color: #fcd34d;">15th IEEE Sri Lanka Section Students | Young Professionals | Women in Engineering Congress (IEEE SLSYWC &apos;26)</strong>!
 </p>
