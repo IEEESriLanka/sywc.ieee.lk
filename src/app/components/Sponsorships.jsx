@@ -16,6 +16,7 @@ const sponsorships = [
   "image 3.png",
   "image 31.png",
   "image 33.png",
+  "deis.png",
   "logo-collabratec 1.png"
 ];
 
