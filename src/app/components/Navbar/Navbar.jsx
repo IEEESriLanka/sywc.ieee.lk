@@ -19,6 +19,7 @@ const menuLinks = [
   { label: "Theme", href: "#theme" },
   { label: "Location", href: "#location" },
   { label: "Schedule", href: "#schedule" },
+  { label: "Handbook", href: "/handbook" },
   { label: "Organizers", href: "#organizers" },
   { label: "Past Congress", href: "/past-congress" },
   { label: "Store", href: "/merch" },

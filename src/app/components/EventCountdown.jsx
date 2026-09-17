@@ -265,11 +265,10 @@ const EventCountdown = () => {
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16 relative z-20">
           {isRegistrationEnded ? (
             <>
-              <div
-                className="group relative inline-flex items-center justify-center gap-3 bg-gray-800/90 text-gray-400 font-bold px-8 py-4 rounded-full text-base border border-gray-700 cursor-not-allowed shadow-xl"
-              >
-                <span>Event Registration Closed</span>
-              </div>
+              <a href="/handbook" className="register-button">
+                <span className="button-text">Delegate Handbook</span>
+                <div className="button-glow"></div>
+              </a>
               <a href="/merch" className="merch-button">
                 <span className="button-text">Purchase Merch</span>
                 <div className="button-glow"></div>
