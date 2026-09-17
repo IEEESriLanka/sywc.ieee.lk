@@ -42,14 +42,6 @@ const speakersData = [
     image: "/speakers_final/Prof. Rohit Sharma_no_bg.webp",
   },
   {
-    id: 5,
-    name: "Mr. Dimuthu Anuraj",
-    title: "Think Fast: Can You Crack It?",
-    occupation:
-      "Lead Ambassador - IEEE Collabratec, Founding Chairman of the 1st IEEE CIS Chapter in Sri Lanka",
-    image: "/speakers_final/Mr. Dimuthu Anuraj_no_bg.webp",
-  },
-  {
     id: 6,
     name: "Dr. Mohammed Muzahir Abbas",
     title: "Engineering the Wireless Future: An Introduction to IEEE MTT-S",
