@@ -15,24 +15,28 @@ const speakersData = [
   {
     id: 1,
     name: "Mr. Kavin Gunasekara",
+    title: "The Continuing Legacy: Welcome to 15 Years of SLSYWC",
     occupation: "Chair, IEEE SL SYWC '26",
     image: "/speakers_final/Kavin Gunasekara_no_bg.webp",
   },
   {
     id: 2,
     name: "Prof. Tharaka Samarasinghe",
+    title: "From Vision to Reality: Milestones of IEEE in Sri Lanka – 2026",
     occupation: "Chair, IEEE Sri Lanka Section",
     image: "/speakers_final/Prof Tharaka Samarasinghe_no_bg.webp",
   },
   {
     id: 3,
     name: "Mr. Eran Wickramaratne",
+    title: "Dream, Decide, Do: Bringing Ideas to Life",
     occupation: "Member of Parliament, Sri Lanka",
     image: "/speakers_final/Eran Wickramaratne_no_bg.webp",
   },
   {
     id: 4,
     name: "Prof. Rohit Sharma",
+    title: "Powering the Future of Electronics: An Introduction to IEEE EPS",
     occupation:
       "Professor and Dean of International Relations, Indian Institute of Technology, Ropar",
     image: "/speakers_final/Prof. Rohit Sharma_no_bg.webp",
@@ -40,6 +44,7 @@ const speakersData = [
   {
     id: 5,
     name: "Mr. Dimuthu Anuraj",
+    title: "Think Fast: Can You Crack It?",
     occupation:
       "Lead Ambassador - IEEE Collabratec, Founding Chairman of the 1st IEEE CIS Chapter in Sri Lanka",
     image: "/speakers_final/Mr. Dimuthu Anuraj_no_bg.webp",
@@ -47,6 +52,7 @@ const speakersData = [
   {
     id: 6,
     name: "Dr. Mohammed Muzahir Abbas",
+    title: "Engineering the Wireless Future: An Introduction to IEEE MTT-S",
     occupation:
       "Macquarie University, Australia; MTT-S YP Region 10 Coordinator",
     image: "/speakers_final/Dr. Mohammed Muzahir Abbas_no_bg.webp",
@@ -54,12 +60,14 @@ const speakersData = [
   {
     id: 7,
     name: "Mr. Kulunu Chakshana",
+    title: "YP Gateway: Beyond the Student Branch",
     occupation: "Chair, IEEE Young Professionals Sri Lanka",
     image: "/speakers_final/Mr. Kulunu Chakshana_no_bg.webp",
   },
   {
     id: 8,
     name: "Dr. Akila Wijethunge",
+    title: "From Consumers to Innovators: Building South Asia's Electronics Industry",
     occupation:
       "Chair, IEEE Industrial Electronics Society (IES) Sri Lanka Chapter",
     image: "/speakers_final/Dr. Akila Wijethunge_no_bg.webp",
@@ -67,24 +75,28 @@ const speakersData = [
   {
     id: 9,
     name: "Mr. Vamsi Krishna Addepalli",
+    title: "From Consumers to Innovators: Building South Asia's Electronics Industry",
     occupation: "IEEE Region 10 Student Representative & Speaker",
     image: "/speakers_final/Mr. Vamsi Krishna Addepalli_no_bg.webp",
   },
   {
     id: 10,
     name: "Mr. Shantanu Suman",
+    title: "IEEE DEIS: Empowering Innovation, Young Professionals and Women in Dielectrics & Electrical Insulation",
     occupation: "IEEE Leader & Speaker",
     image: "/speakers_final/Mr. Shantanu Suman_no_bg.webp",
   },
   {
     id: 11,
     name: "Ms. Punnam Chandrika",
+    title: "IEEE DEIS: Empowering Innovation, Young Professionals and Women in Dielectrics & Electrical Insulation",
     occupation: "IEEE Volunteer & Speaker",
     image: "/speakers_final/Chandrika Punnam_no_bg.webp",
   },
   {
     id: 12,
     name: "Dr. Sudeendra Koushik",
+    title: "Becoming a Future-Ready Professional with IEEE TEMS",
     occupation:
       "President, IEEE Technology and Engineering Management Society (TEMS)",
     image: "/speakers_final/Dr. Sudeendra Koushik_no_bg.webp",
@@ -92,6 +104,7 @@ const speakersData = [
   {
     id: 13,
     name: "Ms. Dorothy Stanley",
+    title: "Why Standards Matter: How IEEE SA Shapes Technical and Socio-Technical Innovation",
     occupation:
       "Hewlett Packard Enterprise | IEEE 802.11 Working Group Chair",
     image: "/speakers_final/Ms.Dorothy Stanley_no_bg.webp",
@@ -99,6 +112,7 @@ const speakersData = [
   {
     id: 14,
     name: "Dr. Subodha Charles",
+    title: "From Local Problems to Lasting Businesses: How Sri Lankan Entrepreneurs Build, Scale and Adapt",
     occupation:
       "Chair, IEEE Ad Hoc Committee on Driving Career Readiness for Students, Chair, IEEE MGA Student Activities Committee, Group Chairman & CEO, Pearl Cluster",
     image: "/speakers_final/Dr Subodha Charles_no_bg.webp",
@@ -106,12 +120,14 @@ const speakersData = [
   {
     id: 15,
     name: "Ms. Warunika Hippola",
+    title: "Opportunity Pathways with IEEE",
     occupation: "Treasurer, IEEE Sri Lanka Section",
     image: "/speakers_final/Ms. Warunika Hippola_no_bg.webp",
   },
   {
     id: 16,
     name: "Mr. Dhammika Marasinghe",
+    title: "Opportunity Pathways with IEEE",
     occupation:
       "Industrial Representative, IEEE MGA Student Activities Committee",
     image: "/speakers_final/Mr. Dhammika Marasinghe_no_bg.webp",
@@ -119,12 +135,14 @@ const speakersData = [
   {
     id: 17,
     name: "Mr. Kavinga Upul Ekanayake",
+    title: "Building Sri Lanka’s RF & Microwave Ecosystem: From University Research to Local Telecommunications and Sensing Applications",
     occupation: "Vice Chair (Chair-Elect), IEEE Sri Lanka Section",
     image: "/speakers_final/Mr. Kavinga Upul Ekanyake_no_bg.webp",
   },
   {
     id: 18,
     name: "Mr. Abdelrahman Metwally",
+    title: "Discover the Advance of IEEE AESS",
     occupation:
       "Chair, Egypt Chapter of the IEEE Aerospace and Electronic Systems Society (AESS) and International Director, Region 8",
     image: "/speakers_final/Mr. Abdelrahman Metwally_no_bg.webp",
@@ -132,6 +150,7 @@ const speakersData = [
   {
     id: 19,
     name: "Mr. Sai Prashanth",
+    title: "Connect to Opportunities: Your Journey with IEEE ComSoc",
     occupation:
       "Chair, Ad Hoc Committee & Technical Activities Board (TAB) Young Professionals Representative, IEEE Education Society",
     image: "/speakers_final/Mr.Sai Prashanth_no_bg.webp",
@@ -139,24 +158,28 @@ const speakersData = [
   {
     id: 20,
     name: "Ms. Chethana Dilukshi",
+    title: "IEEE IES: Connect with Global Network of Industrial Electronics",
     occupation: "Ambassador, IEEE Industrial Electronics Society (IES)",
     image: "/speakers_final/Ms. Chethana Dilukshi_no_bg.webp",
   },
   {
     id: 21,
     name: "Mr. Janitha Dissanayake",
+    title: "Building a World-Class IEEE IAS Chapter from Sri Lanka",
     occupation: "Chair, IEEE IAS SL Chapter",
     image: "/speakers_final/Mr. Janitha Dissanayake_no_bg.webp",
   },
   {
     id: 22,
     name: "Ms. Linaya Gunawardena",
+    title: "Vote of Thanks",
     occupation: "Secretary, IEEE SL SYWC '26",
     image: "/speakers_final/Linaya Gunawardena_no_bg.webp",
   },
   {
     id: 23,
     name: "Mr. Dulith Herath",
+    title: "From Local Problems to Lasting Businesses: How Sri Lankan Entrepreneurs Build, Scale and Adapt",
     occupation:
       "Founder & Chairman of Kapruka Holdings PLC | Founder of Java Lounge",
     image: "/speakers_final/Mr. Dulith Herath_no_bg.webp",
@@ -249,7 +272,7 @@ const SpeakerItem = ({ person, badgeRole }) => {
       </div>
 
       {/* Compact Info Content Area */}
-      <div className="px-2.5 sm:px-3.5 pt-1.5 sm:pt-2 pb-2.5 sm:pb-3.5 flex flex-col text-left relative z-10 bg-[#040814]">
+      <div className="px-2.5 sm:px-3.5 pt-1.5 sm:pt-2 pb-2.5 sm:pb-3 flex flex-col text-left relative z-10 bg-[#040814]">
         <h4 className="text-xs sm:text-sm md:text-[15px] font-bold text-white group-hover:text-[#ffcb40] transition-colors duration-200 leading-tight tracking-tight line-clamp-1 sm:line-clamp-none">
           {person.name}
         </h4>
@@ -259,9 +282,18 @@ const SpeakerItem = ({ person, badgeRole }) => {
 
         {/* Position / Title */}
         {person.occupation ? (
-          <div className="min-h-[1.8rem] sm:min-h-[2.2rem] flex items-start">
-            <p className="text-[10px] sm:text-[11.5px] md:text-xs text-gray-300 group-hover:text-amber-100/90 font-normal leading-tight sm:leading-snug line-clamp-2 transition-colors duration-200">
+          <div className="min-h-[1.6rem] sm:min-h-[2rem] flex items-start">
+            <p className="text-[10px] sm:text-[11px] md:text-xs text-gray-300 group-hover:text-amber-100/90 font-normal leading-tight sm:leading-snug line-clamp-2 transition-colors duration-200">
               {person.occupation}
+            </p>
+          </div>
+        ) : null}
+
+        {/* Talk / Session Title */}
+        {person.title ? (
+          <div className="mt-1 sm:mt-1.5 pt-1 sm:pt-1.5 border-t border-white/[0.08] flex items-start">
+            <p className="text-[9.5px] sm:text-[10.5px] md:text-xs text-[#ffcb40] group-hover:text-[#ffe082] font-medium leading-snug line-clamp-2 transition-colors duration-200">
+              {person.title.replace(/^["“]|["”]$/g, "")}
             </p>
           </div>
         ) : null}
