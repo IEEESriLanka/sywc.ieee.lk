@@ -133,9 +133,10 @@ const Countdown = () => {
         {/* CTA Button */}
         <div className="flex justify-center">
           {isRegistrationEnded ? (
-            <div className="register-button-closed">
-              <span className="button-text">Registration Closed</span>
-            </div>
+            <a href="/handbook" className="register-button">
+              <span className="button-text">Delegate Handbook</span>
+              <div className="button-glow"></div>
+            </a>
           ) : (
             <a href="/register" className="register-button">
               <span className="button-text">Register Now</span>

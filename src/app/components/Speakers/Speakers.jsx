@@ -73,17 +73,19 @@ const speakersData = [
   },
   {
     id: 10,
-    name: "Mr. Shantanu Suman",
-    title: "IEEE DEIS: Empowering Innovation, Young Professionals and Women in Dielectrics & Electrical Insulation",
-    occupation: "IEEE Leader & Speaker",
-    image: "/speakers_final/Mr. Shantanu Suman_no_bg.webp",
+    name: "Dr. Subodha Charles",
+    title: "From Local Problems to Lasting Businesses: How Sri Lankan Entrepreneurs Build, Scale and Adapt",
+    occupation:
+      "Chair, IEEE Ad Hoc Committee on Driving Career Readiness for Students, Chair, IEEE MGA Student Activities Committee, Group Chairman & CEO, Pearl Cluster",
+    image: "/speakers_final/Dr Subodha Charles_no_bg.webp",
   },
   {
     id: 11,
-    name: "Ms. Punnam Chandrika",
-    title: "IEEE DEIS: Empowering Innovation, Young Professionals and Women in Dielectrics & Electrical Insulation",
-    occupation: "IEEE Volunteer & Speaker",
-    image: "/speakers_final/Chandrika Punnam_no_bg.webp",
+    name: "Mr. Dulith Herath",
+    title: "From Local Problems to Lasting Businesses: How Sri Lankan Entrepreneurs Build, Scale and Adapt",
+    occupation:
+      "Founder & Chairman of Kapruka Holdings PLC | Founder of Java Lounge",
+    image: "/speakers_final/Mr. Dulith Herath_no_bg.webp",
   },
   {
     id: 12,
@@ -95,6 +97,20 @@ const speakersData = [
   },
   {
     id: 13,
+    name: "Mr. Shantanu Suman",
+    title: "IEEE DEIS: Empowering Innovation, Young Professionals and Women in Dielectrics & Electrical Insulation",
+    occupation: "IEEE Leader & Speaker",
+    image: "/speakers_final/Mr. Shantanu Suman_no_bg.webp",
+  },
+  {
+    id: 14,
+    name: "Ms. Punnam Chandrika",
+    title: "IEEE DEIS: Empowering Innovation, Young Professionals and Women in Dielectrics & Electrical Insulation",
+    occupation: "IEEE Volunteer & Speaker",
+    image: "/speakers_final/Chandrika Punnam_no_bg.webp",
+  },
+  {
+    id: 15,
     name: "Ms. Dorothy Stanley",
     title: "Why Standards Matter: How IEEE SA Shapes Technical and Socio-Technical Innovation",
     occupation:
@@ -102,22 +118,14 @@ const speakersData = [
     image: "/speakers_final/Ms.Dorothy Stanley_no_bg.webp",
   },
   {
-    id: 14,
-    name: "Dr. Subodha Charles",
-    title: "From Local Problems to Lasting Businesses: How Sri Lankan Entrepreneurs Build, Scale and Adapt",
-    occupation:
-      "Chair, IEEE Ad Hoc Committee on Driving Career Readiness for Students, Chair, IEEE MGA Student Activities Committee, Group Chairman & CEO, Pearl Cluster",
-    image: "/speakers_final/Dr Subodha Charles_no_bg.webp",
-  },
-  {
-    id: 15,
+    id: 16,
     name: "Ms. Warunika Hippola",
     title: "Opportunity Pathways with IEEE",
     occupation: "Treasurer, IEEE Sri Lanka Section",
     image: "/speakers_final/Ms. Warunika Hippola_no_bg.webp",
   },
   {
-    id: 16,
+    id: 17,
     name: "Mr. Dhammika Marasinghe",
     title: "Opportunity Pathways with IEEE",
     occupation:
@@ -125,14 +133,14 @@ const speakersData = [
     image: "/speakers_final/Mr. Dhammika Marasinghe_no_bg.webp",
   },
   {
-    id: 17,
+    id: 18,
     name: "Mr. Kavinga Upul Ekanayake",
     title: "Building Sri Lanka’s RF & Microwave Ecosystem: From University Research to Local Telecommunications and Sensing Applications",
     occupation: "Vice Chair (Chair-Elect), IEEE Sri Lanka Section",
     image: "/speakers_final/Mr. Kavinga Upul Ekanyake_no_bg.webp",
   },
   {
-    id: 18,
+    id: 19,
     name: "Mr. Abdelrahman Metwally",
     title: "Discover the Advance of IEEE AESS",
     occupation:
@@ -140,7 +148,7 @@ const speakersData = [
     image: "/speakers_final/Mr. Abdelrahman Metwally_no_bg.webp",
   },
   {
-    id: 19,
+    id: 20,
     name: "Mr. Sai Prashanth",
     title: "Connect to Opportunities: Your Journey with IEEE ComSoc",
     occupation:
@@ -148,33 +156,25 @@ const speakersData = [
     image: "/speakers_final/Mr.Sai Prashanth_no_bg.webp",
   },
   {
-    id: 20,
+    id: 21,
     name: "Ms. Chethana Dilukshi",
     title: "IEEE IES: Connect with Global Network of Industrial Electronics",
     occupation: "Ambassador, IEEE Industrial Electronics Society (IES)",
     image: "/speakers_final/Ms. Chethana Dilukshi_no_bg.webp",
   },
   {
-    id: 21,
+    id: 22,
     name: "Mr. Janitha Dissanayake",
     title: "Building a World-Class IEEE IAS Chapter from Sri Lanka",
     occupation: "Chair, IEEE IAS SL Chapter",
     image: "/speakers_final/Mr. Janitha Dissanayake_no_bg.webp",
   },
   {
-    id: 22,
+    id: 23,
     name: "Ms. Linaya Gunawardena",
     title: "Vote of Thanks",
     occupation: "Secretary, IEEE SL SYWC '26",
     image: "/speakers_final/Linaya Gunawardena_no_bg.webp",
-  },
-  {
-    id: 23,
-    name: "Mr. Dulith Herath",
-    title: "From Local Problems to Lasting Businesses: How Sri Lankan Entrepreneurs Build, Scale and Adapt",
-    occupation:
-      "Founder & Chairman of Kapruka Holdings PLC | Founder of Java Lounge",
-    image: "/speakers_final/Mr. Dulith Herath_no_bg.webp",
   },
 ];
 
