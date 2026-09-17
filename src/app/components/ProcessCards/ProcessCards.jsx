@@ -29,7 +29,7 @@ const schedule1 = [
   },
   {
     time: "3:05 PM - 3:45 PM",
-    event: "Invited Keynote Session (Motivational / Vision Building)",
+    event: "Keynote Session by Mr. Eran Wickramaratne",
   },
   { time: "3:45 PM - 4:25 PM", event: "IEEE EPS Keynote" },
   { time: "4:25 PM - 4:55 PM", event: "IEEE Puzzlers Session" },
@@ -55,15 +55,14 @@ const schedule2 = [
   { time: "3:00 PM - 3:30 PM", event: "Group Photo" },
   { time: "4:00 PM - 5:00 PM", event: "Lunch" },
   {
-    time: "5:00 PM - 6:00 PM",
+    time: "5:00 PM - 7:00 PM",
     event: "Opportunity Pathways with IEEE - Panel Discussion",
   },
-  { time: "6:00 PM - 7:00 PM", event: "Congress Police" },
   { time: "7:00 PM - 7:40 PM", event: "DEIS Session" },
   {
     time: "8:00 PM - 9:15 PM",
     event:
-      "Panel Discussion on Entrepreneurship (Celebrity Panelists, Moderator: Manodya Ayya)",
+      "Panel Discussion on Entrepreneurship",
   },
   {
     time: "10:00 PM - 11:00 PM",
@@ -246,12 +245,12 @@ const ProcessCards = () => {
                       {cardData.schedule.map((item, i) => (
                         <li
                           key={i}
-                          className="flex items-center py-2.5 md:py-3 px-3 gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
+                          className="grid grid-cols-[130px_1fr] sm:grid-cols-[155px_1fr] md:grid-cols-[175px_1fr] items-start py-2.5 md:py-3 px-2 sm:px-3 gap-2.5 sm:gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
                         >
-                          <span className="text-xs md:text-sm font-mono text-[#ffcb40] flex-shrink-0 md:min-w-[170px] text-right font-semibold">
+                          <span className="text-[11px] sm:text-xs md:text-sm font-mono text-[#ffcb40] font-semibold text-left sm:text-right leading-snug pt-0.5 tracking-tight">
                             {item.time}
                           </span>
-                          <span className="text-sm md:text-base flex-1 text-gray-200 font-normal leading-snug">
+                          <span className="text-xs sm:text-sm md:text-base text-gray-200 font-normal leading-snug break-words">
                             {item.event}
                           </span>
                         </li>
@@ -295,12 +294,12 @@ const ProcessCards = () => {
                       {cardData.schedule.map((item, i) => (
                         <li
                           key={i}
-                          className="flex items-center py-2.5 md:py-3 px-3 gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
+                          className="grid grid-cols-[130px_1fr] sm:grid-cols-[155px_1fr] md:grid-cols-[175px_1fr] items-start py-2.5 md:py-3 px-2 sm:px-3 gap-2.5 sm:gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
                         >
-                          <span className="text-xs md:text-sm font-mono text-[#ffcb40] flex-shrink-0 md:min-w-[170px] text-right font-semibold">
+                          <span className="text-[11px] sm:text-xs md:text-sm font-mono text-[#ffcb40] font-semibold text-left sm:text-right leading-snug pt-0.5 tracking-tight">
                             {item.time}
                           </span>
-                          <span className="text-sm md:text-base flex-1 text-gray-200 font-normal leading-snug">
+                          <span className="text-xs sm:text-sm md:text-base text-gray-200 font-normal leading-snug break-words">
                             {item.event}
                           </span>
                         </li>

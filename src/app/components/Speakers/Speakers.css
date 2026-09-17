@@ -74,9 +74,9 @@
 @media (max-width: 1000px) {
   .speaker-stacked-card {
     min-height: 100vh !important;
-    height: auto !important;
-    max-height: none !important;
-    padding: 6rem 1rem 2rem 1rem !important;
+    height: 100svh !important;
+    max-height: 100svh !important;
+    padding: 5rem 0.6rem 0.75rem 0.6rem !important;
     border-radius: 0 !important;
   }
 }

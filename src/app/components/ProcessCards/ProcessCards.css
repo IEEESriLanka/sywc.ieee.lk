@@ -2,7 +2,6 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  height: 100%;
   background: #030710;
   overflow-x: hidden;
 }
@@ -15,14 +14,15 @@
   max-height: 100svh;
   background: #070d1be6;
   color: #fff;
-  padding: 6rem 2rem 2rem 2rem;
+  padding: 5.5rem 2rem 2rem 2rem;
   display: flex;
-  gap: 3rem;
+  gap: 2rem;
   border: 1px solid rgba(255, 203, 64, 0.2);
   box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.7);
   border-radius: 2rem;
   will-change: transform, opacity;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .process-card::after {
@@ -39,29 +39,6 @@
   border-radius: 2rem;
 }
 
-.process-card-index {
-  flex: 2;
-  color: #ffcb40;
-  font-weight: 700;
-}
-
-.process-card-content {
-  flex: 4;
-  padding-top: 1.5rem;
-  color: #fff;
-}
-
-.process-card-content-wrapper {
-  width: 75%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.process-card-header {
-  width: 75%;
-}
-
 .process-card-img img {
   aspect-ratio: 5/3;
   border-radius: 1.5rem;
@@ -69,90 +46,51 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.process-card-copy {
-  display: flex;
-  gap: 1.5rem;
+/* Standout visible scrollbar for agenda schedule */
+.schedule-list-scroll {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  scrollbar-width: thin;
+  scrollbar-color: #ffcb40 rgba(255, 255, 255, 0.08);
 }
 
-.process-card-copy-title {
-  flex: 2;
+.schedule-list-scroll::-webkit-scrollbar {
+  width: 5px;
+  display: block !important;
 }
 
-.process-card-copy-description {
-  flex: 4;
+.schedule-list-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 9999px;
+}
+
+.schedule-list-scroll::-webkit-scrollbar-thumb {
+  background: #ffcb40;
+  border-radius: 9999px;
+  box-shadow: 0 0 10px rgba(255, 203, 64, 0.5);
+}
+
+.schedule-list-scroll::-webkit-scrollbar-thumb:hover {
+  background: #ffe082;
 }
 
 @media (max-width: 1000px) {
   .process-card {
     flex-direction: column !important;
-    gap: 0;
-    min-height: 100vh !important;
-    height: auto !important;
-    max-height: none !important;
-    padding: 6rem 1rem 1rem 1rem !important;
+    gap: 0.5rem !important;
+    height: 100svh !important;
+    max-height: 100svh !important;
+    min-height: 100svh !important;
+    padding: 5rem 0.75rem 1.25rem 0.75rem !important;
+    border-radius: 0 !important;
   }
   .process-card > div {
     width: 100% !important;
-    padding: 0.5rem !important;
+    padding: 0 !important;
   }
   .process-card-img {
     display: none !important;
-  }
-  .process-card img {
-    height: 180px !important;
-    width: 100% !important;
-    max-height: 180px !important;
-    margin-bottom: 1rem;
-    object-fit: cover;
-  }
-  .process-card h2 {
-    font-size: 1.25rem !important;
-    margin-bottom: 0.5rem !important;
-  }
-  .process-card span {
-    font-size: 0.75rem !important;
-    padding: 0.25em 0.8em !important;
-  }
-  .process-card ul {
-    max-height: 60vh !important;
-    overflow-y: auto !important;
-    padding-right: 0.5rem !important;
-  }
-  .process-card ul::-webkit-scrollbar {
-    width: 4px;
-  }
-  .process-card ul::-webkit-scrollbar-track {
-    background: rgba(255, 203, 64, 0.05);
-    border-radius: 2px;
-  }
-  .process-card ul::-webkit-scrollbar-thumb {
-    background: rgba(255, 203, 64, 0.3);
-    border-radius: 2px;
-  }
-  .process-card ul::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 203, 64, 0.6);
-  }
-  .process-card ul li {
-    font-size: 0.85rem !important;
-    padding: 0.6em 0.3em !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 0.5em !important;
-  }
-  .process-card ul li span {
-    font-size: 0.8rem !important;
-    display: inline-block !important;
-    text-align: left !important;
-    min-width: 90px !important;
-    max-width: none !important;
-    overflow: visible !important;
-    text-overflow: unset !important;
-  }
-  .process-card ul li span:last-child {
-    min-width: 0 !important;
-    max-width: 100vw !important;
-    flex: 1 1 0%;
-    overflow: visible !important;
-    text-overflow: unset !important;
   }
 }
