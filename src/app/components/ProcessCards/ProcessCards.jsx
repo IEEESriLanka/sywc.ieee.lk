@@ -32,6 +32,7 @@ const schedule1 = [
     event: "Keynote Session by Mr. Eran Wickramaratne",
   },
   { time: "3:45 PM - 4:25 PM", event: "IEEE EPS Keynote" },
+  { time: "4:25 PM - 4:55 PM", event: "Membership drive by IAS" },
   { time: "4:55 PM - 5:55 PM", event: "Keynote Session" },
   { time: "5:55 PM - 6:10 PM", event: "Room Allocation" },
   { time: "6:10 PM - 7:10 PM", event: "Getting Ready for Handawa" },
@@ -82,22 +83,21 @@ const schedule3 = [
     time: "9:15 AM - 10:30 AM",
     event: "Panel Discussion on MTTS, CASS, AESS",
   },
-  { time: "10:30 AM - 10:45 AM", event: "Membership Drive by IAS" },
-  { time: "10:45 AM - 11:00 AM", event: "Membership Drive by IES" },
+  { time: "10:30 AM - 10:45 AM", event: "Membership Drive by IES" },
   {
-    time: "11:00 AM - 11:15 AM",
+    time: "10:45 AM - 11:00 AM",
     event: "Membership Drive by AESS",
   },
   {
-    time: "11:15 AM - 11:30 AM",
+    time: "11:00 AM - 11:15 AM",
     event: "Commencement of Closing Ceremony",
   },
   {
-    time: "11:30 AM - 12:25 PM",
+    time: "11:15 AM - 12:10 PM",
     event: "Prize Giving and Final Remarks by Yohan, Uvindu and Kavin",
   },
-  { time: "12:25 PM - 12:30 PM", event: "Vote of Thanks" },
-  { time: "12:30 PM - 1:30 PM", event: "Lunch" },
+  { time: "12:10 PM - 12:15 PM", event: "Vote of Thanks" },
+  { time: "12:15 PM - 1:15 PM", event: "Lunch" },
 ];
 
 const processCardsData = [
