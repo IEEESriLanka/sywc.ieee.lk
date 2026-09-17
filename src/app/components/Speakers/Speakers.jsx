@@ -180,6 +180,11 @@ const emceesModeratorsData = [
     name: "Ms. Thulanya Dewasurendra",
     image: "/speakers_final/Ms. Thulanya Dewasurendra_no_bg.webp",
   },
+  {
+    id: "em-4",
+    name: "Mr. Themiya Nanayakkara",
+    image: "/speakers_final/Mr_Themiya_Nanayakkara_no_bg.webp",
+  },
 ];
 
 // Helper to chunk speakers into batches of 4
@@ -427,13 +432,19 @@ const Speakers = () => {
           </div>
         </div>
 
-        {/* 3 Emcees & Moderators Grid */}
-        <div className="w-full max-w-5xl mx-auto flex-1 grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-4 md:gap-6 z-10 my-auto items-center">
+        {/* Emcees & Moderators Grid (2x2 on mobile, 4-col on desktop) */}
+        <div
+          className={`w-full flex-1 grid gap-2.5 sm:gap-4 md:gap-5 z-10 my-auto items-center ${
+            emceesModeratorsData.length === 3
+              ? "grid-cols-2 sm:grid-cols-3 max-w-5xl mx-auto"
+              : "grid-cols-2 lg:grid-cols-4"
+          }`}
+        >
           {emceesModeratorsData.map((person, pIndex) => (
             <div
               key={person.id}
               className={
-                pIndex === 2
+                emceesModeratorsData.length === 3 && pIndex === 2
                   ? "col-span-2 sm:col-span-1 max-w-[200px] sm:max-w-none mx-auto w-full"
                   : "w-full"
               }
