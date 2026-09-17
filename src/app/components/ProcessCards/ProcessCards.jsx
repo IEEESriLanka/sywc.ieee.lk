@@ -29,7 +29,7 @@ const schedule1 = [
   },
   {
     time: "3:05 PM - 3:45 PM",
-    event: "Invited Keynote Session (Motivational / Vision Building)",
+    event: "Keynote Session by Mr. Eran Wickramaratne",
   },
   { time: "3:45 PM - 4:25 PM", event: "IEEE EPS Keynote" },
   { time: "4:25 PM - 4:55 PM", event: "IEEE Puzzlers Session" },
@@ -55,15 +55,14 @@ const schedule2 = [
   { time: "3:00 PM - 3:30 PM", event: "Group Photo" },
   { time: "4:00 PM - 5:00 PM", event: "Lunch" },
   {
-    time: "5:00 PM - 6:00 PM",
+    time: "5:00 PM - 7:00 PM",
     event: "Opportunity Pathways with IEEE - Panel Discussion",
   },
-  { time: "6:00 PM - 7:00 PM", event: "Congress Police" },
   { time: "7:00 PM - 7:40 PM", event: "DEIS Session" },
   {
     time: "8:00 PM - 9:15 PM",
     event:
-      "Panel Discussion on Entrepreneurship (Celebrity Panelists, Moderator: Manodya Ayya)",
+      "Panel Discussion on Entrepreneurship",
   },
   {
     time: "10:00 PM - 11:00 PM",
@@ -232,26 +231,26 @@ const ProcessCards = () => {
             {isEven ? (
               <>
                 {/* Text Left */}
-                <div className="flex flex-col justify-start items-center w-full md:w-1/2 p-4 md:p-8 z-10 h-full">
-                  <div className="w-full text-center mb-6">
-                    <h2 className="text-3xl font-bold tracking-tight text-white mb-2">
+                <div className="flex flex-col justify-start items-center w-full md:w-1/2 p-2 sm:p-4 md:p-8 z-10 h-full overflow-hidden">
+                  <div className="w-full text-center mb-2 sm:mb-4 md:mb-6 flex-shrink-0">
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1 sm:mb-2">
                       {cardData.title}
                     </h2>
-                    <span className="text-xs font-bold font-mono text-[#030710] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-md">
+                    <span className="text-[11px] sm:text-xs font-bold font-mono text-[#030710] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] px-3.5 py-1 rounded-full uppercase tracking-widest shadow-md inline-block">
                       {`Day ${index + 1}`}
                     </span>
                   </div>
-                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto max-h-[60vh] md:max-h-[62vh] pr-2 schedule-list-scroll">
-                    <ul className="divide-y divide-white/[0.08]">
+                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto pr-1 sm:pr-2 schedule-list-scroll">
+                    <ul className="divide-y divide-white/[0.08] pb-6">
                       {cardData.schedule.map((item, i) => (
                         <li
                           key={i}
-                          className="flex items-center py-2.5 md:py-3 px-3 gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
+                          className="grid grid-cols-[130px_1fr] sm:grid-cols-[155px_1fr] md:grid-cols-[175px_1fr] items-start py-2.5 md:py-3 px-2 sm:px-3 gap-2.5 sm:gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
                         >
-                          <span className="text-xs md:text-sm font-mono text-[#ffcb40] flex-shrink-0 md:min-w-[170px] text-right font-semibold">
+                          <span className="text-[11px] sm:text-xs md:text-sm font-mono text-[#ffcb40] font-semibold text-left sm:text-right leading-snug pt-0.5 tracking-tight flex-shrink-0">
                             {item.time}
                           </span>
-                          <span className="text-sm md:text-base flex-1 text-gray-200 font-normal leading-snug">
+                          <span className="text-xs sm:text-sm md:text-base text-gray-200 font-normal leading-snug break-words">
                             {item.event}
                           </span>
                         </li>
@@ -281,26 +280,26 @@ const ProcessCards = () => {
                   />
                 </div>
                 {/* Text Right */}
-                <div className="flex flex-col justify-start items-center w-full md:w-1/2 p-4 md:p-8 z-10 h-full">
-                  <div className="w-full text-center mb-6">
-                    <h2 className="text-3xl font-bold tracking-tight text-white mb-2">
+                <div className="flex flex-col justify-start items-center w-full md:w-1/2 p-2 sm:p-4 md:p-8 z-10 h-full overflow-hidden">
+                  <div className="w-full text-center mb-2 sm:mb-4 md:mb-6 flex-shrink-0">
+                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mb-1 sm:mb-2">
                       {cardData.title}
                     </h2>
-                    <span className="text-xs font-bold font-mono text-[#030710] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-md">
+                    <span className="text-[11px] sm:text-xs font-bold font-mono text-[#030710] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] px-3.5 py-1 rounded-full uppercase tracking-widest shadow-md inline-block">
                       {`Day ${index + 1}`}
                     </span>
                   </div>
-                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto max-h-[60vh] md:max-h-[62vh] pr-2 schedule-list-scroll">
-                    <ul className="divide-y divide-white/[0.08]">
+                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto pr-1 sm:pr-2 schedule-list-scroll">
+                    <ul className="divide-y divide-white/[0.08] pb-6">
                       {cardData.schedule.map((item, i) => (
                         <li
                           key={i}
-                          className="flex items-center py-2.5 md:py-3 px-3 gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
+                          className="grid grid-cols-[130px_1fr] sm:grid-cols-[155px_1fr] md:grid-cols-[175px_1fr] items-start py-2.5 md:py-3 px-2 sm:px-3 gap-2.5 sm:gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
                         >
-                          <span className="text-xs md:text-sm font-mono text-[#ffcb40] flex-shrink-0 md:min-w-[170px] text-right font-semibold">
+                          <span className="text-[11px] sm:text-xs md:text-sm font-mono text-[#ffcb40] font-semibold text-left sm:text-right leading-snug pt-0.5 tracking-tight flex-shrink-0">
                             {item.time}
                           </span>
-                          <span className="text-sm md:text-base flex-1 text-gray-200 font-normal leading-snug">
+                          <span className="text-xs sm:text-sm md:text-base text-gray-200 font-normal leading-snug break-words">
                             {item.event}
                           </span>
                         </li>
@@ -323,20 +322,6 @@ const ProcessCards = () => {
           .process-mobile-heading {
             display: block !important;
           }
-        }
-        .schedule-list-scroll::-webkit-scrollbar {
-          width: 5px;
-        }
-        .schedule-list-scroll::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.05);
-          border-radius: 4px;
-        }
-        .schedule-list-scroll::-webkit-scrollbar-thumb {
-          background: rgba(255, 203, 64, 0.35);
-          border-radius: 4px;
-        }
-        .schedule-list-scroll::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 203, 64, 0.65);
         }
       `}</style>
     </div>
