@@ -44,9 +44,11 @@ function Sponsors() {
 
   React.useEffect(() => {
     let rotation = 0;
-    let animationFrameId;
+    let animationFrameId = null;
     let isVisible = false;
     let cachedWidth = containerRef.current ? containerRef.current.offsetWidth : 1200;
+
+    const isDesktop = () => typeof window !== "undefined" && window.innerWidth >= 768;
 
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -54,11 +56,24 @@ function Sponsors() {
       }
     };
 
-    window.addEventListener("resize", updateDimensions);
+    const handleResize = () => {
+      updateDimensions();
+      if (!isDesktop() && animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      } else if (isDesktop() && isVisible && !animationFrameId) {
+        animationFrameId = requestAnimationFrame(updateOrbit);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
     updateDimensions();
 
     const updateOrbit = () => {
-      if (!isVisible) return;
+      if (!isVisible || !isDesktop()) {
+        animationFrameId = null;
+        return;
+      }
       const cards = cardsRef.current;
       const N = sponsors.length;
       if (!N || !containerRef.current) return;
@@ -66,8 +81,8 @@ function Sponsors() {
       const width = cachedWidth;
       if (!width) return;
       // Dynamic orbital radii depending on container width
-      const rx = width > 768 ? Math.min(width * 0.46, 570) : width * 0.36;
-      const ry = width > 768 ? 65 : 25;
+      const rx = Math.min(width * 0.46, 570);
+      const ry = 65;
 
       cards.forEach((card, index) => {
         if (!card) return;
@@ -102,7 +117,7 @@ function Sponsors() {
           // Inner Ring (Smallest - orbits faster)
           rxVal = rx * 0.45;
           ryVal = ry * 0.45;
-          yOffset = width > 768 ? -65 : -28; 
+          yOffset = -65; 
           speedMultiplier = -1.25;
           scaleOffset = -0.16; // Very small cards for inner ring
         } else if (ringIndex === 1) {
@@ -116,7 +131,7 @@ function Sponsors() {
           // Outer Ring (Largest - orbits slower)
           rxVal = rx * 1.1;
           ryVal = ry * 1.1;
-          yOffset = width > 768 ? 65 : 28;
+          yOffset = 65;
           speedMultiplier = -0.65;
           scaleOffset = 0.05;
         }
@@ -127,9 +142,7 @@ function Sponsors() {
         const y = Math.sin(angle) * ryVal + yOffset;
         const z = Math.sin(angle); // depth
 
-        const scale = (width > 768 
-          ? 0.65 + ((z + 1) / 2) * 0.3 // 0.65 to 0.95
-          : 0.55 + ((z + 1) / 2) * 0.25) + scaleOffset;
+        const scale = 0.65 + ((z + 1) / 2) * 0.3 + scaleOffset;
 
         const opacity = 0.2 + ((z + 1) / 2) * 0.8; // 0.2 to 1.0
         const zIndex = Math.round(50 + z * 50) + ringIndex * 5; // separate z-planes between rings
@@ -152,7 +165,7 @@ function Sponsors() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && isDesktop()) {
             if (!isVisible) {
               isVisible = true;
               updateDimensions();
@@ -160,7 +173,10 @@ function Sponsors() {
             }
           } else {
             isVisible = false;
-            cancelAnimationFrame(animationFrameId);
+            if (animationFrameId) {
+              cancelAnimationFrame(animationFrameId);
+              animationFrameId = null;
+            }
           }
         });
       },
@@ -172,9 +188,11 @@ function Sponsors() {
     }
 
     return () => {
-      window.removeEventListener("resize", updateDimensions);
+      window.removeEventListener("resize", handleResize);
       observer.disconnect();
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 

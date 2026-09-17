@@ -19,8 +19,9 @@ export default function SmoothScroll({ children }) {
       smoothWheel: true,
       wheelMultiplier: 1,
       smoothTouch: false,
-      touchMultiplier: 2,
+      touchMultiplier: 1,
       infinite: false,
+      autoResize: true,
     });
 
     setLenis(lenisInstance);
