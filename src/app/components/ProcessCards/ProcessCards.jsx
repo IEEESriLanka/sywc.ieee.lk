@@ -44,35 +44,35 @@ const schedule2 = [
   { time: "8:00 AM - 9:00 AM", event: "Breakfast + Chapter Stalls" },
   { time: "9:00 AM - 9:20 AM", event: "YP Session" },
   { time: "9:20 AM - 9:30 AM", event: "Opening Plenary" },
-  { time: "11:00 AM - 11:45 AM", event: "IEEE Standards Session" },
-  { time: "12:00 PM - 12:15 PM", event: "Membership Drive by ComSoc" },
+  { time: "9:30 AM - 10:15 AM", event: "IEEE Standards Session" },
+  { time: "10:15 AM - 10:30 AM", event: "Membership Drive by ComSoc" },
   {
-    time: "1:00 PM - 2:00 PM",
+    time: "10:30 AM - 11:30 AM",
     event: "Panel Discussion on IES, EPS and DEIS",
   },
-  { time: "2:00 PM - 2:15 PM", event: "Membership Drive by TEMS" },
-  { time: "3:00 PM - 3:30 PM", event: "Group Photo" },
-  { time: "4:00 PM - 5:00 PM", event: "Lunch" },
+  { time: "11:30 AM - 11:45 AM", event: "Membership Drive by TEMS" },
+  { time: "11:45 AM - 12:15 PM", event: "Group Photo" },
+  { time: "12:15 PM - 1:15 PM", event: "Lunch" },
   {
-    time: "5:00 PM - 7:00 PM",
+    time: "1:15 PM - 2:15 PM",
     event: "Opportunity Pathways with IEEE - Panel Discussion",
   },
-  { time: "7:00 PM - 7:40 PM", event: "DEIS Session" },
+  { time: "2:15 PM - 3:05 PM", event: "DEIS Session" },
   {
-    time: "8:00 PM - 9:15 PM",
+    time: "3:05 PM - 4:05 PM",
     event:
       "Panel Discussion on Entrepreneurship",
   },
   {
-    time: "10:00 PM - 11:00 PM",
+    time: "4:20 PM - 6:05 PM",
     event: "Outbound Training Activities",
   },
   {
-    time: "11:00 PM - 12:00 AM",
+    time: "6:05 PM - 7:05 PM",
     event: "Preparation Time for Awards Night",
   },
-  { time: "12:00 AM - 1:30 AM", event: "Awards Night" },
-  { time: "1:30 AM - 3:45 AM", event: "Dinner and DJ" },
+  { time: "07:05 PM - 8:35 PM", event: "Awards Night" },
+  { time: "08:30 PM - 11:20 PM", event: "Dinner and DJ" },
 ];
 
 const schedule3 = [
