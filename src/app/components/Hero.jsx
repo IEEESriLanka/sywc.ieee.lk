@@ -73,16 +73,21 @@ const Hero = () => {
       iconElements[0]?.getBoundingClientRect().width || 60;
     const exactScale = headerIconSize / currentIconSize;
 
-    // Gradient backgrounds for animation
-    const gradientStart =
-      "linear-gradient(135deg, #030710 0%, #050914 50%, #030710 100%)";
-    const gradientEnd =
-      "linear-gradient(135deg, #050914 0%, #030710 50%, #050914 100%)";
+    // Cache DOM nodes and dimensions once outside the scroll loop
+    const fadeDiv = heroSection.querySelector(".hero-gradient-fade");
+    let windowW = window.innerWidth;
+    let windowH = window.innerHeight;
 
-    ScrollTrigger.create({
+    const onResize = () => {
+      windowW = window.innerWidth;
+      windowH = window.innerHeight;
+    };
+    window.addEventListener("resize", onResize);
+
+    const heroScrollTrigger = ScrollTrigger.create({
       trigger: ".hero",
       start: "top top",
-      end: `+=${window.innerHeight * 8}px`,
+      end: `+=${windowH * 6}px`,
       pin: true,
       pinSpacing: true,
       scrub: 1,
@@ -90,40 +95,13 @@ const Hero = () => {
         const progress = self.progress;
 
         // Smoothly crossfade the gradients
-        const fadeDiv = heroSection.querySelector(".hero-gradient-fade");
         if (fadeDiv) {
           fadeDiv.style.opacity = progress;
         }
 
-        // Animate background gradient
-        if (heroSection) {
-          // Interpolate between the two gradients based on progress
-          // For simplicity, switch at halfway point, or use a crossfade
-          if (progress < 0.5) {
-            heroSection.style.background = gradientStart;
-          } else {
-            heroSection.style.background = gradientEnd;
-          }
-        }
-
-        textSegments.forEach((segment) => {
-          if (segment) {
-             gsap.set(segment, { opacity: 0 });
-          }
-        });
-
-        // Always collapse placeholders since we don't want icons in text
-        placeholders.forEach((placeholder) => {
-             if (placeholder) {
-                 placeholder.style.width = "0px";
-                 placeholder.style.margin = "0px";
-                 placeholder.style.opacity = "0";
-             }
-        });
-
         if (progress <= 0.3) {
           const moveProgress = progress / 0.3;
-          const containerMoveY = -window.innerHeight * 0.3 * moveProgress;
+          const containerMoveY = -windowH * 0.3 * moveProgress;
 
           if (progress <= 0.15) {
             const headerProgress = progress / 0.15;
@@ -178,24 +156,12 @@ const Hero = () => {
             opacity: 0,
           });
 
-          if (scaleProgress >= 0.5) {
-            heroSection.style.backgroundColor = "#030710";
-          } else {
-            heroSection.style.backgroundColor = "#050914";
-          }
-
-          const targetCenterY = window.innerHeight / 2;
-          const targetCenterX = window.innerWidth / 2;
-          const containerRect = animatedIcons.getBoundingClientRect();
-          const currentCenterX = containerRect.left + containerRect.width / 2;
-          const currentCenterY = containerRect.top + containerRect.height / 2;
-          const deltaX = (targetCenterX - currentCenterX) * scaleProgress;
-          const deltaY = (targetCenterY - currentCenterY) * scaleProgress;
-          const baseY = -window.innerHeight * 0.3;
+          const deltaY = (windowH * 0.2) * scaleProgress;
+          const baseY = -windowH * 0.3;
           const currentScale = 1 + (exactScale - 1) * scaleProgress;
 
           gsap.set(animatedIcons, {
-            x: deltaX,
+            x: 0,
             y: baseY + deltaY,
             scale: currentScale,
             opacity: 1,
@@ -205,7 +171,6 @@ const Hero = () => {
             gsap.set(icon, { x: 0, y: 0 });
           });
         } else if (progress <= 0.75) {
-          // Just fade out the icons here, no duplicate icons flying
           const fadeOutProgress = (progress - 0.6) / 0.15;
 
           gsap.set(heroHeader, {
@@ -213,35 +178,24 @@ const Hero = () => {
             opacity: 0,
           });
 
-          heroSection.style.backgroundColor = "#030710";
-
-          const targetCenterY = window.innerHeight / 2;
-          const targetCenterX = window.innerWidth / 2;
-          const containerRect = animatedIcons.getBoundingClientRect();
-          const currentCenterX = containerRect.left + containerRect.width / 2;
-          const currentCenterY = containerRect.top + containerRect.height / 2;
-          const deltaX = targetCenterX - currentCenterX;
-          const deltaY = targetCenterY - currentCenterY;
-          const baseY = -window.innerHeight * 0.3;
+          const deltaY = windowH * 0.2;
+          const baseY = -windowH * 0.3;
 
           gsap.set(animatedIcons, {
-            x: deltaX,
+            x: 0,
             y: baseY + deltaY,
             scale: exactScale,
-            opacity: 1 - fadeOutProgress, // Fade out
+            opacity: 1 - fadeOutProgress,
           });
 
           iconElements.forEach((icon) => {
             gsap.set(icon, { x: 0, y: 0 });
           });
-
         } else {
           gsap.set(heroHeader, {
             transform: `translate(-50%, calc(-50% + -100px))`,
             opacity: 0,
           });
-
-          heroSection.style.backgroundColor = "#030710";
 
           gsap.set(animatedIcons, { opacity: 0 });
 
@@ -263,10 +217,14 @@ const Hero = () => {
             });
           });
         }
-      },    });
+      },
+    });
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      window.removeEventListener("resize", onResize);
+      if (heroScrollTrigger && heroScrollTrigger.kill) {
+        heroScrollTrigger.kill();
+      }
     };
   }, [isClient]);
 

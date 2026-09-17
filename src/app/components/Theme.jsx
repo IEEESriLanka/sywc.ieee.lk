@@ -96,7 +96,6 @@ const Theme = () => {
         <div className="theme-desktop">
           <WhoWeAre />
         </div>
-        {/* <Schedule /> */}
 
         <section
           className="mission-intro relative overflow-hidden"
@@ -172,13 +171,16 @@ const Theme = () => {
         <Location />
         <div id="schedule">
           <div className="theme-desktop">
-            {/* <Marquee text={"Schedule"} /> */}
+            <Marquee text={"Schedule"} />
           </div>
-          {/* <ProcessCards /> */}
+          <ProcessCards />
         </div>
 
         <div id="speakers">
-          {/* <Speakers /> */}
+          <div className="theme-desktop">
+            <Marquee text={"Speakers"} />
+          </div>
+          <Speakers />
         </div>
 
         {/* <section className="recognition">

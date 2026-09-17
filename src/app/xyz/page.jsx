@@ -53,7 +53,7 @@ function RegPage() {
             <div className="flex flex-wrap justify-center gap-4 text-sm md:text-base text-purple-200">
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 mr-2" />
-                September 26/ 27/ 28, 2026
+                September 18/ 19/ 20, 2026
               </div>
               <div className="flex items-center">
                 <MapPin className="w-4 h-4 mr-2" />

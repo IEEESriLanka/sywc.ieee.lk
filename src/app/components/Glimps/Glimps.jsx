@@ -175,6 +175,13 @@ const Glimps = () => {
       };
       initAnimations();
       window.addEventListener("resize", initAnimations);
+
+      return () => {
+        window.removeEventListener("resize", initAnimations);
+        if (scrollTriggerInstance) {
+          scrollTriggerInstance.kill();
+        }
+      };
     };
     init();
   }, []);

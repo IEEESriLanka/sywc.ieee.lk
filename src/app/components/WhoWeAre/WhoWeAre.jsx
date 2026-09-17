@@ -13,40 +13,36 @@ const WhoWeAre = () => {
     const whoweareScroll = document.querySelector(".whoweare-scroll");
     const whoweareHeader = document.querySelector(".whoweare-header h1");
 
+    if (!whoweareScroll || !whoweareHeader) return;
+
     // Function to recalculate on resize
     const updateScrollCalculation = () => {
       const currentViewportWidth = window.innerWidth;
-      const currentTextWidth = whoweareHeader.offsetWidth;
-
-      // Check if we're on mobile
+      const currentTextWidth = whoweareHeader.offsetWidth || 1500;
       const isMobile = currentViewportWidth <= 1000;
-
-      // Calculate the full scroll distance needed
-      // We want to scroll until the end of the text is visible
       const textEndPosition =
-        currentTextWidth + ((isMobile ? 5 : 10) * currentViewportWidth) / 100; // margin-left
+        currentTextWidth + ((isMobile ? 5 : 10) * currentViewportWidth) / 100;
       const scrollDistance = Math.max(
         0,
         textEndPosition - currentViewportWidth
       );
-
       return { maxTranslateX: scrollDistance, isMobile };
     };
 
-    let { maxTranslateX, isMobile } = updateScrollCalculation();
+    let { maxTranslateX } = updateScrollCalculation();
 
     const images = [
-      { id: "#whoweare-img-1", endTranslateX: -800 },
-      { id: "#whoweare-img-2", endTranslateX: -1200 },
-      { id: "#whoweare-img-3", endTranslateX: -600 },
-      { id: "#whoweare-img-4", endTranslateX: -1000 },
-      { id: "#whoweare-img-5", endTranslateX: -900 },
+      { el: document.querySelector("#whoweare-img-1"), endTranslateX: -800 },
+      { el: document.querySelector("#whoweare-img-2"), endTranslateX: -1200 },
+      { el: document.querySelector("#whoweare-img-3"), endTranslateX: -600 },
+      { el: document.querySelector("#whoweare-img-4"), endTranslateX: -1000 },
+      { el: document.querySelector("#whoweare-img-5"), endTranslateX: -900 },
     ];
 
-    ScrollTrigger.create({
+    const mainTrigger = ScrollTrigger.create({
       trigger: ".whoweare",
       start: "top top",
-      end: `+=${window.innerHeight * 6}`,
+      end: `+=${window.innerHeight * 5}`,
       pin: true,
       pinSpacing: true,
       scrub: 1,
@@ -65,16 +61,20 @@ const WhoWeAre = () => {
         } else {
           opacity = 1;
           scale = 1;
-          const adjustedProgress = (progress - 0.3) / (1 - 0.3);
-
-          // Recalculate for current viewport size
-          const currentCalc = updateScrollCalculation();
-          const currentMaxTranslateX = currentCalc.maxTranslateX;
-
+          const adjustedProgress = (progress - 0.3) / 0.7;
           translateX = -Math.min(
-            adjustedProgress * currentMaxTranslateX,
-            currentMaxTranslateX
+            adjustedProgress * maxTranslateX,
+            maxTranslateX
           );
+
+          // Update image translations in the same tick
+          images.forEach((img) => {
+            if (img.el) {
+              gsap.set(img.el, {
+                x: `${img.endTranslateX * adjustedProgress}px`,
+              });
+            }
+          });
         }
 
         gsap.set(whoweareScroll, {
@@ -85,36 +85,19 @@ const WhoWeAre = () => {
       },
     });
 
-    images.forEach((img) => {
-      ScrollTrigger.create({
-        trigger: ".whoweare",
-        start: "top top",
-        end: `+=${window.innerHeight * 6}`,
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-
-          if (progress >= 0.3) {
-            const adjustedProgress = (progress - 0.3) / (1 - 0.3);
-            gsap.set(img.id, {
-              x: `${img.endTranslateX * adjustedProgress}px`,
-            });
-          }
-        },
-      });
-    });
-
     // Handle window resize
     const handleResize = () => {
       const newCalc = updateScrollCalculation();
       maxTranslateX = newCalc.maxTranslateX;
-      isMobile = newCalc.isMobile;
     };
 
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (mainTrigger && mainTrigger.kill) {
+        mainTrigger.kill();
+      }
     };
   }, []);
 

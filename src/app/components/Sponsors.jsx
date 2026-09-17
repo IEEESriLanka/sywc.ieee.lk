@@ -45,13 +45,25 @@ function Sponsors() {
   React.useEffect(() => {
     let rotation = 0;
     let animationFrameId;
+    let isVisible = false;
+    let cachedWidth = containerRef.current ? containerRef.current.offsetWidth : 1200;
+
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        cachedWidth = containerRef.current.offsetWidth;
+      }
+    };
+
+    window.addEventListener("resize", updateDimensions);
+    updateDimensions();
 
     const updateOrbit = () => {
+      if (!isVisible) return;
       const cards = cardsRef.current;
       const N = sponsors.length;
       if (!N || !containerRef.current) return;
 
-      const width = containerRef.current.offsetWidth;
+      const width = cachedWidth;
       if (!width) return;
       // Dynamic orbital radii depending on container width
       const rx = width > 768 ? Math.min(width * 0.46, 570) : width * 0.36;
@@ -119,16 +131,14 @@ function Sponsors() {
           ? 0.65 + ((z + 1) / 2) * 0.3 // 0.65 to 0.95
           : 0.55 + ((z + 1) / 2) * 0.25) + scaleOffset;
 
-        const opacity = 0.2 + ((z + 1) / 2) * 0.8; // 0.2 to 1.0 (reduce background opacity)
+        const opacity = 0.2 + ((z + 1) / 2) * 0.8; // 0.2 to 1.0
         const zIndex = Math.round(50 + z * 50) + ringIndex * 5; // separate z-planes between rings
-        const blur = (1 - (z + 1) / 2) * 1.5; // Max 1.5px blur for back cards to give strong depth contrast
 
-        card.style.setProperty("--hx", `${x}px`);
-        card.style.setProperty("--hy", `${y}px`);
-        card.style.setProperty("--scale", scale);
-        card.style.setProperty("--opacity", opacity);
+        card.style.setProperty("--hx", `${x.toFixed(1)}px`);
+        card.style.setProperty("--hy", `${y.toFixed(1)}px`);
+        card.style.setProperty("--scale", scale.toFixed(3));
+        card.style.setProperty("--opacity", opacity.toFixed(2));
         card.style.setProperty("--z-index", zIndex);
-        card.style.setProperty("--blur", `${blur}px`);
       });
 
       // Rotate in the opposite direction (subtraction instead of addition)
@@ -139,9 +149,31 @@ function Sponsors() {
       animationFrameId = requestAnimationFrame(updateOrbit);
     };
 
-    animationFrameId = requestAnimationFrame(updateOrbit);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!isVisible) {
+              isVisible = true;
+              updateDimensions();
+              animationFrameId = requestAnimationFrame(updateOrbit);
+            }
+          } else {
+            isVisible = false;
+            cancelAnimationFrame(animationFrameId);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     return () => {
+      window.removeEventListener("resize", updateDimensions);
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
