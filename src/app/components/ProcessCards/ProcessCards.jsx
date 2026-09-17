@@ -32,8 +32,7 @@ const schedule1 = [
     event: "Keynote Session by Mr. Eran Wickramaratne",
   },
   { time: "3:45 PM - 4:25 PM", event: "IEEE EPS Keynote" },
-  { time: "4:25 PM - 4:55 PM", event: "IEEE Puzzlers Session" },
-  { time: "4:55 PM - 5:55 PM", event: "Keynote Speech - MTTS" },
+  { time: "4:55 PM - 5:55 PM", event: "Keynote Session" },
   { time: "5:55 PM - 6:10 PM", event: "Room Allocation" },
   { time: "6:10 PM - 7:10 PM", event: "Getting Ready for Handawa" },
   { time: "7:10 PM - 8:10 PM", event: "IEEE Handawa & Dinner" },
@@ -78,7 +77,7 @@ const schedule2 = [
 
 const schedule3 = [
   { time: "8:00 AM - 9:00 AM", event: "Breakfast" },
-  { time: "9:00 AM - 9:15 AM", event: "Opening Plenary (Congress Police)" },
+  { time: "9:00 AM - 9:15 AM", event: "Opening Plenary" },
   {
     time: "9:15 AM - 10:30 AM",
     event: "Panel Discussion on MTTS, CASS, AESS",
@@ -87,17 +86,16 @@ const schedule3 = [
   { time: "10:45 AM - 11:00 AM", event: "Membership Drive by IES" },
   {
     time: "11:00 AM - 11:15 AM",
-    event: "Membership Drive by AESS & Token of Appreciation",
+    event: "Membership Drive by AESS",
   },
   {
     time: "11:15 AM - 11:30 AM",
     event: "Commencement of Closing Ceremony",
   },
   {
-    time: "11:30 AM - 12:15 PM",
+    time: "11:30 AM - 12:25 PM",
     event: "Prize Giving and Final Remarks by Yohan, Uvindu and Kavin",
   },
-  { time: "12:15 PM - 12:25 PM", event: "After Movie" },
   { time: "12:25 PM - 12:30 PM", event: "Vote of Thanks" },
   { time: "12:30 PM - 1:30 PM", event: "Lunch" },
 ];
@@ -211,8 +209,8 @@ const ProcessCards = () => {
             {/* Corner accents */}
             <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-[#ffcb40]/40 pointer-events-none z-20" />
             <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[#ffcb40]/40 pointer-events-none z-20" />
-            <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[#00ecec]/40 pointer-events-none z-20" />
-            <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#00ecec]/40 pointer-events-none z-20" />
+            <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[#ffcb40]/40 pointer-events-none z-20" />
+            <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#ffcb40]/40 pointer-events-none z-20" />
 
             {/* Two-column alternating layout */}
             {isEven ? (
