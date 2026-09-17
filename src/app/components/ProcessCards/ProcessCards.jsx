@@ -125,34 +125,21 @@ const processCardsData = [
 
 const ProcessCards = () => {
   useGSAP(() => {
-    const processCards = document.querySelectorAll(".process-card");
-    processCards.forEach((card, index) => {
-      if (index < processCards.length - 1) {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top top",
-          endTrigger: processCards[processCards.length - 1],
-          end: "top top",
-          pin: true,
-          pinSpacing: false,
-          id: `card-pin-${index}`,
-        });
-      }
-      if (index < processCards.length - 1) {
-        ScrollTrigger.create({
-          trigger: processCards[index + 1],
-          start: "top bottom",
-          end: "top top",
-          onUpdate: (self) => {
-            const progress = self.progress;
-            const scale = 1 - progress * 0.25;
-            const rotation = (index % 2 === 0 ? 5 : -5) * progress;
-            const afterOpacity = progress;
-            gsap.set(card, {
-              scale: scale,
-              rotation: rotation,
-              "--after-opacity": afterOpacity,
-            });
+    const cards = gsap.utils.toArray(".process-card");
+    if (!cards || cards.length === 0) return;
+
+    cards.forEach((card, index) => {
+      if (index < cards.length - 1) {
+        gsap.to(card, {
+          scale: 0.88,
+          rotation: index % 2 === 0 ? 3.5 : -3.5,
+          opacity: 0.35,
+          ease: "none",
+          scrollTrigger: {
+            trigger: cards[index + 1],
+            start: "top bottom",
+            end: "top top",
+            scrub: true,
           },
         });
       }

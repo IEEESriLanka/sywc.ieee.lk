@@ -4,13 +4,12 @@
   position: relative;
   width: 100%;
   max-width: 100%;
-  height: 100%;
   background: #030710;
-  overflow-x: hidden;
 }
 
 .speaker-stacked-card {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100%;
   max-width: 100%;
   height: 100svh;
@@ -20,55 +19,33 @@
   flex-direction: column;
   justify-content: space-between;
   border-radius: 1.5rem;
-  will-change: transform, opacity;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   box-sizing: border-box;
+  transform-origin: center top;
+  will-change: transform, opacity;
 }
 
 .speaker-mini-card {
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  box-sizing: border-box;
 }
 
-.speaker-mini-card img {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* Animated Golden Spotlight Aura for transparent speaker cutouts */
-@keyframes gold-ambient-pulse {
-  0%, 100% {
-    transform: translate(-50%, -50%) scale(0.88);
-    opacity: 0.55;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.15);
-    opacity: 0.9;
-  }
-}
-
+/* Optimized Golden Spotlight Aura for transparent speaker cutouts */
 .gold-speaker-glow {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 203, 64, 0.45) 0%, rgba(255, 175, 10, 0.22) 45%, transparent 72%);
-  filter: blur(16px);
-  animation: gold-ambient-pulse 3.5s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(255, 203, 64, 0.4) 0%, rgba(255, 175, 10, 0.15) 50%, transparent 75%);
   pointer-events: none;
   z-index: 1;
 }
 
 .group:hover .gold-speaker-glow {
-  background: radial-gradient(circle, rgba(255, 215, 80, 0.7) 0%, rgba(255, 180, 20, 0.35) 45%, transparent 75%);
-  filter: blur(20px);
-  animation-duration: 2s;
+  background: radial-gradient(circle, rgba(255, 215, 80, 0.6) 0%, rgba(255, 180, 20, 0.25) 50%, transparent 75%);
+  transform: translate(-50%, -50%) scale(1.1);
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 
 @media (max-width: 1000px) {

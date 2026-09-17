@@ -27,9 +27,11 @@ function Sponsorships() {
 
   React.useEffect(() => {
     let rotation = 0;
-    let animationFrameId;
+    let animationFrameId = null;
     let isVisible = false;
     let cachedWidth = containerRef.current ? containerRef.current.offsetWidth : 1200;
+
+    const isDesktop = () => typeof window !== "undefined" && window.innerWidth >= 768;
 
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -37,20 +39,32 @@ function Sponsorships() {
       }
     };
 
-    window.addEventListener("resize", updateDimensions);
+    const handleResize = () => {
+      updateDimensions();
+      if (!isDesktop() && animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      } else if (isDesktop() && isVisible && !animationFrameId) {
+        animationFrameId = requestAnimationFrame(updateOrbit);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
     updateDimensions();
 
     const updateOrbit = () => {
-      if (!isVisible) return;
+      if (!isVisible || !isDesktop()) {
+        animationFrameId = null;
+        return;
+      }
       const cards = cardsRef.current;
       const N = sponsorships.length;
       if (!N || !containerRef.current) return;
 
       const width = cachedWidth;
       if (!width) return;
-      // Dynamic orbital radii depending on container width
-      const rx = width > 768 ? Math.min(width * 0.44, 530) : width * 0.35;
-      const ry = width > 768 ? 75 : 35;
+      const rx = Math.min(width * 0.44, 530);
+      const ry = 75;
 
       cards.forEach((card, index) => {
         if (!card) return;
@@ -59,12 +73,8 @@ function Sponsorships() {
         const y = Math.sin(angle) * ry;
         const z = Math.sin(angle); // range from -1 to 1
 
-        // Map depth (z) to scale, opacity, z-index, and blur filter
-        const scale = width > 768 
-          ? 0.75 + ((z + 1) / 2) * 0.35 // 0.75 to 1.1 on desktop
-          : 0.65 + ((z + 1) / 2) * 0.3;  // 0.65 to 0.95 on mobile
-        
-        const opacity = 0.25 + ((z + 1) / 2) * 0.75; // 0.25 to 1.0
+        const scale = 0.75 + ((z + 1) / 2) * 0.35;
+        const opacity = 0.25 + ((z + 1) / 2) * 0.75;
         const zIndex = Math.round(50 + z * 50);
 
         card.style.setProperty("--hx", `${x.toFixed(1)}px`);
@@ -85,7 +95,7 @@ function Sponsorships() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && isDesktop()) {
             if (!isVisible) {
               isVisible = true;
               updateDimensions();
@@ -93,7 +103,10 @@ function Sponsorships() {
             }
           } else {
             isVisible = false;
-            cancelAnimationFrame(animationFrameId);
+            if (animationFrameId) {
+              cancelAnimationFrame(animationFrameId);
+              animationFrameId = null;
+            }
           }
         });
       },
@@ -105,9 +118,11 @@ function Sponsorships() {
     }
 
     return () => {
-      window.removeEventListener("resize", updateDimensions);
+      window.removeEventListener("resize", handleResize);
       observer.disconnect();
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 

@@ -271,30 +271,17 @@ const Speakers = () => {
     if (!cards || cards.length === 0) return;
 
     cards.forEach((card, index) => {
-      // Pin card at top
       if (index < cards.length - 1) {
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top top",
-          endTrigger: cards[cards.length - 1],
-          end: "top top",
-          pin: true,
-          pinSpacing: false,
-          id: `speaker-stack-pin-${index}`,
-          anticipatePin: 1,
-        });
-
-        // High-performance GSAP scrub tween
         gsap.to(card, {
-          scale: 0.84,
+          scale: 0.86,
           rotation: index % 2 === 0 ? 3 : -3,
-          opacity: 0.3,
+          opacity: 0.35,
           ease: "none",
           scrollTrigger: {
             trigger: cards[index + 1],
             start: "top bottom",
             end: "top top",
-            scrub: 0.4,
+            scrub: true,
           },
         });
       }
@@ -303,7 +290,7 @@ const Speakers = () => {
 
   return (
     <div
-      className="speakers-stacked-container flex flex-col items-center gap-12 py-16 min-h-screen relative w-full overflow-hidden"
+      className="speakers-stacked-container flex flex-col items-center gap-12 py-16 min-h-screen relative w-full"
       style={{
         backgroundColor: "#030710",
       }}

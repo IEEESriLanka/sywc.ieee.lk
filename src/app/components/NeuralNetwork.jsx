@@ -14,35 +14,43 @@ const NeuralNetwork = () => {
     let particles = [];
     
     // Configuration
-    const isMobile = window.innerWidth <= 768;
-    const particleCount = isMobile ? 25 : 42;
-    const connectionDistance = isMobile ? 100 : 130;
+    const isMobile = typeof window !== "undefined" && window.innerWidth <= 768;
+    const particleCount = isMobile ? 14 : 35;
+    const connectionDistance = isMobile ? 75 : 120;
     
-    // Resize handling with devicePixelRatio support
+    // Resize handling with clamped devicePixelRatio to prevent canvas memory crash on iOS
     const resize_canvas = () => {
       const parent = canvas.parentElement;
       if (parent) {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const isMobileNow = window.innerWidth <= 768;
+        const dpr = isMobileNow ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
         const rectW = parent.clientWidth || window.innerWidth;
         const rectH = parent.clientHeight || window.innerHeight;
         
-        canvas.width = rectW * dpr;
-        canvas.height = rectH * dpr;
+        canvas.width = Math.floor(rectW * dpr);
+        canvas.height = Math.floor(rectH * dpr);
         
         canvas.style.width = `${rectW}px`;
         canvas.style.height = `${rectH}px`;
         
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
     };
     
-    window.addEventListener("resize", resize_canvas);
+    let resizeTimer;
+    const handleResizeDebounced = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(resize_canvas, 150);
+    };
+
+    window.addEventListener("resize", handleResizeDebounced);
     resize_canvas();
 
     // Mouse tracking
     let mouse = { x: null, y: null };
     
     const handleMouseMove = (e) => {
+      if (isMobile) return;
       mouse.x = e.clientX;
       mouse.y = e.clientY;
     };
@@ -52,18 +60,22 @@ const NeuralNetwork = () => {
       mouse.y = undefined;
     };
 
-    window.addEventListener("mousemove", handleMouseMove, { passive: true });
-    window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+    if (!isMobile) {
+      window.addEventListener("mousemove", handleMouseMove, { passive: true });
+      window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+    }
 
     // Particle Class
     class Particle {
       constructor() {
-        const width = canvas.width / (Math.min(window.devicePixelRatio || 1, 2));
-        const height = canvas.height / (Math.min(window.devicePixelRatio || 1, 2));
+        const isMobileNow = window.innerWidth <= 768;
+        const dpr = isMobileNow ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
+        const width = canvas.width / dpr;
+        const height = canvas.height / dpr;
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
+        this.vx = (Math.random() - 0.5) * 0.35;
+        this.vy = (Math.random() - 0.5) * 0.35;
         this.size = Math.random() * 1.5 + 1;
         this.color = "#ffcb40";
       }
@@ -101,7 +113,8 @@ const NeuralNetwork = () => {
     const animate = () => {
       if (!isAnimating) return;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const isMobileNow = window.innerWidth <= 768;
+      const dpr = isMobileNow ? 1 : Math.min(window.devicePixelRatio || 1, 1.25);
       const width = canvas.width / dpr;
       const height = canvas.height / dpr;
       ctx.clearRect(0, 0, width, height);
@@ -149,14 +162,17 @@ const NeuralNetwork = () => {
           cancelAnimationFrame(animationFrameId);
         }
       });
-    }, { threshold: 0 });
+    }, { threshold: 0.05 });
 
     observer.observe(canvas);
 
     return () => {
-      window.removeEventListener("resize", resize_canvas);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseleave", handleMouseLeave);
+      clearTimeout(resizeTimer);
+      window.removeEventListener("resize", handleResizeDebounced);
+      if (!isMobile) {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseleave", handleMouseLeave);
+      }
       cancelAnimationFrame(animationFrameId);
       observer.disconnect();
     };
