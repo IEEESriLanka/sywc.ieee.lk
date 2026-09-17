@@ -1,23 +1,28 @@
 .process-cards {
   position: relative;
   width: 100%;
+  max-width: 100%;
   height: 100%;
-  background: transparent;
+  background: #030710;
+  overflow-x: hidden;
 }
 
 .process-card {
   position: relative;
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
   height: 100svh;
-  background: #101828ee;
+  max-height: 100svh;
+  background: #070d1be6;
   color: #fff;
-  padding: 1.5rem;
+  padding: 6rem 2rem 2rem 2rem;
   display: flex;
   gap: 3rem;
-  border: 2px solid #00ecec55;
-  box-shadow: 0 4px 32px 0 #004cf155;
+  border: 1px solid rgba(255, 203, 64, 0.2);
+  box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.7);
   border-radius: 2rem;
-  will-change: transform;
+  will-change: transform, opacity;
+  box-sizing: border-box;
 }
 
 .process-card::after {
@@ -36,7 +41,7 @@
 
 .process-card-index {
   flex: 2;
-  color: #00ecec;
+  color: #ffcb40;
   font-weight: 700;
 }
 
@@ -60,7 +65,8 @@
 .process-card-img img {
   aspect-ratio: 5/3;
   border-radius: 1.5rem;
-  box-shadow: 0 2px 16px 0 #004cf122;
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .process-card-copy {
@@ -81,7 +87,9 @@
     flex-direction: column !important;
     gap: 0;
     min-height: 100vh !important;
-    padding: 1rem !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 6rem 1rem 1rem 1rem !important;
   }
   .process-card > div {
     width: 100% !important;
@@ -98,12 +106,12 @@
     object-fit: cover;
   }
   .process-card h2 {
-    font-size: 1.1rem !important;
+    font-size: 1.25rem !important;
     margin-bottom: 0.5rem !important;
   }
   .process-card span {
-    font-size: 0.7rem !important;
-    padding: 0.2em 0.7em !important;
+    font-size: 0.75rem !important;
+    padding: 0.25em 0.8em !important;
   }
   .process-card ul {
     max-height: 60vh !important;
@@ -114,34 +122,31 @@
     width: 4px;
   }
   .process-card ul::-webkit-scrollbar-track {
-    background: rgba(0, 236, 236, 0.1);
+    background: rgba(255, 203, 64, 0.05);
     border-radius: 2px;
   }
   .process-card ul::-webkit-scrollbar-thumb {
-    background: rgba(0, 236, 236, 0.3);
+    background: rgba(255, 203, 64, 0.3);
     border-radius: 2px;
   }
   .process-card ul::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 236, 236, 0.5);
+    background: rgba(255, 203, 64, 0.6);
   }
   .process-card ul li {
     font-size: 0.85rem !important;
-    padding: 0.5em 0.2em !important;
+    padding: 0.6em 0.3em !important;
     flex-direction: row !important;
     align-items: center !important;
     gap: 0.5em !important;
-    white-space: nowrap !important;
   }
   .process-card ul li span {
     font-size: 0.8rem !important;
     display: inline-block !important;
     text-align: left !important;
     min-width: 90px !important;
-    /* Remove max-width and ellipsis for time */
     max-width: none !important;
     overflow: visible !important;
     text-overflow: unset !important;
-    white-space: nowrap !important;
   }
   .process-card ul li span:last-child {
     min-width: 0 !important;
@@ -149,52 +154,5 @@
     flex: 1 1 0%;
     overflow: visible !important;
     text-overflow: unset !important;
-    white-space: normal !important;
-    width: 100% !important;
-    display: block !important;
-  }
-}
-
-/* Tablet and small laptop adjustments */
-@media (max-width: 1200px) and (min-width: 1001px) {
-  .process-card {
-    min-height: 80vh !important;
-  }
-  .process-card ul {
-    max-height: 50vh !important;
-    overflow-y: auto !important;
-  }
-}
-
-/* Large mobile devices */
-@media (max-width: 768px) and (min-width: 481px) {
-  .process-card {
-    min-height: 100vh !important;
-    padding: 0.75rem !important;
-  }
-  .process-card ul {
-    max-height: 65vh !important;
-  }
-}
-
-/* Small mobile devices */
-@media (max-width: 480px) {
-  .process-card {
-    min-height: 100vh !important;
-    padding: 0.5rem !important;
-  }
-  .process-card ul {
-    max-height: 70vh !important;
-  }
-  .process-card h2 {
-    font-size: 1rem !important;
-  }
-  .process-card ul li {
-    font-size: 0.8rem !important;
-    padding: 0.4em 0.1em !important;
-  }
-  .process-card ul li span {
-    font-size: 0.75rem !important;
-    min-width: 80px !important;
   }
 }

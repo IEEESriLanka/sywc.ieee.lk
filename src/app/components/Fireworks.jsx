@@ -40,11 +40,12 @@ const Fireworks = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     let width = window.innerWidth;
     let height = window.innerHeight;
     canvas.width = width;
     canvas.height = height;
+    let isVisible = false;
 
     const handleResize = () => {
       width = window.innerWidth;
@@ -60,41 +61,53 @@ const Fireworks = () => {
 
     let lastSpawn = 0;
     function animate(now) {
+      if (!isVisible) return;
       ctx.clearRect(0, 0, width, height);
-      // Fade out old trails
-      ctx.globalAlpha = 0.18;
-      ctx.fillStyle = "#000";
-      ctx.fillRect(0, 0, width, height);
-      ctx.globalAlpha = 1;
-      // Animate particles
+
       particlesRef.current.forEach((p) => {
-        ctx.save();
-        ctx.globalAlpha = p.alpha;
+        ctx.globalAlpha = Math.max(0, p.alpha);
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 12;
         ctx.fill();
-        ctx.restore();
         p.x += p.vx;
         p.y += p.vy;
         p.vx *= 0.98;
         p.vy *= 0.98;
         p.vy += 0.03; // gravity
-        p.alpha -= 0.012;
+        p.alpha -= 0.015;
       });
       particlesRef.current = particlesRef.current.filter((p) => p.alpha > 0.05);
-      // Spawn new fireworks every ~0.7s
-      if (!lastSpawn || now - lastSpawn > 700) {
+
+      if (!lastSpawn || now - lastSpawn > 800) {
         spawnFirework();
         lastSpawn = now;
       }
       animationRef.current = requestAnimationFrame(animate);
     }
-    animationRef.current = requestAnimationFrame(animate);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!isVisible) {
+              isVisible = true;
+              animationRef.current = requestAnimationFrame(animate);
+            }
+          } else {
+            isVisible = false;
+            cancelAnimationFrame(animationRef.current);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(canvas);
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      observer.disconnect();
       cancelAnimationFrame(animationRef.current);
     };
   }, []);

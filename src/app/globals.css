@@ -57,16 +57,14 @@
   box-sizing: border-box;
 } */
 html {
-  scroll-behavior: smooth;
+  /* Let Lenis handle smooth scrolling to avoid frame fighting */
 }
 
 body {
   font-family: "Host Grotesk", sans-serif;
-  /* line-height: 1.6; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
-  scroll-behavior: smooth;
   background-color: #030710;
   color: #e3e3db;
 }

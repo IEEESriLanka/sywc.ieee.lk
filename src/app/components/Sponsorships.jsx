@@ -28,13 +28,25 @@ function Sponsorships() {
   React.useEffect(() => {
     let rotation = 0;
     let animationFrameId;
+    let isVisible = false;
+    let cachedWidth = containerRef.current ? containerRef.current.offsetWidth : 1200;
+
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        cachedWidth = containerRef.current.offsetWidth;
+      }
+    };
+
+    window.addEventListener("resize", updateDimensions);
+    updateDimensions();
 
     const updateOrbit = () => {
+      if (!isVisible) return;
       const cards = cardsRef.current;
       const N = sponsorships.length;
       if (!N || !containerRef.current) return;
 
-      const width = containerRef.current.offsetWidth;
+      const width = cachedWidth;
       if (!width) return;
       // Dynamic orbital radii depending on container width
       const rx = width > 768 ? Math.min(width * 0.44, 530) : width * 0.35;
@@ -52,16 +64,14 @@ function Sponsorships() {
           ? 0.75 + ((z + 1) / 2) * 0.35 // 0.75 to 1.1 on desktop
           : 0.65 + ((z + 1) / 2) * 0.3;  // 0.65 to 0.95 on mobile
         
-        const opacity = 0.25 + ((z + 1) / 2) * 0.75; // 0.25 to 1.0 (reduce background opacity)
-        const zIndex = Math.round(50 + z * 50); // 1 to 100
-        const blur = (1 - (z + 1) / 2) * 1.5; // Max 1.5px blur for back cards to give strong depth contrast
+        const opacity = 0.25 + ((z + 1) / 2) * 0.75; // 0.25 to 1.0
+        const zIndex = Math.round(50 + z * 50);
 
-        card.style.setProperty("--hx", `${x}px`);
-        card.style.setProperty("--hy", `${y}px`);
-        card.style.setProperty("--scale", scale);
-        card.style.setProperty("--opacity", opacity);
+        card.style.setProperty("--hx", `${x.toFixed(1)}px`);
+        card.style.setProperty("--hy", `${y.toFixed(1)}px`);
+        card.style.setProperty("--scale", scale.toFixed(3));
+        card.style.setProperty("--opacity", opacity.toFixed(2));
         card.style.setProperty("--z-index", zIndex);
-        card.style.setProperty("--blur", `${blur}px`);
       });
 
       // Slowly rotate orbit if not hovered
@@ -72,9 +82,31 @@ function Sponsorships() {
       animationFrameId = requestAnimationFrame(updateOrbit);
     };
 
-    animationFrameId = requestAnimationFrame(updateOrbit);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!isVisible) {
+              isVisible = true;
+              updateDimensions();
+              animationFrameId = requestAnimationFrame(updateOrbit);
+            }
+          } else {
+            isVisible = false;
+            cancelAnimationFrame(animationFrameId);
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     return () => {
+      window.removeEventListener("resize", updateDimensions);
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

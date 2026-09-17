@@ -10,138 +10,115 @@ gsap.registerPlugin(ScrollTrigger);
 const schedule1 = [
   { time: "12:30 PM - 1:30 PM", event: "Delegate Registration" },
   { time: "1:30 PM - 1:40 PM", event: "Ushering of Guests" },
-  { time: "1:40 PM - 1:55 PM", event: "Commencement of the Opening Ceremony" },
   {
-    time: "1:55 PM - 2:00 PM",
-    event:
-      '"Empowering Innovation for Sustainability: Welcome to Congress" by Uvindu Kodikara, Chair, IEEE SLSYWC 2026',
+    time: "1:40 PM - 2:00 PM",
+    event: "Commencement of Opening Ceremony with Oil Lamp",
+  },
+  { time: "2:00 PM - 2:05 PM", event: "Welcome Speech" },
+  {
+    time: "2:05 PM - 2:20 PM",
+    event: "Inaugural Showcase",
   },
   {
-    time: "2:00 PM - 2:15 PM",
-    event:
-      '"From Vision to Reality: Milestones of IEEE in Sri Lanka - 2026" by Prof. S. Vasanthapriyan, Chair, IEEE Sri Lanka Section',
+    time: "2:20 PM - 2:35 PM",
+    event: "Speech by IEEE Sri Lanka Section Chair",
   },
   {
-    time: "2:15 PM - 2:30 PM",
-    event: "Inside Congress - An overview of Congress Protocols",
+    time: "2:35 PM - 3:05 PM",
+    event: "An Overview of Congress Protocols",
   },
   {
-    time: "2:30 PM - 3:00 PM",
-    event:
-      'Keynote Speech on "Opportunity Pathways with IEEE" by Dr. Subodha Charles, Chair, MGA Student Activities Committee',
+    time: "3:05 PM - 3:45 PM",
+    event: "Invited Keynote Session (Motivational / Vision Building)",
   },
-  {
-    time: "3:00 PM - 3:15 PM",
-    event:
-      'Keynote Speech on "The Role of Medical Technology in Shaping a Smarter Future" by Prof. Ruwan Gopura',
-  },
-  {
-    time: "3:15 PM - 3:30 PM",
-    event:
-      'Keynote Speech on "Sustainable Intelligence: AI for People, Planet, and Prosperity" by Prof. Roshan Ragel',
-  },
-  {
-    time: "3:30 PM - 4:00 PM",
-    event:
-      'Keynote Speech on "Tech-Driven Sustainability: Harnessing AI, IoT, and Clean Tech for a Greener Future" by Dr. Rajanikanth Aluvalu',
-  },
-  {
-    time: "4:00 PM - 4:15 PM",
-    event:
-      'Keynote Speech on "Fueling the Next Generation of Tech Leaders: The Power of IEEE ComSoc Membership" by Mr. M Sai Prashanth',
-  },
-  {
-    time: "4:15 PM - 5:00 PM",
-    event:
-      'Panel discussion on "Sustainable Innovation in the Global South: Challenges, Opportunities, and the Role of Young Engineers" - Panelists: Dr Syed Muzahir Abbas, Mr. M Sai Prashanth, Dr. Rajanikanth Aluvalu, Moderator: Mr. Javin Manatunge',
-  },
-  { time: "5:00 PM - 6:00 PM", event: "Room Allocation" },
-  { time: "6:00 PM - 7:00 PM", event: "Getting ready for Handawa" },
-  { time: "7:00 PM - 8:00 PM", event: "Dinner" },
-  { time: "8:00 PM - 11:00 PM", event: "IEEE Handawa" },
+  { time: "3:45 PM - 4:25 PM", event: "IEEE EPS Keynote" },
+  { time: "4:25 PM - 4:55 PM", event: "IEEE Puzzlers Session" },
+  { time: "4:55 PM - 5:55 PM", event: "Keynote Speech - MTTS" },
+  { time: "5:55 PM - 6:10 PM", event: "Room Allocation" },
+  { time: "6:10 PM - 7:10 PM", event: "Getting Ready for Handawa" },
+  { time: "7:10 PM - 8:10 PM", event: "IEEE Handawa & Dinner" },
+  { time: "8:10 PM - 10:10 PM", event: "IEEE Handawa" },
 ];
 
 const schedule2 = [
-  { time: "7:00 AM - 8:45 AM", event: "Chapter Stalls" },
-  { time: "8:00 AM - 8:45 AM", event: "Breakfast" },
-  { time: "8:45 AM - 9:00 AM", event: "Opening Plenary" },
+  { time: "7:00 AM - 8:00 AM", event: "Chapter Stalls" },
+  { time: "8:00 AM - 9:00 AM", event: "Breakfast + Chapter Stalls" },
+  { time: "9:00 AM - 9:20 AM", event: "YP Session" },
+  { time: "9:20 AM - 9:30 AM", event: "Opening Plenary" },
+  { time: "11:00 AM - 11:45 AM", event: "IEEE Standards Session" },
+  { time: "12:00 PM - 12:15 PM", event: "Membership Drive by ComSoc" },
   {
-    time: "9:00 AM - 10:00 AM",
-    event: "Vision-Building Workshop by Mr. Heminda Jayaweera",
+    time: "1:00 PM - 2:00 PM",
+    event: "Panel Discussion on IES, EPS and DEIS",
   },
+  { time: "2:00 PM - 2:15 PM", event: "Membership Drive by TEMS" },
+  { time: "3:00 PM - 3:30 PM", event: "Group Photo" },
+  { time: "4:00 PM - 5:00 PM", event: "Lunch" },
   {
-    time: "10:00 AM - 10:30 AM",
-    event: "Keynote Speech by Mr. Hwa Chiang LEO",
+    time: "5:00 PM - 6:00 PM",
+    event: "Opportunity Pathways with IEEE - Panel Discussion",
   },
+  { time: "6:00 PM - 7:00 PM", event: "Congress Police" },
+  { time: "7:00 PM - 7:40 PM", event: "DEIS Session" },
   {
-    time: "10:30 AM - 11:30 AM",
-    event: "Entrepreneurship Session(Panel Discussion)",
-  },
-  { time: "11:30 AM - 12:00 PM", event: "R10 YP Spotlight" },
-  { time: "12:00 PM - 12:15 PM", event: "Group photo" },
-  { time: "12:15 PM - 1:15 PM", event: "Lunch with leaders" },
-  {
-    time: "1:15 PM - 2:00 PM",
-    event: "Panel Discussion with Senior IEEE members",
-  },
-  {
-    time: "2:00 PM - 2:45 PM",
+    time: "8:00 PM - 9:15 PM",
     event:
-      'Keynote Speech on "Discover the World of Dielectrics with IEEE DEIS" by Mr. Ashok Narayan Tripathi',
+      "Panel Discussion on Entrepreneurship (Celebrity Panelists, Moderator: Manodya Ayya)",
   },
-  { time: "2:45 PM - 4:15 PM", event: "Outbound training activities" },
-  { time: "4:15 PM - 6:00 PM", event: "Preparation time for awards night" },
-  { time: "6:00 PM - 7:30 PM", event: "Awards Night" },
-  { time: "7:30 PM - 10:30 PM", event: "Dinner and DJ" },
+  {
+    time: "10:00 PM - 11:00 PM",
+    event: "Outbound Training Activities",
+  },
+  {
+    time: "11:00 PM - 12:00 AM",
+    event: "Preparation Time for Awards Night",
+  },
+  { time: "12:00 AM - 1:30 AM", event: "Awards Night" },
+  { time: "1:30 AM - 3:45 AM", event: "Dinner and DJ" },
 ];
 
 const schedule3 = [
-  { time: "8:00 AM - 8:45 AM", event: "Breakfast" },
-  { time: "8:45 AM - 9:00 AM", event: "Opening Plenary" },
+  { time: "8:00 AM - 9:00 AM", event: "Breakfast" },
+  { time: "9:00 AM - 9:15 AM", event: "Opening Plenary (Congress Police)" },
   {
-    time: "9:00 AM - 10:00 AM",
-    event:
-      "IEEE IAS CMD Workshop by Mr. Janitha Dissanayake, Chair, IEEE IAS SL chapter",
+    time: "9:15 AM - 10:30 AM",
+    event: "Panel Discussion on MTTS, CASS, AESS",
+  },
+  { time: "10:30 AM - 10:45 AM", event: "Membership Drive by IAS" },
+  { time: "10:45 AM - 11:00 AM", event: "Membership Drive by IES" },
+  {
+    time: "11:00 AM - 11:15 AM",
+    event: "Membership Drive by AESS & Token of Appreciation",
   },
   {
-    time: "10:00 AM - 10:45 AM",
-    event:
-      'Panel discussion on "Hardware is Hard - But Worth It: Developing a Full Electronics Industrial eco system in Sri Lanka" from CASS and IES',
+    time: "11:15 AM - 11:30 AM",
+    event: "Commencement of Closing Ceremony",
   },
   {
-    time: "10:45 AM - 11:00 AM",
-    event: "Commencement of the Closing Ceremony",
+    time: "11:30 AM - 12:15 PM",
+    event: "Prize Giving and Final Remarks by Yohan, Uvindu and Kavin",
   },
-  { time: "11:00 AM - 11:15 AM", event: "Prize giving" },
-  {
-    time: "11:15 AM - 12:00 PM",
-    event:
-      '"Congress diaries, Beauty of hapIEEE Volunteering" by Mr. Manodya Nabadawewa, Chair, IEEE SLSAC',
-  },
-  {
-    time: "12:00 PM - 12:10 PM",
-    event:
-      '"Congress 2026: A journey to remember & What\'s next" by Ms. Sanjana Attanayake, Secretary, IEEE SLSYWC 2026',
-  },
-  { time: "12:10 PM - 12:25 PM", event: "Group photo" },
+  { time: "12:15 PM - 12:25 PM", event: "After Movie" },
+  { time: "12:25 PM - 12:30 PM", event: "Vote of Thanks" },
+  { time: "12:30 PM - 1:30 PM", event: "Lunch" },
 ];
 
 const processCardsData = [
   {
     index: "01",
-    title: "26th Sep 2026",
+    title: "18th Sep 2026",
     image: "/hero/1.jpeg",
     schedule: schedule1,
   },
   {
     index: "02",
-    title: "27th Sep 2026",
+    title: "19th Sep 2026",
     image: "/hero/2.jpeg",
     schedule: schedule2,
   },
   {
     index: "03",
-    title: "28th Sep 2026",
+    title: "20th Sep 2026",
     image: "/hero/3.jpeg",
     schedule: schedule3,
   },
@@ -187,8 +164,7 @@ const ProcessCards = () => {
     <div
       className="process-cards flex flex-col items-center gap-12 py-16 min-h-screen"
       style={{
-        background:
-          "radial-gradient(ellipse at 60% 40%, #1a2a6c 0%, #0a0f1c 80%), linear-gradient(120deg, #0a0f1c 0%, #004cf1 100%)",
+        backgroundColor: "#030710",
       }}
     >
       <div className="process-mobile-heading text-center">
@@ -197,97 +173,85 @@ const ProcessCards = () => {
             Event Schedule
           </h2>
         </Copy>
-        <div className="w-24 h-1 bg-gradient-to-r from-[#004CF1] to-[#00ECEC] rounded-full mx-auto mt-6"></div>
+        <div className="w-24 h-1 bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] rounded-full mx-auto mt-6"></div>
       </div>
       {processCardsData.map((cardData, index) => {
         const isEven = index % 2 === 1;
         return (
           <div
             key={index}
-            className="process-card w-full bg-white rounded-none md:rounded-2xl shadow-xl flex flex-col md:flex-row items-stretch p-4 md:p-12 relative overflow-hidden border-b border-gray-200 min-h-screen md:min-h-0"
+            className="process-card w-full rounded-none md:rounded-2xl shadow-2xl flex flex-col md:flex-row items-stretch p-4 md:p-12 relative overflow-hidden min-h-screen md:min-h-0"
           >
-            {/* Animated Gradient Background (from Hero/About/Theme/Location) */}
+            {/* Dark Cyber Background matching the other sections */}
             <div className="absolute inset-0 w-full h-full -z-10">
-              {/* Base gradient background */}
+              {/* Base background gradient */}
               <div
                 className="absolute inset-0 w-full h-full"
                 style={{
                   background:
-                    "radial-gradient(ellipse at 60% 40%, #1A2A6C 0%, #0A0F1C 80%), linear-gradient(120deg, #0A0F1C 0%, #232526 100%)",
-                  transition: "opacity 0.3s linear",
+                    "radial-gradient(ellipse at 60% 40%, #0d162b 0%, #030710 80%), linear-gradient(180deg, #030710 0%, #060b17 100%)",
                 }}
               ></div>
 
-              {/* Animated gradient overlay */}
-              <div
-                className="absolute inset-0 w-full h-full process-gradient-fade"
-                style={{
-                  background:
-                    "radial-gradient(circle at 70% 30%, #014034 0%, #0A0F1C 70%), linear-gradient(120deg, #0A0F1C 0%, #00B836 100%)",
-                  opacity: 0,
-                  transition: "opacity 0.3s linear",
-                }}
-              ></div>
+              {/* Animated subtle grid pattern */}
+              <div className="absolute inset-0 grid-pattern opacity-30"></div>
 
-              {/* Animated Grid Pattern */}
-              <div className="absolute inset-0 grid-pattern"></div>
-
-              {/* Floating Geometric Shapes */}
-              <div className="absolute inset-0 floating-shapes">
-                <div className="shape shape-1"></div>
-                <div className="shape shape-2"></div>
-                <div className="shape shape-3"></div>
-                <div className="shape shape-4"></div>
-                <div className="shape shape-5"></div>
-                <div className="shape shape-6"></div>
-              </div>
-
-              {/* Animated Light Rays */}
-              <div className="absolute inset-0 light-rays">
-                <div className="ray ray-1"></div>
-                <div className="ray ray-2"></div>
-                <div className="ray ray-3"></div>
-              </div>
-
-              {/* Animated Wave Effect */}
-              <div className="absolute inset-0 wave-container">
-                <div className="wave wave-1"></div>
-                <div className="wave wave-2"></div>
-                <div className="wave wave-3"></div>
-              </div>
-
-              {/* Glowing Orbs */}
-              <div className="absolute inset-0 glowing-orbs">
-                <div className="orb orb-1"></div>
-                <div className="orb orb-2"></div>
-                <div className="orb orb-3"></div>
+              {/* Glowing ambient orbs matching the theme */}
+              <div className="absolute inset-0 glowing-orbs opacity-40">
+                <div
+                  className="orb orb-1"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(255, 203, 64, 0.15), transparent 70%)",
+                  }}
+                ></div>
+                <div
+                  className="orb orb-2"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(0, 236, 236, 0.15), transparent 70%)",
+                  }}
+                ></div>
+                <div
+                  className="orb orb-3"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(0, 76, 241, 0.15), transparent 70%)",
+                  }}
+                ></div>
               </div>
             </div>
+
+            {/* Corner accents */}
+            <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-[#ffcb40]/40 pointer-events-none z-20" />
+            <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[#ffcb40]/40 pointer-events-none z-20" />
+            <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[#00ecec]/40 pointer-events-none z-20" />
+            <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#00ecec]/40 pointer-events-none z-20" />
 
             {/* Two-column alternating layout */}
             {isEven ? (
               <>
                 {/* Text Left */}
                 <div className="flex flex-col justify-start items-center w-full md:w-1/2 p-4 md:p-8 z-10 h-full">
-                  <div className="w-full text-center mb-4">
-                    <h2 className="text-2xl font-bold tracking-tight text-white mb-1">
+                  <div className="w-full text-center mb-6">
+                    <h2 className="text-3xl font-bold tracking-tight text-white mb-2">
                       {cardData.title}
                     </h2>
-                    <span className="text-xs font-semibold text-[#00ecec] bg-[#004cf1] px-3 py-1 rounded-full uppercase tracking-widest">{`Day ${
-                      index + 1
-                    }`}</span>
+                    <span className="text-xs font-bold font-mono text-[#030710] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-md">
+                      {`Day ${index + 1}`}
+                    </span>
                   </div>
-                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto max-h-[70vh] md:max-h-none">
-                    <ul className="divide-y divide-[#00ecec33]">
+                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto max-h-[60vh] md:max-h-[62vh] pr-2 schedule-list-scroll">
+                    <ul className="divide-y divide-white/[0.08]">
                       {cardData.schedule.map((item, i) => (
                         <li
                           key={i}
-                          className="flex items-center py-3 px-2 gap-4 hover:bg-[#004cf122] transition"
+                          className="flex items-center py-2.5 md:py-3 px-3 gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
                         >
-                          <span className="text-sm flex-1 font-mono text-[#00ecec] md:min-w-[80px] text-right font-semibold">
+                          <span className="text-xs md:text-sm font-mono text-[#ffcb40] flex-shrink-0 md:min-w-[170px] text-right font-semibold">
                             {item.time}
                           </span>
-                          <span className="text-base flex-1 text-white font-medium">
+                          <span className="text-sm md:text-base flex-1 text-gray-200 font-normal leading-snug">
                             {item.event}
                           </span>
                         </li>
@@ -300,7 +264,7 @@ const ProcessCards = () => {
                   <img
                     src={cardData.image}
                     alt=""
-                    className="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-[#00ecec33] bg-white max-h-[500px]"
+                    className="w-full h-full object-cover rounded-2xl shadow-2xl border border-white/10 max-h-[500px]"
                     style={{ minHeight: "300px" }}
                   />
                 </div>
@@ -312,31 +276,31 @@ const ProcessCards = () => {
                   <img
                     src={cardData.image}
                     alt=""
-                    className="w-full h-full object-cover rounded-2xl shadow-lg border-4 border-[#00ecec33] bg-white max-h-[500px]"
+                    className="w-full h-full object-cover rounded-2xl shadow-2xl border border-white/10 max-h-[500px]"
                     style={{ minHeight: "300px" }}
                   />
                 </div>
                 {/* Text Right */}
                 <div className="flex flex-col justify-start items-center w-full md:w-1/2 p-4 md:p-8 z-10 h-full">
-                  <div className="w-full text-center mb-4">
-                    <h2 className="text-2xl font-bold tracking-tight text-white mb-1">
+                  <div className="w-full text-center mb-6">
+                    <h2 className="text-3xl font-bold tracking-tight text-white mb-2">
                       {cardData.title}
                     </h2>
-                    <span className="text-xs font-semibold text-[#00ecec] bg-[#004cf1] px-3 py-1 rounded-full uppercase tracking-widest">{`Day ${
-                      index + 1
-                    }`}</span>
+                    <span className="text-xs font-bold font-mono text-[#030710] bg-gradient-to-r from-[#bf953f] via-[#fcf6ba] to-[#b38728] px-4 py-1.5 rounded-full uppercase tracking-widest shadow-md">
+                      {`Day ${index + 1}`}
+                    </span>
                   </div>
-                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto max-h-[70vh] md:max-h-none">
-                    <ul className="divide-y divide-[#00ecec33]">
+                  <div className="w-full max-w-4xl mx-auto flex-1 overflow-y-auto max-h-[60vh] md:max-h-[62vh] pr-2 schedule-list-scroll">
+                    <ul className="divide-y divide-white/[0.08]">
                       {cardData.schedule.map((item, i) => (
                         <li
                           key={i}
-                          className="flex items-center py-3 px-2 gap-4 hover:bg-[#004cf122] transition"
+                          className="flex items-center py-2.5 md:py-3 px-3 gap-3 md:gap-4 hover:bg-white/[0.04] rounded-lg transition-colors duration-200"
                         >
-                          <span className="text-sm font-mono text-[#00ecec] flex-1 md:min-w-[80px] text-right font-semibold">
+                          <span className="text-xs md:text-sm font-mono text-[#ffcb40] flex-shrink-0 md:min-w-[170px] text-right font-semibold">
                             {item.time}
                           </span>
-                          <span className="text-base flex-1 text-white font-medium">
+                          <span className="text-sm md:text-base flex-1 text-gray-200 font-normal leading-snug">
                             {item.event}
                           </span>
                         </li>
@@ -359,6 +323,20 @@ const ProcessCards = () => {
           .process-mobile-heading {
             display: block !important;
           }
+        }
+        .schedule-list-scroll::-webkit-scrollbar {
+          width: 5px;
+        }
+        .schedule-list-scroll::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 4px;
+        }
+        .schedule-list-scroll::-webkit-scrollbar-thumb {
+          background: rgba(255, 203, 64, 0.35);
+          border-radius: 4px;
+        }
+        .schedule-list-scroll::-webkit-scrollbar-thumb:hover {
+          background: rgba(255, 203, 64, 0.65);
         }
       `}</style>
     </div>

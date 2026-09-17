@@ -14,24 +14,24 @@ const NeuralNetwork = () => {
     let particles = [];
     
     // Configuration
-    const particleCount = 60;
-    const connectionDistance = 150;
-    const mouseDistance = 200;
+    const isMobile = window.innerWidth <= 768;
+    const particleCount = isMobile ? 25 : 42;
+    const connectionDistance = isMobile ? 100 : 130;
     
     // Resize handling with devicePixelRatio support
     const resize_canvas = () => {
       const parent = canvas.parentElement;
       if (parent) {
-        const dpr = window.devicePixelRatio || 1;
-        const rect = parent.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rectW = parent.clientWidth || window.innerWidth;
+        const rectH = parent.clientHeight || window.innerHeight;
         
-        canvas.width = rect.width * dpr;
-        canvas.height = rect.height * dpr;
+        canvas.width = rectW * dpr;
+        canvas.height = rectH * dpr;
         
-        canvas.style.width = `${rect.width}px`;
-        canvas.style.height = `${rect.height}px`;
+        canvas.style.width = `${rectW}px`;
+        canvas.style.height = `${rectH}px`;
         
-        // Scale context to ensure correct drawing size
         ctx.scale(dpr, dpr);
       }
     };
@@ -43,8 +43,8 @@ const NeuralNetwork = () => {
     let mouse = { x: null, y: null };
     
     const handleMouseMove = (e) => {
-      mouse.x = e.x;
-      mouse.y = e.y;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     };
     
     const handleMouseLeave = () => {
@@ -52,53 +52,33 @@ const NeuralNetwork = () => {
       mouse.y = undefined;
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
 
     // Particle Class
     class Particle {
       constructor() {
-        const width = canvas.width / (window.devicePixelRatio || 1);
-        const height = canvas.height / (window.devicePixelRatio || 1);
+        const width = canvas.width / (Math.min(window.devicePixelRatio || 1, 2));
+        const height = canvas.height / (Math.min(window.devicePixelRatio || 1, 2));
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.size = Math.random() * 2 + 1;
-        this.color = "#ffcb40"; // Gold color to match theme
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.size = Math.random() * 1.5 + 1;
+        this.color = "#ffcb40";
       }
 
-      update() {
+      update(width, height) {
         this.x += this.vx;
         this.y += this.vy;
 
-        // Bounce off edges
-        // Bounce off edges using logical dimensions (CSS pixels)
-        const width = canvas.width / (window.devicePixelRatio || 1);
-        const height = canvas.height / (window.devicePixelRatio || 1);
-        
         if (this.x < 0 || this.x > width) this.vx = -this.vx;
         if (this.y < 0 || this.y > height) this.vy = -this.vy;
-
-        // Mouse interaction
-        if (mouse.x != undefined) {
-            let dx = mouse.x - this.x;
-            let dy = mouse.y - this.y;
-            let distance = Math.sqrt(dx * dx + dy * dy);
-            
-            if (distance < mouseDistance) {
-                const forceDirectionX = dx / distance;
-                const forceDirectionY = dy / distance;
-                const force = (mouseDistance - distance) / mouseDistance;
-                // Gently push away or attract - let's attract slightly for interactive feel
-                // actually "neural network" usually implies static connection, let's just make connections stronger near mouse
-            }
-        }
       }
 
       draw() {
         ctx.fillStyle = this.color;
-        ctx.globalAlpha = 0.6; // Slightly transparent nodes
+        ctx.globalAlpha = 0.5;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -121,12 +101,13 @@ const NeuralNetwork = () => {
     const animate = () => {
       if (!isAnimating) return;
 
-      const width = canvas.width / (window.devicePixelRatio || 1);
-      const height = canvas.height / (window.devicePixelRatio || 1);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = canvas.width / dpr;
+      const height = canvas.height / dpr;
       ctx.clearRect(0, 0, width, height);
       
       particles.forEach(particle => {
-        particle.update();
+        particle.update(width, height);
         particle.draw();
       });
 
@@ -135,23 +116,24 @@ const NeuralNetwork = () => {
     };
 
     const connect = () => {
-        for (let a = 0; a < particles.length; a++) {
-            for (let b = a; b < particles.length; b++) {
-                let dx = particles[a].x - particles[b].x;
-                let dy = particles[a].y - particles[b].y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
+      ctx.lineWidth = 0.8;
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distSq = dx * dx + dy * dy;
 
-                if (distance < connectionDistance) {
-                    let opacityValue = 1 - (distance / connectionDistance);
-                    ctx.strokeStyle = `rgba(255, 203, 64, ${opacityValue * 0.4})`; // Gold connection lines
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[a].x, particles[a].y);
-                    ctx.lineTo(particles[b].x, particles[b].y);
-                    ctx.stroke();
-                }
-            }
+          if (distSq < connectionDistance * connectionDistance) {
+            let distance = Math.sqrt(distSq);
+            let opacityValue = (1 - (distance / connectionDistance)) * 0.3;
+            ctx.strokeStyle = `rgba(255, 203, 64, ${opacityValue})`;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
         }
+      }
     };
 
     // Intersection Observer to pause animation when off-screen

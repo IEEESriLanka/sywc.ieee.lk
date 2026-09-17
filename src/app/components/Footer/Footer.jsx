@@ -96,34 +96,28 @@ export default function Footer() {
       animate();
     }
 
-    function checkFooterPosition() {
-      const footer = document.getElementById("footer-root");
-      if (!footer) return;
-      const rect = footer.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      if (rect.top > viewportHeight + 100) {
-        hasExploded.current = false;
-      }
-      if (!hasExploded.current && rect.top <= viewportHeight + 250) {
-        explode();
-      }
+    const footer = document.getElementById("footer-root");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            explode();
+          } else {
+            hasExploded.current = false;
+          }
+        });
+      },
+      { rootMargin: "100px" }
+    );
+
+    if (footer) {
+      observer.observe(footer);
     }
 
-    let checkTimeout;
-    function onScroll() {
-      clearTimeout(checkTimeout);
-      checkTimeout = setTimeout(checkFooterPosition, 5);
-    }
-    function onResize() {
-      hasExploded.current = false;
-    }
-    window.addEventListener("scroll", onScroll);
-    window.addEventListener("resize", onResize);
     createParticles();
-    setTimeout(checkFooterPosition, 500);
+
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      observer.disconnect();
       if (animationId.current) cancelAnimationFrame(animationId.current);
     };
   }, []);

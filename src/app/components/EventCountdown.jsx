@@ -15,7 +15,7 @@ const EventCountdown = () => {
   });
 
   useEffect(() => {
-    // Event starts: September 26, 2026 at 9:00 AM
+    // Event starts: September 18, 2026 at 9:00 AM
     const eventDate = new Date("2026-09-18T09:00:00");
 
     const timer = setInterval(() => {

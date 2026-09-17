@@ -64,7 +64,7 @@ const HTML_PRESETS = {
     </tr>
     <tr>
       <td style="color: #94a3b8;">Event Dates:</td>
-      <td>September 26 &ndash; 28, 2026</td>
+      <td>September 18 &ndash; 20, 2026</td>
     </tr>
     <tr>
       <td style="color: #94a3b8;">Location:</td>
